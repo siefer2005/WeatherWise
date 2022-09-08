@@ -1,6 +1,8 @@
 package com.juanantbuit.weatherproject.domain.models
 
 import com.google.gson.annotations.SerializedName
+import com.juanantbuit.weatherproject.domain.models.common.IconIdModel
+import com.juanantbuit.weatherproject.domain.models.common.MainInfoModel
 
 data class CityInfoModel(
     val name: String,

@@ -1,4 +1,4 @@
-package com.juanantbuit.weatherproject.domain.models
+package com.juanantbuit.weatherproject.domain.models.common
 
 import com.google.gson.annotations.SerializedName
 
