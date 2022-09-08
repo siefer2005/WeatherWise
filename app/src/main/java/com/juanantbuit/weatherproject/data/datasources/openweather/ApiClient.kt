@@ -5,7 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface CityInfoApiClient {
+interface ApiClient {
 
     @GET("/data/2.5/weather")
     suspend fun getCityInfo(@Query("lat") latitude: Double,

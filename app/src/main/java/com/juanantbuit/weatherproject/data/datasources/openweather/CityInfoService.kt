@@ -14,7 +14,7 @@ class CityInfoService {
 
     suspend fun getCityInfo(latitude: Double, longitude: Double): CityInfoModel {
         return withContext(Dispatchers.IO) {
-            val response: Response<CityInfoModel> = retrofit.create(CityInfoApiClient::class.java).getCityInfo(latitude, longitude, API_KEY, UNITS)
+            val response: Response<CityInfoModel> = retrofit.create(ApiClient::class.java).getCityInfo(latitude, longitude, API_KEY, UNITS)
             response.body()!!
         }
     }
