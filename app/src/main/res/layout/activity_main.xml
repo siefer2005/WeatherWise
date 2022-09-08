@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".framework.ui.main.MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -87,8 +87,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="top"
-                    tools:srcCompat="@tools:sample/avatars"
-                    android:contentDescription="@string/IconWeatherDescription"/>
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/IconWeatherDescription"
+                    tools:srcCompat="@drawable/ic_launcher_background" />
             </LinearLayout>
 
             <LinearLayout
