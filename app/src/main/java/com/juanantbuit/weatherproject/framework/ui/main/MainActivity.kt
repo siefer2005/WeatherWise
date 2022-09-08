@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        viewModel.forecastResponse.observe(this) { forecastResponse ->
+            println("hey")
+        }
+
     }
 
     private fun refreshIcon(url:String) {
