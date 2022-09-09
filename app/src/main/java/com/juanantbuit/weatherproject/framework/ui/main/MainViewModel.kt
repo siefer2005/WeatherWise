@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
+import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
 import com.juanantbuit.weatherproject.usecases.GetCityInfoUseCase
 import com.juanantbuit.weatherproject.usecases.GetForecastResponseUseCase
+import com.juanantbuit.weatherproject.usecases.GetNextDaysInfoUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -21,6 +23,7 @@ class MainViewModel : ViewModel() {
 
     private val getCityInfoUseCase = GetCityInfoUseCase()
     private val getForecastResponseUseCase = GetForecastResponseUseCase()
+    private val getNextDaysInfoUseCase = GetNextDaysInfoUseCase()
 
     fun getCityInfo(latitude: Double, longitude: Double) {
         viewModelScope.launch {
@@ -36,8 +39,14 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getImageUrl(): String {
-        return "https://openweathermap.org/img/wn/" + cityInfo.value!!.iconId[0].idIcon + "@4x.png"
+    fun getNextDaysInfo(forecastResponse: ForecastResponseModel): MutableList<NextDayInfoModel> {
+
+        return getNextDaysInfoUseCase(forecastResponse)
+
+    }
+
+    fun getImageUrl(idIcon: String): String {
+        return "https://openweathermap.org/img/wn/$idIcon@4x.png"
     }
 
 }
