@@ -12,7 +12,7 @@ class CityInfoService {
 
     private val retrofit = RetrofitHelper.getRetrofit()
 
-    suspend fun getCityInfo(latitude: Double, longitude: Double): CityInfoModel {
+    suspend fun getCityInfo(latitude: Double?, longitude: Double?): CityInfoModel {
         return withContext(Dispatchers.IO) {
             val response: Response<CityInfoModel> = retrofit.create(ApiClient::class.java).getCityInfo(latitude, longitude, API_KEY, UNITS)
             response.body()!!

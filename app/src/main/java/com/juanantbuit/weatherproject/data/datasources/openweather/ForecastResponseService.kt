@@ -12,7 +12,7 @@ class ForecastResponseService {
 
     private val retrofit = RetrofitHelper.getRetrofit()
 
-    suspend fun getForecastResponse(latitude: Double, longitude: Double): ForecastResponseModel {
+    suspend fun getForecastResponse(latitude: Double?, longitude: Double?): ForecastResponseModel {
         return withContext(Dispatchers.IO) {
             val response: Response<ForecastResponseModel> = retrofit.create(ApiClient::class.java).getForecastResponse(latitude, longitude, API_KEY, UNITS)
             response.body()!!

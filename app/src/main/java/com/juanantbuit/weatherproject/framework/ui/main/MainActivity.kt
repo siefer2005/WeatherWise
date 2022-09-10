@@ -21,9 +21,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(this.layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getCityInfo(38.2391, -1.41877)
-        viewModel.getForecastResponse(38.2391,-1.41877)
         viewModel.getCurrentDay()
+
+        binding.gpsButton.setOnClickListener {
+            viewModel.getCoordinatesFromGPS(this)
+        }
 
         viewModel.currentDay.observe(this) { currentDay ->
             if(currentDay != null) {
@@ -33,7 +35,13 @@ class MainActivity : AppCompatActivity() {
                 binding.nextDay4.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 4)]
                 binding.nextDay5.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 5)]
             }
+        }
 
+        viewModel.coordinates.observe(this) { coordinates ->
+            if(coordinates != null) {
+                viewModel.getCityInfo(coordinates["latitude"], coordinates["longitude"])
+                viewModel.getForecastResponse(coordinates["latitude"], coordinates["longitude"])
+            }
         }
 
         viewModel.cityInfo.observe(this) { cityInfo ->
@@ -49,8 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.forecastResponse.observe(this) { forecastResponse ->
 
-            val nextDaysInfo: MutableList<NextDayInfoModel> =
-                viewModel.getNextDaysInfo(forecastResponse!!)
+            val nextDaysInfo: MutableList<NextDayInfoModel> = viewModel.getNextDaysInfo(forecastResponse!!)
 
             binding.nextDayTemp1.text = " " + nextDaysInfo[0].averageTemp.toString() + "º"
             binding.nextDayTemp2.text = " " + nextDaysInfo[1].averageTemp.toString() + "º"
@@ -63,7 +70,6 @@ class MainActivity : AppCompatActivity() {
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[2].iconId), binding.nextDayImage3)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[3].iconId), binding.nextDayImage4)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[4].iconId), binding.nextDayImage5)
-
         }
     }
 

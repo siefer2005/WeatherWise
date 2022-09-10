@@ -6,7 +6,7 @@ import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
 class ForecastResponseRepository {
 
     private val api = ForecastResponseService()
-    suspend fun getForecastResponse(latitude: Double, longitude: Double): ForecastResponseModel {
+    suspend fun getForecastResponse(latitude: Double?, longitude: Double?): ForecastResponseModel {
         return api.getForecastResponse(latitude, longitude)
     }
 
