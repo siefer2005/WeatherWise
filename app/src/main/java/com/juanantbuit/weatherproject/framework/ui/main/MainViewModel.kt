@@ -1,11 +1,13 @@
 package com.juanantbuit.weatherproject.framework.ui.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Looper
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,10 +19,8 @@ import com.google.android.gms.location.LocationServices
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
-import com.juanantbuit.weatherproject.usecases.GetCityInfoUseCase
-import com.juanantbuit.weatherproject.usecases.GetForecastResponseUseCase
-import com.juanantbuit.weatherproject.usecases.GetNextDaysInfoUseCase
-import com.juanantbuit.weatherproject.usecases.TurnOnGpsUseCase
+import com.juanantbuit.weatherproject.usecases.*
+import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.HashMap
@@ -64,6 +64,18 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun checkGPSPermission(activity: MainActivity) {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getCoordinatesFromGPS(activity)
+        } else {
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                GPS_REQUEST_CODE)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     fun getCoordinatesFromGPS(activity: MainActivity) {
 
         val locationRequest: LocationRequest?
@@ -73,8 +85,6 @@ class MainViewModel : ViewModel() {
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         locationRequest.interval = 5000
         locationRequest.fastestInterval = 2000
-
-        if (ActivityCompat.checkSelfPermission(activity.baseContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             if (isGPSEnabled(activity)) {
 
@@ -105,20 +115,13 @@ class MainViewModel : ViewModel() {
                 val turnOnGpsUseCase = TurnOnGpsUseCase(activity)
                 turnOnGpsUseCase.turnOnGPS(locationRequest)
             }
-        } else {
-            activity.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-        }
 
     }
 
     private fun isGPSEnabled(activity: MainActivity): Boolean {
-        var locationManager: LocationManager? = null
+        val locationManager: LocationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        if (locationManager == null) {
-            locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        }
-
-        return locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     //Necessary to stay in the index range of DAYS_OF_WEEK

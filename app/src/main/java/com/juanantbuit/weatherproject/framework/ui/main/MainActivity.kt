@@ -1,5 +1,6 @@
 package com.juanantbuit.weatherproject.framework.ui.main
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -10,6 +11,7 @@ import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
 import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
+import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.getCurrentDay()
 
         binding.gpsButton.setOnClickListener {
-            viewModel.getCoordinatesFromGPS(this)
+            viewModel.checkGPSPermission(this)
         }
 
         viewModel.currentDay.observe(this) { currentDay ->
@@ -83,4 +85,17 @@ class MainActivity : AppCompatActivity() {
             .into(imageView)
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            GPS_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    viewModel.getCoordinatesFromGPS(this)
+                }
+                return
+            }
+        }
+
+    }
 }
