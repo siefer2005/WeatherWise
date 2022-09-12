@@ -1,20 +1,20 @@
 package com.juanantbuit.weatherproject.data.datasources.openweather
 
 import com.juanantbuit.weatherproject.data.datasources.RetrofitHelper
-import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
+import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 import com.juanantbuit.weatherproject.utils.API_KEY
-import com.juanantbuit.weatherproject.utils.UNITS
+import com.juanantbuit.weatherproject.utils.SEARCH_LIMIT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class ForecastResponseService {
+class SearchItemListService {
 
     private val retrofit = RetrofitHelper.getRetrofit()
 
-    suspend fun getForecastResponse(latitude: Float?, longitude: Float?): ForecastResponseModel {
+    suspend fun getSearchItemList(searchQuery: String): List<SearchItemModel> {
         return withContext(Dispatchers.IO) {
-            val response: Response<ForecastResponseModel> = retrofit.create(ApiClient::class.java).getForecastResponse(latitude, longitude, API_KEY, UNITS)
+            val response: Response<List<SearchItemModel>> = retrofit.create(ApiClient::class.java).getSearchItemList(searchQuery, SEARCH_LIMIT, API_KEY)
             response.body()!!
         }
     }

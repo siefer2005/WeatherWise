@@ -36,8 +36,8 @@ class MainViewModel : ViewModel() {
     private val _forecastResponse = MutableLiveData<ForecastResponseModel?>()
     val forecastResponse: LiveData<ForecastResponseModel?> get() = _forecastResponse
 
-    private val _coordinates = MutableLiveData<HashMap<String, Double>?>()
-    val coordinates: LiveData<HashMap<String, Double>?> get() = _coordinates
+    private val _coordinates = MutableLiveData<HashMap<String, Float>?>()
+    val coordinates: LiveData<HashMap<String, Float>?> get() = _coordinates
 
     private val getCityInfoUseCase = GetCityInfoUseCase()
     private val getForecastResponseUseCase = GetForecastResponseUseCase()
@@ -50,14 +50,14 @@ class MainViewModel : ViewModel() {
         _currentDay.postValue(result)
     }
 
-    fun getCityInfo(latitude: Double?, longitude: Double?) {
+    fun getCityInfo(latitude: Float?, longitude: Float?) {
         viewModelScope.launch {
             val result = getCityInfoUseCase.getCityInfo(latitude, longitude)
             _cityInfo.postValue(result)
         }
     }
 
-    fun getForecastResponse(latitude: Double?, longitude: Double?) {
+    fun getForecastResponse(latitude: Float?, longitude: Float?) {
         viewModelScope.launch {
             val result = getForecastResponseUseCase.getForecastResponse(latitude, longitude)
             _forecastResponse.postValue(result)
@@ -79,7 +79,7 @@ class MainViewModel : ViewModel() {
     fun getCoordinatesFromGPS(activity: MainActivity) {
 
         val locationRequest: LocationRequest?
-        val coordinates: HashMap<String, Double> = hashMapOf()
+        val coordinates: HashMap<String, Float> = hashMapOf()
 
         locationRequest = LocationRequest.create()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -99,8 +99,8 @@ class MainViewModel : ViewModel() {
                             if (locationResult.locations.size > 0) {
 
                                 val index: Int = locationResult.locations.size - 1
-                                val latitude = locationResult.locations[index].latitude
-                                val longitude = locationResult.locations[index].longitude
+                                val latitude = locationResult.locations[index].latitude.toFloat()
+                                val longitude = locationResult.locations[index].longitude.toFloat()
 
                                 coordinates["latitude"] = latitude
                                 coordinates["longitude"] = longitude
@@ -116,6 +116,15 @@ class MainViewModel : ViewModel() {
                 turnOnGpsUseCase.turnOnGPS(locationRequest)
             }
 
+    }
+
+    fun setCoordinates(lat: Float, long: Float) {
+        val coordinates: HashMap<String, Float> = hashMapOf()
+
+        coordinates["latitude"] = lat
+        coordinates["longitude"] = long
+
+        _coordinates.postValue(coordinates)
     }
 
     private fun isGPSEnabled(activity: MainActivity): Boolean {

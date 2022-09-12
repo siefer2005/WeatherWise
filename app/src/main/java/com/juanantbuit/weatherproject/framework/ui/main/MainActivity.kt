@@ -1,15 +1,20 @@
 package com.juanantbuit.weatherproject.framework.ui.main
 
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
+import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivity
 import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 
@@ -17,6 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var prefs: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +35,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.gpsButton.setOnClickListener {
             viewModel.checkGPSPermission(this)
+        }
+
+        binding.citySearcher.setOnClickListener {
+            val intent = Intent(this, SearchListActivity::class.java)
+            intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(intent)
         }
 
         viewModel.currentDay.observe(this) { currentDay ->
@@ -73,6 +87,15 @@ class MainActivity : AppCompatActivity() {
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[3].iconId), binding.nextDayImage4)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[4].iconId), binding.nextDayImage5)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        editor = prefs.edit()
+
+        viewModel.setCoordinates(prefs.getFloat("lastLatitude", 0.0f), prefs.getFloat("lastLongitude", 0.0f))
     }
 
     private fun refreshIcon(url:String, imageView: ImageView) {

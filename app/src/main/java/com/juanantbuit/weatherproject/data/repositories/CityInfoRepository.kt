@@ -6,7 +6,7 @@ import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 class CityInfoRepository {
 
     private val api = CityInfoService()
-    suspend fun getCityInfo(latitude: Double?, longitude: Double?): CityInfoModel {
+    suspend fun getCityInfo(latitude: Float?, longitude: Float?): CityInfoModel {
         return api.getCityInfo(latitude, longitude)
     }
 }
