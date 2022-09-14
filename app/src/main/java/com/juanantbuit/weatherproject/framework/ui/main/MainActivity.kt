@@ -1,11 +1,15 @@
 package com.juanantbuit.weatherproject.framework.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
@@ -14,9 +18,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
+import com.juanantbuit.weatherproject.framework.ui.daily_details.DailyDetailsFragment
 import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivity
 import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
+import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,22 +34,50 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
 
+    private lateinit var dailyDetailsFragment: DailyDetailsFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(this.layoutInflater)
         setContentView(binding.root)
 
+        dailyDetailsFragment = DailyDetailsFragment()
+
         viewModel.getCurrentDay()
 
-        binding.gpsButton.setOnClickListener {
-            viewModel.checkGPSPermission(this)
-        }
+        /*************************LISTENERS*************************/
 
         binding.citySearcher.setOnClickListener {
             val intent = Intent(this, SearchListActivity::class.java)
             intent.flags = FLAG_ACTIVITY_NO_ANIMATION
             startActivity(intent)
         }
+
+        binding.gpsButton.setOnClickListener {
+            viewModel.checkGPSPermission(this)
+        }
+
+        binding.nextDayInfo1?.setOnClickListener {
+            showDailyDetails(binding.nextDayImage1,  binding.nextDay1)
+        }
+
+        binding.nextDayInfo2?.setOnClickListener {
+            showDailyDetails(binding.nextDayImage2,  binding.nextDay2)
+        }
+
+        binding.nextDayInfo3?.setOnClickListener {
+            showDailyDetails(binding.nextDayImage3,  binding.nextDay3)
+        }
+
+        binding.nextDayInfo4?.setOnClickListener {
+            showDailyDetails(binding.nextDayImage4,  binding.nextDay4)
+        }
+
+        binding.nextDayInfo5?.setOnClickListener {
+            showDailyDetails(binding.nextDayImage5,  binding.nextDay5)
+        }
+
+        /*************************OBSERVERS*************************/
 
         viewModel.currentDay.observe(this) { currentDay ->
             if(currentDay != null) {
@@ -98,16 +134,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.setCoordinates(prefs.getFloat("lastLatitude", 0.0f), prefs.getFloat("lastLongitude", 0.0f))
     }
 
-    private fun refreshIcon(url:String, imageView: ImageView) {
-
-        Glide.with(this)
-            .load(url)
-            .error(R.drawable.ic_launcher_foreground)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .fitCenter()
-            .into(imageView)
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -119,6 +145,46 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+    }
 
+    /*************************PRIVATE FUNCTIONS*************************/
+
+    private fun refreshIcon(url:String, imageView: ImageView) {
+
+        Glide.with(this)
+            .load(url)
+            .error(R.drawable.ic_launcher_foreground)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .fitCenter()
+            .into(imageView)
+    }
+
+    private fun showDailyDetails(imageView: ImageView, textView: TextView) {
+
+        val bundle = Bundle()
+        val bitMap = (imageView.drawable as BitmapDrawable).bitmap
+        saveImageFromBitmap(bitMap)
+
+        bundle.putString("dayname", textView.text as String?)
+
+        dailyDetailsFragment.arguments = bundle
+        dailyDetailsFragment.show(supportFragmentManager, "dailyDetailsFragment")
+    }
+
+    private fun saveImageFromBitmap(bitmap: Bitmap) {
+
+        val fileName = "dayImage"
+
+        try {
+            val bytes = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
+
+            val fo: FileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE)
+
+            fo.write(bytes.toByteArray())
+            fo.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

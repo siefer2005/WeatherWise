@@ -128,6 +128,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun isGPSEnabled(activity: MainActivity): Boolean {
+
         val locationManager: LocationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -135,6 +136,7 @@ class MainViewModel : ViewModel() {
 
     //Necessary to stay in the index range of DAYS_OF_WEEK
     fun getCorrectIndex(day: Int) : Int {
+
         return if(day <= 6) {
             day
         } else {
@@ -143,13 +145,12 @@ class MainViewModel : ViewModel() {
     }
 
     fun getNextDaysInfo(forecastResponse: ForecastResponseModel): MutableList<NextDayInfoModel> {
-
         return getNextDaysInfoUseCase(forecastResponse)
-
     }
 
     fun getImageUrl(idIcon: String): String {
         return "https://openweathermap.org/img/wn/$idIcon@4x.png"
     }
+
 
 }

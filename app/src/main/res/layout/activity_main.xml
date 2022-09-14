@@ -235,6 +235,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/nextDayInfo1"
                     android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
@@ -282,6 +283,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/nextDayInfo2"
                     android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
@@ -329,6 +331,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/nextDayInfo3"
                     android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
@@ -376,6 +379,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/nextDayInfo4"
                     android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
@@ -423,6 +427,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/nextDayInfo5"
                     android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
