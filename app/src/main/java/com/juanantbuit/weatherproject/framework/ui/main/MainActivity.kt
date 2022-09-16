@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var dailyDetailsFragment: DailyDetailsFragment
 
+    private lateinit var nextDaysInfo: MutableList<NextDayInfoModel>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(this.layoutInflater)
@@ -58,23 +60,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.nextDayInfo1?.setOnClickListener {
-            showDailyDetails(binding.nextDayImage1,  binding.nextDay1)
+            showDailyDetails(binding.nextDayImage1,  binding.nextDay1, nextDaysInfo[0].temperatures.toDoubleArray())
         }
 
         binding.nextDayInfo2?.setOnClickListener {
-            showDailyDetails(binding.nextDayImage2,  binding.nextDay2)
+            showDailyDetails(binding.nextDayImage2,  binding.nextDay2, nextDaysInfo[1].temperatures.toDoubleArray())
         }
 
         binding.nextDayInfo3?.setOnClickListener {
-            showDailyDetails(binding.nextDayImage3,  binding.nextDay3)
+            showDailyDetails(binding.nextDayImage3,  binding.nextDay3, nextDaysInfo[2].temperatures.toDoubleArray())
         }
 
         binding.nextDayInfo4?.setOnClickListener {
-            showDailyDetails(binding.nextDayImage4,  binding.nextDay4)
+            showDailyDetails(binding.nextDayImage4,  binding.nextDay4, nextDaysInfo[3].temperatures.toDoubleArray())
         }
 
         binding.nextDayInfo5?.setOnClickListener {
-            showDailyDetails(binding.nextDayImage5,  binding.nextDay5)
+            showDailyDetails(binding.nextDayImage5,  binding.nextDay5, nextDaysInfo[4].temperatures.toDoubleArray())
         }
 
         /*************************OBSERVERS*************************/
@@ -109,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.forecastResponse.observe(this) { forecastResponse ->
 
-            val nextDaysInfo: MutableList<NextDayInfoModel> = viewModel.getNextDaysInfo(forecastResponse!!)
+            nextDaysInfo = viewModel.getNextDaysInfo(forecastResponse!!)
 
             binding.nextDayTemp1.text = " " + nextDaysInfo[0].averageTemp.toString() + "º"
             binding.nextDayTemp2.text = " " + nextDaysInfo[1].averageTemp.toString() + "º"
@@ -159,13 +161,14 @@ class MainActivity : AppCompatActivity() {
             .into(imageView)
     }
 
-    private fun showDailyDetails(imageView: ImageView, textView: TextView) {
+    private fun showDailyDetails(imageView: ImageView, textView: TextView, temperatures: DoubleArray) {
 
         val bundle = Bundle()
         val bitMap = (imageView.drawable as BitmapDrawable).bitmap
         saveImageFromBitmap(bitMap)
 
         bundle.putString("dayname", textView.text as String?)
+        bundle.putDoubleArray("temperatures", temperatures)
 
         dailyDetailsFragment.arguments = bundle
         dailyDetailsFragment.show(supportFragmentManager, "dailyDetailsFragment")
