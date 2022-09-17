@@ -23,17 +23,23 @@ class GetNextDaysInfoUseCase {
 
             val dayTemps = getAllTempsOfDay(forecastsForFiveDays, day)
 
-            averageTemp = if (dayTemps.size > 1) {
-                dayTemps.average().toInt()
-            } else {
-                dayTemps[0].toInt()
-            }
+            if (dayTemps.size == 1) {
+                averageTemp = dayTemps[0].toInt()
 
-            nextDaysInfo.add(NextDayInfoModel(averageTemp,
-                                              forecastsForFiveDays[day][AFTERNOON_TIME_INDEX]
-                                                .iconId[0]
-                                                .idIcon,
-                                              dayTemps))
+                nextDaysInfo.add(NextDayInfoModel(averageTemp,
+                                 forecastsForFiveDays[day][0]
+                                    .iconId[0]
+                                    .idIcon,
+                                 dayTemps))
+            } else {
+                averageTemp = dayTemps.average().toInt()
+
+                nextDaysInfo.add(NextDayInfoModel(averageTemp,
+                                 forecastsForFiveDays[day][AFTERNOON_TIME_INDEX]
+                                    .iconId[0]
+                                    .idIcon,
+                                 dayTemps))
+            }
         }
 
         return nextDaysInfo
