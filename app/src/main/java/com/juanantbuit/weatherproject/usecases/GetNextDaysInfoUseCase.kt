@@ -22,26 +22,14 @@ class GetNextDaysInfoUseCase {
         for(day in forecastsForFiveDays.indices) {
 
             val dayTemps = getAllTempsOfDay(forecastsForFiveDays, day)
+            averageTemp = dayTemps.average().toInt()
 
-            if (dayTemps.size == 1) {
-                averageTemp = dayTemps[0].toInt()
-
-                nextDaysInfo.add(NextDayInfoModel(averageTemp,
-                                 forecastsForFiveDays[day][0]
-                                    .iconId[0]
-                                    .idIcon,
-                                 dayTemps))
-            } else {
-                averageTemp = dayTemps.average().toInt()
-
-                nextDaysInfo.add(NextDayInfoModel(averageTemp,
-                                 forecastsForFiveDays[day][AFTERNOON_TIME_INDEX]
-                                    .iconId[0]
-                                    .idIcon,
-                                 dayTemps))
-            }
+            nextDaysInfo.add(NextDayInfoModel(averageTemp,
+                             forecastsForFiveDays[day][AFTERNOON_TIME_INDEX]
+                                 .iconId[0]
+                                 .idIcon,
+                             dayTemps))
         }
-
         return nextDaysInfo
     }
 
@@ -63,14 +51,11 @@ class GetNextDaysInfoUseCase {
     }
 
     private fun getAllTempsOfDay(forecastsForFiveDays: List<List<ForecastInfoModel>>, day: Int): MutableList<Double> {
-
         val dayTemps: MutableList<Double> = arrayListOf()
 
         for (triHourlyForecast in forecastsForFiveDays[day].indices) {
             dayTemps.add(forecastsForFiveDays[day][triHourlyForecast].mainInfo.temp)
         }
-
         return dayTemps
     }
-
 }

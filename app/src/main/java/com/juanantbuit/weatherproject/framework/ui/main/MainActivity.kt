@@ -75,10 +75,6 @@ class MainActivity : AppCompatActivity() {
             showDailyDetails(binding.nextDayImage4,  binding.nextDay4, nextDaysInfo[3].temperatures.toDoubleArray())
         }
 
-        binding.nextDayInfo5?.setOnClickListener {
-            showDailyDetails(binding.nextDayImage5,  binding.nextDay5, nextDaysInfo[4].temperatures.toDoubleArray())
-        }
-
         /*************************OBSERVERS*************************/
 
         viewModel.currentDay.observe(this) { currentDay ->
@@ -87,7 +83,6 @@ class MainActivity : AppCompatActivity() {
                 binding.nextDay2.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 2)]
                 binding.nextDay3.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 3)]
                 binding.nextDay4.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 4)]
-                binding.nextDay5.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 5)]
             }
         }
 
@@ -117,13 +112,11 @@ class MainActivity : AppCompatActivity() {
             binding.nextDayTemp2.text = " " + nextDaysInfo[1].averageTemp.toString() + "º"
             binding.nextDayTemp3.text = " " + nextDaysInfo[2].averageTemp.toString() + "º"
             binding.nextDayTemp4.text = " " + nextDaysInfo[3].averageTemp.toString() + "º"
-            binding.nextDayTemp5.text = " " + nextDaysInfo[4].averageTemp.toString() + "º"
 
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[0].iconId), binding.nextDayImage1)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[1].iconId), binding.nextDayImage2)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[2].iconId), binding.nextDayImage3)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[3].iconId), binding.nextDayImage4)
-            refreshIcon(viewModel.getImageUrl(nextDaysInfo[4].iconId), binding.nextDayImage5)
         }
     }
 

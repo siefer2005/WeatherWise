@@ -217,7 +217,7 @@
             android:layout_gravity="top"
             android:layout_marginStart="15dp"
             android:gravity="bottom"
-            android:text="@string/next_5_days"
+            android:text="@string/next_4_days"
             android:textColor="@color/black"
             android:textSize="32sp" />
 
@@ -414,54 +414,6 @@
 
                         <TextView
                             android:id="@+id/nextDayTemp4"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="5dp"
-                            android:layout_weight="2"
-                            android:gravity="center"
-                            android:text=" 22º"
-                            android:textColor="@color/white"
-                            android:textSize="34sp" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/nextDayInfo5"
-                    android:layout_width="130dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="14dp"
-                    android:layout_marginHorizontal="7dp"
-                    app:cardBackgroundColor="@color/purple_200"
-                    app:cardCornerRadius="15dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/nextDay5"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Monday"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
-
-                        <ImageView
-                            android:id="@+id/nextDayImage5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="3"
-                            tools:srcCompat="@tools:sample/avatars"
-                            android:contentDescription="@string/next_day_icon"/>
-
-                        <TextView
-                            android:id="@+id/nextDayTemp5"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="5dp"
