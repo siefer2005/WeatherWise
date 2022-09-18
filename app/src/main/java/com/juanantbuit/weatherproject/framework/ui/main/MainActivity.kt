@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -22,8 +23,10 @@ import com.juanantbuit.weatherproject.framework.ui.daily_details.DailyDetailsFra
 import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivity
 import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
+import kotlin.properties.Delegates
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+
+    private var firstAppStart by Delegates.notNull<Boolean>()
 
     private lateinit var dailyDetailsFragment: DailyDetailsFragment
 
@@ -45,7 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         dailyDetailsFragment = DailyDetailsFragment()
 
-        viewModel.getCurrentDay()
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        editor = prefs.edit()
 
         /*************************LISTENERS*************************/
 
@@ -55,23 +61,32 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.citySearcher.setOnSearchClickListener {
+            citySearcher.clearFocus()
+            citySearcher.isIconified = true
+
+            val intent = Intent(this, SearchListActivity::class.java)
+            intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(intent)
+        }
+
         binding.gpsButton.setOnClickListener {
             viewModel.checkGPSPermission(this)
         }
 
-        binding.nextDayInfo1?.setOnClickListener {
+        binding.nextDayInfo1.setOnClickListener {
             showDailyDetails(binding.nextDayImage1,  binding.nextDay1, nextDaysInfo[0].temperatures.toDoubleArray())
         }
 
-        binding.nextDayInfo2?.setOnClickListener {
+        binding.nextDayInfo2.setOnClickListener {
             showDailyDetails(binding.nextDayImage2,  binding.nextDay2, nextDaysInfo[1].temperatures.toDoubleArray())
         }
 
-        binding.nextDayInfo3?.setOnClickListener {
+        binding.nextDayInfo3.setOnClickListener {
             showDailyDetails(binding.nextDayImage3,  binding.nextDay3, nextDaysInfo[2].temperatures.toDoubleArray())
         }
 
-        binding.nextDayInfo4?.setOnClickListener {
+        binding.nextDayInfo4.setOnClickListener {
             showDailyDetails(binding.nextDayImage4,  binding.nextDay4, nextDaysInfo[3].temperatures.toDoubleArray())
         }
 
@@ -88,9 +103,16 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.coordinates.observe(this) { coordinates ->
             if(coordinates != null) {
+
+                editor.putFloat("lastLatitude", coordinates["latitude"]!!)
+                editor.putFloat("lastLongitude", coordinates["longitude"]!!)
+                editor.apply()
+
                 viewModel.getCityInfo(coordinates["latitude"], coordinates["longitude"])
                 viewModel.getForecastResponse(coordinates["latitude"], coordinates["longitude"])
             }
+            viewModel.getCurrentDay()
+            showPrincipalElements()
         }
 
         viewModel.cityInfo.observe(this) { cityInfo ->
@@ -123,10 +145,15 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        editor = prefs.edit()
+        firstAppStart = prefs.getBoolean("firstAppStart", true)
 
-        viewModel.setCoordinates(prefs.getFloat("lastLatitude", 0.0f), prefs.getFloat("lastLongitude", 0.0f))
+        if(firstAppStart) {
+            hidePrincipalElements()
+        } else {
+            showPrincipalElements()
+            setCoordinates()
+        }
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -143,6 +170,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*************************PRIVATE FUNCTIONS*************************/
+
+    private fun hidePrincipalElements() {
+        binding.cityName.visibility = View.GONE
+        binding.principalCardView.visibility = View.GONE
+        binding.next4Days.visibility = View.GONE
+        binding.horizontalScrollView.visibility = View.GONE
+    }
+
+    private fun showPrincipalElements() {
+        binding.cityName.visibility = View.VISIBLE
+        binding.principalCardView.visibility = View.VISIBLE
+        binding.next4Days.visibility = View.VISIBLE
+        binding.horizontalScrollView.visibility = View.VISIBLE
+
+        binding.fistStartMessage!!.visibility = View.GONE
+    }
+
+    private fun setCoordinates() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        editor = prefs.edit()
+
+        viewModel.setCoordinates(
+            prefs.getFloat("lastLatitude", 0.0f),
+            prefs.getFloat("lastLongitude", 0.0f)
+        )
+    }
 
     private fun refreshIcon(url:String, imageView: ImageView) {
 
@@ -168,7 +221,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveImageFromBitmap(bitmap: Bitmap) {
-
         val fileName = "dayImage"
 
         try {

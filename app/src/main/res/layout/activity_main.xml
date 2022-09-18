@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/principalCardView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="15dp"
@@ -191,7 +191,7 @@
         android:text="Madrid, ES"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintBottom_toTopOf="@+id/principalCardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -208,10 +208,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
+        app:layout_constraintTop_toBottomOf="@+id/principalCardView">
 
         <TextView
-            android:id="@+id/next5Days"
+            android:id="@+id/next4Days"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_gravity="top"
@@ -429,6 +429,16 @@
         </HorizontalScrollView>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/fistStartMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First, look for a city in the browser or with the GPS button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

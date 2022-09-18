@@ -23,9 +23,6 @@ class SearchListActivity: AppCompatActivity() {
         binding = SearchListBinding.inflate(this.layoutInflater)
         setContentView(binding.root)
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        editor = prefs.edit()
-
         citySearcher.isIconified = false
 
         binding.citySearcher.setOnQueryTextFocusChangeListener { _, isFocused ->
@@ -60,8 +57,12 @@ class SearchListActivity: AppCompatActivity() {
 
     private fun onItemSelected(searchItem: SearchItemModel) {
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        editor = prefs.edit()
+
         editor.putFloat("lastLatitude", searchItem.lat.toFloat())
         editor.putFloat("lastLongitude", searchItem.lon.toFloat())
+        editor.putBoolean("firstAppStart", false)
         editor.apply()
         finish()
     }

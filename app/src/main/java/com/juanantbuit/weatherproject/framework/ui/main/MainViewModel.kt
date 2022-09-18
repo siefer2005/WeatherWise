@@ -3,6 +3,7 @@ package com.juanantbuit.weatherproject.framework.ui.main
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Looper
@@ -12,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -26,6 +28,9 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class MainViewModel : ViewModel() {
+
+    private lateinit var prefs: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     private val _currentDay = MutableLiveData<Int?>()
     val currentDay: LiveData<Int?> get() = _currentDay
@@ -105,6 +110,8 @@ class MainViewModel : ViewModel() {
                                 coordinates["latitude"] = latitude
                                 coordinates["longitude"] = longitude
 
+                                setFirstAppStartFalse(activity)
+
                                 _coordinates.postValue(coordinates)
 
                             }
@@ -136,7 +143,6 @@ class MainViewModel : ViewModel() {
 
     //Necessary to stay in the index range of DAYS_OF_WEEK
     fun getCorrectIndex(day: Int) : Int {
-
         return if(day <= 6) {
             day
         } else {
@@ -152,5 +158,12 @@ class MainViewModel : ViewModel() {
         return "https://openweathermap.org/img/wn/$idIcon@4x.png"
     }
 
+    private fun setFirstAppStartFalse(activity: MainActivity) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        editor = prefs.edit()
+
+        editor.putBoolean("firstAppStart", false)
+        editor.apply()
+    }
 
 }
