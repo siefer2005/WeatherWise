@@ -54,7 +54,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="14dp"
-        app:cardBackgroundColor="@color/teal_700"
+        app:cardBackgroundColor="#6d5df3"
         app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +78,7 @@
                     android:layout_width="205dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text=" 22º"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="92sp" />
 
@@ -121,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text=" 22º"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="34sp" />
                 </RelativeLayout>
@@ -146,7 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="33%"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="34sp" />
                 </RelativeLayout>
@@ -171,7 +171,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="3 km/hr"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="30sp" />
                 </RelativeLayout>
@@ -188,7 +188,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Madrid, ES"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/principalCardView"
@@ -240,7 +240,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
                     android:layout_marginHorizontal="7dp"
-                    app:cardBackgroundColor="@color/purple_200"
+                    app:cardBackgroundColor="#41e1bc"
                     app:cardCornerRadius="15dp">
 
                     <LinearLayout
@@ -255,7 +255,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Monday"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="18sp" />
 
@@ -275,7 +275,7 @@
                             android:layout_margin="5dp"
                             android:layout_weight="2"
                             android:gravity="center"
-                            android:text=" 22º"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="34sp" />
                     </LinearLayout>
@@ -288,7 +288,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
                     android:layout_marginHorizontal="7dp"
-                    app:cardBackgroundColor="@color/purple_200"
+                    app:cardBackgroundColor="#fb0d95"
                     app:cardCornerRadius="15dp">
 
                     <LinearLayout
@@ -303,7 +303,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Monday"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="18sp" />
 
@@ -323,7 +323,7 @@
                             android:layout_margin="5dp"
                             android:layout_weight="2"
                             android:gravity="center"
-                            android:text=" 22º"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="34sp" />
                     </LinearLayout>
@@ -336,7 +336,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
                     android:layout_marginHorizontal="7dp"
-                    app:cardBackgroundColor="@color/purple_200"
+                    app:cardBackgroundColor="#fbbf28"
                     app:cardCornerRadius="15dp">
 
                     <LinearLayout
@@ -351,7 +351,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Monday"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="18sp" />
 
@@ -371,7 +371,7 @@
                             android:layout_margin="5dp"
                             android:layout_weight="2"
                             android:gravity="center"
-                            android:text=" 22º"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="34sp" />
                     </LinearLayout>
@@ -384,7 +384,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginVertical="14dp"
                     android:layout_marginHorizontal="7dp"
-                    app:cardBackgroundColor="@color/purple_200"
+                    app:cardBackgroundColor="#5c4ce4"
                     app:cardCornerRadius="15dp">
 
                     <LinearLayout
@@ -399,7 +399,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Monday"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="18sp" />
 
@@ -419,7 +419,7 @@
                             android:layout_margin="5dp"
                             android:layout_weight="2"
                             android:gravity="center"
-                            android:text=" 22º"
+                            android:text=""
                             android:textColor="@color/white"
                             android:textSize="34sp" />
                     </LinearLayout>
@@ -431,10 +431,10 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/fistStartMessage"
+        android:id="@+id/specialMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="First, look for a city in the browser or with the GPS button"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

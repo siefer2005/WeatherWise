@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,11 +23,14 @@ import com.google.android.gms.location.LocationServices
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
-import com.juanantbuit.weatherproject.usecases.*
+import com.juanantbuit.weatherproject.usecases.GetCityInfoUseCase
+import com.juanantbuit.weatherproject.usecases.GetForecastResponseUseCase
+import com.juanantbuit.weatherproject.usecases.GetNextDaysInfoUseCase
+import com.juanantbuit.weatherproject.usecases.TurnOnGpsUseCase
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.HashMap
+
 
 class MainViewModel : ViewModel() {
 
@@ -156,6 +161,17 @@ class MainViewModel : ViewModel() {
 
     fun getImageUrl(idIcon: String): String {
         return "https://openweathermap.org/img/wn/$idIcon@4x.png"
+    }
+
+    fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val network = connectivityManager.activeNetwork ?: return false
+            val actNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return when {
+                actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
     }
 
     private fun setFirstAppStartFalse(activity: MainActivity) {

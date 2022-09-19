@@ -56,22 +56,43 @@ class MainActivity : AppCompatActivity() {
         /*************************LISTENERS*************************/
 
         binding.citySearcher.setOnClickListener {
-            val intent = Intent(this, SearchListActivity::class.java)
-            intent.flags = FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(intent)
+            if (viewModel.isNetworkAvailable(this)) {
+
+                val intent = Intent(this, SearchListActivity::class.java)
+                intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+                startActivity(intent)
+
+            } else {
+                hidePrincipalElements()
+                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+            }
         }
 
         binding.citySearcher.setOnSearchClickListener {
-            citySearcher.clearFocus()
-            citySearcher.isIconified = true
+            if (viewModel.isNetworkAvailable(this)) {
 
-            val intent = Intent(this, SearchListActivity::class.java)
-            intent.flags = FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(intent)
+                citySearcher.clearFocus()
+                citySearcher.isIconified = true
+
+                val intent = Intent(this, SearchListActivity::class.java)
+                intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+                startActivity(intent)
+
+            } else {
+                hidePrincipalElements()
+                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+            }
         }
 
         binding.gpsButton.setOnClickListener {
-            viewModel.checkGPSPermission(this)
+            if (viewModel.isNetworkAvailable(this)) {
+
+                viewModel.checkGPSPermission(this)
+
+            } else {
+                hidePrincipalElements()
+                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+            }
         }
 
         binding.nextDayInfo1.setOnClickListener {
@@ -118,11 +139,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.cityInfo.observe(this) { cityInfo ->
             if (cityInfo != null) {
                 refreshIcon(viewModel.getImageUrl(cityInfo.iconId[0].idIcon), binding.currentImage)
-                binding.cityName.text = cityInfo.name + ", " + cityInfo.country.countryId
-                binding.currentTemp.text = " " + cityInfo.mainInfo.temp.toInt().toString() + "º"
-                binding.tempFeelsLike.text = " " + cityInfo.mainInfo.thermalSensation.toInt().toString() + "º"
-                binding.humidityPercentage.text = " " + cityInfo.mainInfo.humidity.toString() + "%"
-                binding.windVelocity.text = cityInfo.windVelocity.speed.toInt().toString() + " km/hr"
+                binding.cityName.text = getString(R.string.city_name, cityInfo.name, cityInfo.country.countryId)
+                binding.currentTemp.text = getString(R.string.temperature, cityInfo.mainInfo.temp.toInt())
+                binding.tempFeelsLike.text = getString(R.string.temperature, cityInfo.mainInfo.thermalSensation.toInt())
+                binding.humidityPercentage.text = getString(R.string.humidity_template, cityInfo.mainInfo.humidity)
+                binding.windVelocity.text = getString(R.string.wind_speed, cityInfo.windVelocity.speed.toInt())
             }
         }
 
@@ -130,10 +151,10 @@ class MainActivity : AppCompatActivity() {
 
             nextDaysInfo = viewModel.getNextDaysInfo(forecastResponse!!)
 
-            binding.nextDayTemp1.text = " " + nextDaysInfo[0].averageTemp.toString() + "º"
-            binding.nextDayTemp2.text = " " + nextDaysInfo[1].averageTemp.toString() + "º"
-            binding.nextDayTemp3.text = " " + nextDaysInfo[2].averageTemp.toString() + "º"
-            binding.nextDayTemp4.text = " " + nextDaysInfo[3].averageTemp.toString() + "º"
+            binding.nextDayTemp1.text = getString(R.string.temperature, nextDaysInfo[0].averageTemp)
+            binding.nextDayTemp2.text = getString(R.string.temperature, nextDaysInfo[1].averageTemp)
+            binding.nextDayTemp3.text = getString(R.string.temperature, nextDaysInfo[2].averageTemp)
+            binding.nextDayTemp4.text = getString(R.string.temperature, nextDaysInfo[3].averageTemp)
 
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[0].iconId), binding.nextDayImage1)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[1].iconId), binding.nextDayImage2)
@@ -147,13 +168,18 @@ class MainActivity : AppCompatActivity() {
 
         firstAppStart = prefs.getBoolean("firstAppStart", true)
 
-        if(firstAppStart) {
-            hidePrincipalElements()
+        if (viewModel.isNetworkAvailable(this)) {
+            if (firstAppStart) {
+                hidePrincipalElements()
+                binding.specialMessage?.text = getString(R.string.firstStartText)
+            } else {
+                showPrincipalElements()
+                setCoordinates()
+            }
         } else {
-            showPrincipalElements()
-            setCoordinates()
+            hidePrincipalElements()
+            binding.specialMessage?.text = getString(R.string.noInternetMessage)
         }
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -176,6 +202,8 @@ class MainActivity : AppCompatActivity() {
         binding.principalCardView.visibility = View.GONE
         binding.next4Days.visibility = View.GONE
         binding.horizontalScrollView.visibility = View.GONE
+
+        binding.specialMessage?.visibility = View.VISIBLE
     }
 
     private fun showPrincipalElements() {
@@ -184,7 +212,7 @@ class MainActivity : AppCompatActivity() {
         binding.next4Days.visibility = View.VISIBLE
         binding.horizontalScrollView.visibility = View.VISIBLE
 
-        binding.fistStartMessage!!.visibility = View.GONE
+        binding.specialMessage?.visibility = View.GONE
     }
 
     private fun setCoordinates() {
@@ -213,7 +241,7 @@ class MainActivity : AppCompatActivity() {
         val bitMap = (imageView.drawable as BitmapDrawable).bitmap
         saveImageFromBitmap(bitMap)
 
-        bundle.putString("dayname", textView.text as String?)
+        bundle.putString("dayName", textView.text as String?)
         bundle.putDoubleArray("temperatures", temperatures)
 
         dailyDetailsFragment.arguments = bundle

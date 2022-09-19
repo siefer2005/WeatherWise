@@ -37,7 +37,7 @@ class DailyDetailsFragment: BottomSheetDialogFragment() {
         val imageBitmap = BitmapFactory.decodeStream(context?.openFileInput("dayImage"))
 
         val temperatures = arguments?.getDoubleArray("temperatures")
-        binding.dayName.text = arguments?.getString("dayname")
+        binding.dayName.text = arguments?.getString("dayName")
         binding.dayImage.setImageBitmap(imageBitmap)
 
         setLineChartView()
