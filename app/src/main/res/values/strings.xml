@@ -11,6 +11,6 @@
     <string name="firstStartText">First, look for a city in the browser or with the GPS button</string>
     <string name="temperature"> %1$dº</string>
     <string name="city_name">%1$s, %2$s</string>
-    <string name="humidity_template"> %1$d\u0025</string>
+    <string name="humidity_template"> %1$d%%</string>
     <string name="wind_speed">%1$d km/hr</string>
 </resources>
