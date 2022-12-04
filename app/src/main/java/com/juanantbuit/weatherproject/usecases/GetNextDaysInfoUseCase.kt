@@ -19,7 +19,7 @@ class GetNextDaysInfoUseCase {
         val forecastsForFiveDays: List<List<ForecastInfoModel>> = getOnlyNextDaysInfo(forecastResponse).chunked(TRI_HOURS_IN_DAY)
         val nextDaysInfo: MutableList<NextDayInfoModel> = arrayListOf()
 
-        for(day in forecastsForFiveDays.indices) {
+        for(day in 0..3) {
 
             val dayTemps = getAllTempsOfDay(forecastsForFiveDays, day)
             averageTemp = dayTemps.average().toInt()

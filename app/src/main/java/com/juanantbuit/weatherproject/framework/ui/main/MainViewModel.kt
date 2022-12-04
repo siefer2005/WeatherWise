@@ -96,37 +96,37 @@ class MainViewModel : ViewModel() {
         locationRequest.interval = 5000
         locationRequest.fastestInterval = 2000
 
-            if (isGPSEnabled(activity)) {
+        if (isGPSEnabled(activity)) {
 
-                LocationServices.getFusedLocationProviderClient(activity)
-                    .requestLocationUpdates(locationRequest, object : LocationCallback() {
-                        override fun onLocationResult(locationResult: LocationResult) {
-                            super.onLocationResult(locationResult)
+            LocationServices.getFusedLocationProviderClient(activity)
+                .requestLocationUpdates(locationRequest, object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        super.onLocationResult(locationResult)
 
-                            LocationServices.getFusedLocationProviderClient(activity)
+                        LocationServices.getFusedLocationProviderClient(activity)
                                 .removeLocationUpdates(this)
 
-                            if (locationResult.locations.size > 0) {
+                        if (locationResult.locations.size > 0) {
 
-                                val index: Int = locationResult.locations.size - 1
-                                val latitude = locationResult.locations[index].latitude.toFloat()
-                                val longitude = locationResult.locations[index].longitude.toFloat()
+                            val index: Int = locationResult.locations.size - 1
+                            val latitude = locationResult.locations[index].latitude.toFloat()
+                            val longitude = locationResult.locations[index].longitude.toFloat()
 
-                                coordinates["latitude"] = latitude
-                                coordinates["longitude"] = longitude
+                            coordinates["latitude"] = latitude
+                            coordinates["longitude"] = longitude
 
-                                setFirstAppStartFalse(activity)
+                            setFirstAppStartFalse(activity)
 
-                                _coordinates.postValue(coordinates)
+                            _coordinates.postValue(coordinates)
 
-                            }
                         }
+                    }
                     }, Looper.getMainLooper())
 
-            } else {
-                val turnOnGpsUseCase = TurnOnGpsUseCase(activity)
-                turnOnGpsUseCase.turnOnGPS(locationRequest)
-            }
+        } else {
+            val turnOnGpsUseCase = TurnOnGpsUseCase(activity)
+            turnOnGpsUseCase.turnOnGPS(locationRequest)
+        }
 
     }
 

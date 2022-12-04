@@ -29,7 +29,7 @@
             app:cardCornerRadius="15dp"
             app:cardUseCompatPadding="true">
 
-            <SearchView
+            <android.widget.SearchView
                 android:id="@+id/citySearcher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -148,7 +148,7 @@
                         android:gravity="center"
                         android:text=""
                         android:textColor="@color/white"
-                        android:textSize="34sp" />
+                        android:textSize="34sp"/>
                 </RelativeLayout>
 
                 <RelativeLayout

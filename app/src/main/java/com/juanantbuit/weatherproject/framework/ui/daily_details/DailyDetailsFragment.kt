@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.FragmentDailyDetailsBinding
 
 
@@ -38,7 +39,9 @@ class DailyDetailsFragment: BottomSheetDialogFragment() {
 
         val temperatures = arguments?.getDoubleArray("temperatures")
         binding.dayName.text = arguments?.getString("dayName")
+        binding.averageTemperature.text = getString(R.string.temperature, arguments?.getInt("averageTemp"))
         binding.dayImage.setImageBitmap(imageBitmap)
+
 
         setLineChartView()
         setLineListData(temperatures)
