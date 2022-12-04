@@ -96,19 +96,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.nextDayInfo1.setOnClickListener {
-            showDailyDetails(binding.nextDayImage1,  binding.nextDay1, nextDaysInfo[0].temperatures.toDoubleArray())
+            showDailyDetails(binding.nextDayImage1,  binding.nextDay1, nextDaysInfo[0].temperatures.toDoubleArray(), nextDaysInfo[0].averageTemp)
         }
 
         binding.nextDayInfo2.setOnClickListener {
-            showDailyDetails(binding.nextDayImage2,  binding.nextDay2, nextDaysInfo[1].temperatures.toDoubleArray())
+            showDailyDetails(binding.nextDayImage2,  binding.nextDay2, nextDaysInfo[1].temperatures.toDoubleArray(), nextDaysInfo[1].averageTemp)
         }
 
         binding.nextDayInfo3.setOnClickListener {
-            showDailyDetails(binding.nextDayImage3,  binding.nextDay3, nextDaysInfo[2].temperatures.toDoubleArray())
+            showDailyDetails(binding.nextDayImage3,  binding.nextDay3, nextDaysInfo[2].temperatures.toDoubleArray(), nextDaysInfo[2].averageTemp)
         }
 
         binding.nextDayInfo4.setOnClickListener {
-            showDailyDetails(binding.nextDayImage4,  binding.nextDay4, nextDaysInfo[3].temperatures.toDoubleArray())
+            showDailyDetails(binding.nextDayImage4,  binding.nextDay4, nextDaysInfo[3].temperatures.toDoubleArray(), nextDaysInfo[3].averageTemp)
         }
 
         /*************************OBSERVERS*************************/
@@ -124,7 +124,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.coordinates.observe(this) { coordinates ->
             if(coordinates != null) {
-
                 editor.putFloat("lastLatitude", coordinates["latitude"]!!)
                 editor.putFloat("lastLongitude", coordinates["longitude"]!!)
                 editor.apply()
@@ -235,7 +234,7 @@ class MainActivity : AppCompatActivity() {
             .into(imageView)
     }
 
-    private fun showDailyDetails(imageView: ImageView, textView: TextView, temperatures: DoubleArray) {
+    private fun showDailyDetails(imageView: ImageView, textView: TextView, temperatures: DoubleArray, averageTemp: Int) {
 
         val bundle = Bundle()
         val bitMap = (imageView.drawable as BitmapDrawable).bitmap
@@ -243,6 +242,7 @@ class MainActivity : AppCompatActivity() {
 
         bundle.putString("dayName", textView.text as String?)
         bundle.putDoubleArray("temperatures", temperatures)
+        bundle.putInt("averageTemp", averageTemp)
 
         dailyDetailsFragment.arguments = bundle
         dailyDetailsFragment.show(supportFragmentManager, "dailyDetailsFragment")
