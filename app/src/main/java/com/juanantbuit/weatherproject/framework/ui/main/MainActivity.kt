@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
 
             } else {
-                hidePrincipalElements()
+                showSpecialMessage()
                 binding.specialMessage?.text = getString(R.string.noInternetMessage)
             }
         }
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
 
             } else {
-                hidePrincipalElements()
+                showSpecialMessage()
                 binding.specialMessage?.text = getString(R.string.noInternetMessage)
             }
         }
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.checkGPSPermission(this)
 
             } else {
-                hidePrincipalElements()
+                showSpecialMessage()
                 binding.specialMessage?.text = getString(R.string.noInternetMessage)
             }
         }
@@ -109,6 +109,22 @@ class MainActivity : AppCompatActivity() {
 
         binding.nextDayInfo4.setOnClickListener {
             showDailyDetails(binding.nextDayImage4,  binding.nextDay4, nextDaysInfo[3].temperatures.toDoubleArray(), nextDaysInfo[3].averageTemp)
+        }
+
+        binding.swiperefresh.setOnRefreshListener {
+            if (viewModel.isNetworkAvailable(this)) {
+                if (firstAppStart) {
+                    binding.swiperefresh.isRefreshing = false
+                    showSpecialMessage()
+                    binding.specialMessage?.text = getString(R.string.firstStartText)
+                } else {
+                    setCoordinates()
+                }
+            } else {
+                binding.swiperefresh.isRefreshing = false
+                showSpecialMessage()
+                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+            }
         }
 
         /*************************OBSERVERS*************************/
@@ -132,7 +148,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.getForecastResponse(coordinates["latitude"], coordinates["longitude"])
             }
             viewModel.getCurrentDay()
-            showPrincipalElements()
         }
 
         viewModel.cityInfo.observe(this) { cityInfo ->
@@ -159,6 +174,9 @@ class MainActivity : AppCompatActivity() {
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[1].iconId), binding.nextDayImage2)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[2].iconId), binding.nextDayImage3)
             refreshIcon(viewModel.getImageUrl(nextDaysInfo[3].iconId), binding.nextDayImage4)
+
+            hideProgressBar()
+            binding.swiperefresh.isRefreshing = false
         }
     }
 
@@ -169,14 +187,14 @@ class MainActivity : AppCompatActivity() {
 
         if (viewModel.isNetworkAvailable(this)) {
             if (firstAppStart) {
-                hidePrincipalElements()
+                showSpecialMessage()
                 binding.specialMessage?.text = getString(R.string.firstStartText)
             } else {
-                showPrincipalElements()
+                showProgressBar()
                 setCoordinates()
             }
         } else {
-            hidePrincipalElements()
+            showSpecialMessage()
             binding.specialMessage?.text = getString(R.string.noInternetMessage)
         }
     }
@@ -196,22 +214,34 @@ class MainActivity : AppCompatActivity() {
 
     /*************************PRIVATE FUNCTIONS*************************/
 
-    private fun hidePrincipalElements() {
+    private fun showSpecialMessage() {
         binding.cityName.visibility = View.GONE
         binding.principalCardView.visibility = View.GONE
         binding.next4Days.visibility = View.GONE
         binding.horizontalScrollView.visibility = View.GONE
+        binding.progressBar?.visibility = View.GONE
 
         binding.specialMessage?.visibility = View.VISIBLE
     }
 
-    private fun showPrincipalElements() {
+    private fun showProgressBar() {
+        binding.cityName.visibility = View.GONE
+        binding.principalCardView.visibility = View.GONE
+        binding.next4Days.visibility = View.GONE
+        binding.horizontalScrollView.visibility = View.GONE
+        binding.specialMessage?.visibility = View.GONE
+
+        binding.progressBar?.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
         binding.cityName.visibility = View.VISIBLE
         binding.principalCardView.visibility = View.VISIBLE
         binding.next4Days.visibility = View.VISIBLE
         binding.horizontalScrollView.visibility = View.VISIBLE
-
         binding.specialMessage?.visibility = View.GONE
+
+        binding.progressBar?.visibility = View.GONE
     }
 
     private fun setCoordinates() {

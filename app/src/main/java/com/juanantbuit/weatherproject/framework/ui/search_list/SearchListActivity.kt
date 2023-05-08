@@ -2,6 +2,7 @@ package com.juanantbuit.weatherproject.framework.ui.search_list
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,7 @@ class SearchListActivity: AppCompatActivity() {
 
                 if (searchQuery.isNotEmpty()) {
                     viewModel.getSearchItemList(searchQuery)
+                    showProgressBar()
                 }
                 return false
             }
@@ -47,7 +49,7 @@ class SearchListActivity: AppCompatActivity() {
 
 
         viewModel.searchItemList.observe(this) { searchItemList ->
-
+            hideProgressBar()
             binding.recyclerSearch.layoutManager = LinearLayoutManager(this)
             binding.recyclerSearch.adapter = SearchItemsAdapter(searchItemList!!) { searchItem ->
                 onItemSelected(searchItem)
@@ -65,5 +67,13 @@ class SearchListActivity: AppCompatActivity() {
         editor.putBoolean("firstAppStart", false)
         editor.apply()
         finish()
+    }
+
+    private fun showProgressBar() {
+        binding.progressBar2.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar2.visibility = View.GONE
     }
 }

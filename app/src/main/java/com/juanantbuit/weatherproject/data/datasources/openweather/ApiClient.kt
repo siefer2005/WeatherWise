@@ -2,7 +2,6 @@ package com.juanantbuit.weatherproject.data.datasources.openweather
 
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
-import com.juanantbuit.weatherproject.domain.models.SearchItemListModel
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 import retrofit2.Response
 import retrofit2.http.GET
@@ -22,12 +21,12 @@ interface ApiClient {
                                     @Query("lon") longitude: Float?,
                                     @Query("appid") apiKey: String,
                                     @Query("units") units: String)
-                                :Response<ForecastResponseModel>
+                                    :Response<ForecastResponseModel>
 
     @GET("/geo/1.0/direct")
     suspend fun getSearchItemList(@Query("q") searchText: String,
                                   @Query("limit") searchLimit: Int,
                                   @Query("appid") apiKey: String)
-            :Response<List<SearchItemModel>>
+                                  :Response<List<SearchItemModel>>
 
 }
