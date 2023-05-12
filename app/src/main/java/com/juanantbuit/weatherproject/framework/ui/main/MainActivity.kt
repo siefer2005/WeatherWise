@@ -13,6 +13,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -129,12 +131,15 @@ class MainActivity : AppCompatActivity() {
 
         /*************************OBSERVERS*************************/
 
+        //TODO: Refactor this function. Very long and repeated lines of code are used.
         viewModel.currentDay.observe(this) { currentDay ->
             if(currentDay != null) {
-                binding.nextDay1.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 1)]
-                binding.nextDay2.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 2)]
-                binding.nextDay3.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 3)]
-                binding.nextDay4.text = DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 4)]
+                //Dynamically selects the id of the next 4 days, searches for the text by
+                //that identifier and adds it to the activity.
+                binding.nextDay1.text = resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 1)], "string", "com.juanantbuit.weatherproject")) as String
+                binding.nextDay2.text =  resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 2)], "string", "com.juanantbuit.weatherproject")) as String
+                binding.nextDay3.text =  resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 3)], "string", "com.juanantbuit.weatherproject")) as String
+                binding.nextDay4.text =  resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 4)], "string", "com.juanantbuit.weatherproject")) as String
             }
         }
 
@@ -187,9 +192,16 @@ class MainActivity : AppCompatActivity() {
 
         if (viewModel.isNetworkAvailable(this)) {
             if (firstAppStart) {
+                //Selects the user's preferred language as default language
+                AppCompatDelegate.getApplicationLocales()
+
                 showSpecialMessage()
                 binding.specialMessage?.text = getString(R.string.firstStartText)
             } else {
+                //Selects the last language selected by the user as the application language.
+                val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("en") //TODO
+                AppCompatDelegate.setApplicationLocales(appLocale)
+
                 showProgressBar()
                 setCoordinates()
             }

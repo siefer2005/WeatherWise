@@ -1,16 +1,32 @@
 <resources>
     <string name="app_name">WeatherProject</string>
-    <string name="gpsButtonDescription">gps image button</string>
-    <string name="IconWeatherDescription">Current weather icon</string>
+
+    <string name="gps_button_description">gps image button</string>
+    <string name="Icon_weather_description">Current weather icon</string>
+    <string name="next_day_icon">Next day icon</string>
+
     <string name="thermal_sensation">Thermal sensation</string>
     <string name="humidity">Humidity</string>
     <string name="wind">Wind</string>
     <string name="next_4_days">Next 4 Days</string>
-    <string name="next_day_icon">Next day icon</string>
+
+    <string name="search_hint">Search a city</string>
+
     <string name="noInternetMessage">No internet connection. Please connect to a network.</string>
     <string name="firstStartText">First, look for a city in the browser or with the GPS button</string>
+
     <string name="temperature"> %1$dº</string>
     <string name="city_name">%1$s, %2$s</string>
     <string name="humidity_template"> %1$d%%</string>
     <string name="wind_speed">%1$d km/hr</string>
+
+    <string name="sunday_id">Sunday</string>
+    <string name="monday_id">Monday</string>
+    <string name="tuesday_id">Tuesday</string>
+    <string name="wednesday_id">Wednesday</string>
+    <string name="thursday_id">Thursday</string>
+    <string name="friday_id">Friday</string>
+    <string name="saturday_id">Saturday</string>
+
+
 </resources>

@@ -41,7 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:contentDescription="@string/gpsButtonDescription"
+            android:contentDescription="@string/gps_button_description"
             app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
     </LinearLayout>
@@ -89,7 +89,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="top"
                     android:layout_weight="1"
-                    android:contentDescription="@string/IconWeatherDescription"
+                    android:contentDescription="@string/Icon_weather_description"
                     tools:srcCompat="@tools:sample/avatars" />
             </LinearLayout>
 
