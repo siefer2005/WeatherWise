@@ -1,6 +1,5 @@
 package com.juanantbuit.weatherproject.framework.ui.main
 
-import android.R.id.toggle
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
@@ -13,7 +12,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
@@ -28,6 +26,7 @@ import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivit
 import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.side_panel.view.*
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import kotlin.properties.Delegates
@@ -131,6 +130,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.sidePanel!!.englishRadioButton.englishRadioButton.setOnClickListener {
+            editor.putString("language", "en")
+            editor.apply()
+
+            changeLanguage("en")
+        }
+
+        binding.sidePanel!!.spanishRadioButton.spanishRadioButton.setOnClickListener {
+            editor.putString("language", "es")
+            editor.apply()
+
+            changeLanguage("es")
+        }
+
         /*************************OBSERVERS*************************/
 
         //TODO: Refactor this function. Very long and repeated lines of code are used.
@@ -197,12 +210,26 @@ class MainActivity : AppCompatActivity() {
                 //Selects the user's preferred language as default language
                 AppCompatDelegate.getApplicationLocales()
 
+                val languageCode = prefs.getString("language", "en")
+                changeLanguage(languageCode!!)
+
+                if (languageCode == "en") {
+                    binding.sidePanel!!.englishRadioButton.isChecked = true
+                } else {
+                    binding.sidePanel!!.spanishRadioButton.isChecked = true
+                }
+
                 showSpecialMessage()
                 binding.specialMessage?.text = getString(R.string.firstStartText)
             } else {
-                //Selects the last language selected by the user as the application language.
-                val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("en") //TODO
-                AppCompatDelegate.setApplicationLocales(appLocale)
+                val languageCode = prefs.getString("language", "en")
+                changeLanguage(languageCode!!)
+
+                if (languageCode == "en") {
+                    binding.sidePanel!!.englishRadioButton.isChecked = true
+                } else {
+                    binding.sidePanel!!.spanishRadioButton.isChecked = true
+                }
 
                 showProgressBar()
                 setCoordinates()
@@ -306,5 +333,10 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun changeLanguage(languageCode: String) {
+        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(languageCode)
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 }

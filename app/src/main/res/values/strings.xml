@@ -28,5 +28,9 @@
     <string name="friday_id">Friday</string>
     <string name="saturday_id">Saturday</string>
 
+    <string name="english_language">English</string>
+    <string name="spanish_language">Spanish</string>
+    <string name="choose_language">Choose a language</string>
+
 
 </resources>

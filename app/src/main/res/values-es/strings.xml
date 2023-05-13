@@ -28,4 +28,8 @@
     <string name="thursday_id">Jueves</string>
     <string name="friday_id">Viernes</string>
     <string name="saturday_id">Sábado</string>
+
+    <string name="english_language">Inglés</string>
+    <string name="spanish_language">Español</string>
+    <string name="choose_language">Selecciona un idioma</string>
 </resources>
