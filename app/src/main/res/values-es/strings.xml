@@ -19,7 +19,8 @@
     <string name="temperature"> %1$dº</string>
     <string name="city_name">%1$s, %2$s</string>
     <string name="humidity_template"> %1$d%%</string>
-    <string name="wind_speed">%1$d km/hr</string>
+    <string name="wind_speed_imperial">%1$d mph</string>
+    <string name="wind_speed">%1$d m/s</string>
 
     <string name="sunday_id">Domingo</string>
     <string name="monday_id">Lunes</string>
@@ -32,4 +33,9 @@
     <string name="english_language">Inglés</string>
     <string name="spanish_language">Español</string>
     <string name="choose_language">Selecciona un idioma</string>
+
+    <string name="choose_a_metric_unit">Elige una unidad métrica</string>
+    <string name="celsius">Celsius (ºC)</string>
+    <string name="fahrenheit">Fahrenheit (ºF)</string>
+    <string name="kelvin">Kelvin</string>
 </resources>

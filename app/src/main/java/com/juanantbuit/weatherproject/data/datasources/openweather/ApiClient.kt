@@ -13,20 +13,23 @@ interface ApiClient {
     suspend fun getCityInfo(@Query("lat") latitude: Float?,
                             @Query("lon") longitude: Float?,
                             @Query("appid") apiKey: String,
-                            @Query("units") units: String)
+                            @Query("units") units: String,
+                            @Query("lang") lang: String)
                             :Response<CityInfoModel>
 
     @GET("/data/2.5/forecast")
     suspend fun getForecastResponse(@Query("lat") latitude: Float?,
                                     @Query("lon") longitude: Float?,
                                     @Query("appid") apiKey: String,
-                                    @Query("units") units: String)
+                                    @Query("units") units: String,
+                                    @Query("lang") lang: String)
                                     :Response<ForecastResponseModel>
 
     @GET("/geo/1.0/direct")
     suspend fun getSearchItemList(@Query("q") searchText: String,
                                   @Query("limit") searchLimit: Int,
-                                  @Query("appid") apiKey: String)
+                                  @Query("appid") apiKey: String,
+                                  @Query("lang") lang: String)
                                   :Response<List<SearchItemModel>>
 
 }

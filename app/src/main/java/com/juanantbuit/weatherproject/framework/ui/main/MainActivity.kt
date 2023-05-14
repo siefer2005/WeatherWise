@@ -25,6 +25,8 @@ import com.juanantbuit.weatherproject.framework.ui.daily_details.DailyDetailsFra
 import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivity
 import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
+import com.juanantbuit.weatherproject.utils.LANG
+import com.juanantbuit.weatherproject.utils.UNITS
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.side_panel.view.*
 import java.io.ByteArrayOutputStream
@@ -144,6 +146,27 @@ class MainActivity : AppCompatActivity() {
             changeLanguage("es")
         }
 
+        binding.sidePanel!!.celsiusRadioButton.setOnClickListener {
+            editor.putString("units", "metric")
+            editor.apply()
+
+            changeUnits("metric")
+        }
+
+        binding.sidePanel!!.fahrenheitRadioButton.setOnClickListener {
+            editor.putString("units", "imperial")
+            editor.apply()
+
+            changeUnits("imperial")
+        }
+
+        binding.sidePanel!!.kelvinRadioButton.setOnClickListener {
+            editor.putString("units", "standard")
+            editor.apply()
+
+            changeUnits("standard")
+        }
+
         /*************************OBSERVERS*************************/
 
         //TODO: Refactor this function. Very long and repeated lines of code are used.
@@ -177,7 +200,12 @@ class MainActivity : AppCompatActivity() {
                 binding.currentTemp.text = getString(R.string.temperature, cityInfo.mainInfo.temp.toInt())
                 binding.tempFeelsLike.text = getString(R.string.temperature, cityInfo.mainInfo.thermalSensation.toInt())
                 binding.humidityPercentage.text = getString(R.string.humidity_template, cityInfo.mainInfo.humidity)
-                binding.windVelocity.text = getString(R.string.wind_speed, cityInfo.windVelocity.speed.toInt())
+
+                if(UNITS == "imperial") {
+                    binding.windVelocity.text = getString(R.string.wind_speed_imperial, cityInfo.windVelocity.speed.toInt())
+                } else {
+                    binding.windVelocity.text = getString(R.string.wind_speed, cityInfo.windVelocity.speed.toInt())
+                }
             }
         }
 
@@ -222,13 +250,28 @@ class MainActivity : AppCompatActivity() {
                 showSpecialMessage()
                 binding.specialMessage?.text = getString(R.string.firstStartText)
             } else {
-                val languageCode = prefs.getString("language", "en")
-                changeLanguage(languageCode!!)
 
-                if (languageCode == "en") {
+                UNITS = prefs.getString("units", "metric")!!
+                LANG = prefs.getString("language", "en")!!
+
+                changeLanguage(LANG)
+
+                if (LANG == "en") {
                     binding.sidePanel!!.englishRadioButton.isChecked = true
                 } else {
                     binding.sidePanel!!.spanishRadioButton.isChecked = true
+                }
+
+                when (UNITS) {
+                    "metric" -> {
+                        binding.sidePanel!!.celsiusRadioButton.isChecked = true
+                    }
+                    "imperial" -> {
+                        binding.sidePanel!!.fahrenheitRadioButton.isChecked = true
+                    }
+                    else -> {
+                        binding.sidePanel!!.kelvinRadioButton.isChecked = true
+                    }
                 }
 
                 showProgressBar()
@@ -338,5 +381,10 @@ class MainActivity : AppCompatActivity() {
     private fun changeLanguage(languageCode: String) {
         val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(languageCode)
         AppCompatDelegate.setApplicationLocales(appLocale)
+    }
+
+    private fun changeUnits(units: String) {
+        LANG = units
+        recreate()
     }
 }
