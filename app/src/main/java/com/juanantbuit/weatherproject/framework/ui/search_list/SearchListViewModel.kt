@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.juanantbuit.weatherproject.domain.models.SearchItemListModel
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 import com.juanantbuit.weatherproject.usecases.GetSearchItemsUseCase
 import kotlinx.coroutines.launch

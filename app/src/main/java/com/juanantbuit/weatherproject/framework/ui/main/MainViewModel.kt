@@ -55,7 +55,7 @@ class MainViewModel : ViewModel() {
 
     fun getCurrentDay() {
         val calendar = Calendar.getInstance()
-        //Subtraction necessary for the number (1..7) to match the indexes of DAYS_OF_WEEK (0..6)
+        //Subtraction needed for the number (1..7) to match the indexes of DAYS_OF_WEEK (0..6)
         val result = calendar[Calendar.DAY_OF_WEEK] - 1
         _currentDay.postValue(result)
     }

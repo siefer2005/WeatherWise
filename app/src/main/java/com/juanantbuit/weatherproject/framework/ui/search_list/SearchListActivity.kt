@@ -18,6 +18,7 @@ class SearchListActivity: AppCompatActivity() {
     private lateinit var binding: SearchListBinding
     private lateinit var prefs: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var searchType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,7 @@ class SearchListActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         citySearcher.isIconified = false
+        searchType = intent.getStringExtra("searchType")!!
 
         binding.citySearcher.setOnQueryTextFocusChangeListener { _, isFocused ->
 
@@ -62,9 +64,32 @@ class SearchListActivity: AppCompatActivity() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         editor = prefs.edit()
 
-        editor.putFloat("lastLatitude", searchItem.lat.toFloat())
-        editor.putFloat("lastLongitude", searchItem.lon.toFloat())
-        editor.putBoolean("firstAppStart", false)
+        when(searchType) {
+            "firstSave" -> {
+                editor.putFloat("firstSaveLatitude", searchItem.lat.toFloat())
+                editor.putFloat("firstSaveLongitude", searchItem.lon.toFloat())
+                editor.putString("firstSaveName", searchItem.name)
+            }
+
+            "secondSave" -> {
+                editor.putFloat("secondSaveLatitude", searchItem.lat.toFloat())
+                editor.putFloat("secondSaveLongitude", searchItem.lon.toFloat())
+                editor.putString("secondSaveName", searchItem.name)
+            }
+
+            "thirdSave" -> {
+                editor.putFloat("thirdSaveLatitude", searchItem.lat.toFloat())
+                editor.putFloat("thirdSaveLongitude", searchItem.lon.toFloat())
+                editor.putString("thirdSaveName", searchItem.name)
+            }
+
+            else -> {
+                editor.putFloat("lastLatitude", searchItem.lat.toFloat())
+                editor.putFloat("lastLongitude", searchItem.lon.toFloat())
+                editor.putBoolean("firstAppStart", false)
+            }
+        }
+
         editor.apply()
         finish()
     }

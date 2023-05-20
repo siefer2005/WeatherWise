@@ -1,7 +1,6 @@
 package com.juanantbuit.weatherproject.framework.ui.search_list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.juanantbuit.weatherproject.R

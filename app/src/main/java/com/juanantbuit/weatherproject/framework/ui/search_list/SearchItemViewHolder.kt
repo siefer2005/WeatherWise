@@ -7,12 +7,12 @@ import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 
 class SearchItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
-    val binding = SearchItemBinding.bind(view)
+    private val binding = SearchItemBinding.bind(view)
 
     fun render(searchItem: SearchItemModel, onClickListener: (SearchItemModel) -> Unit) {
         binding.cityAndCountry.text = searchItem.name + ", " + searchItem.country
 
-        itemView.setOnClickListener() { onClickListener(searchItem) }
+        itemView.setOnClickListener { onClickListener(searchItem) }
     }
 
 }

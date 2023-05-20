@@ -64,12 +64,13 @@ class MainActivity : AppCompatActivity() {
             if (viewModel.isNetworkAvailable(this)) {
 
                 val intent = Intent(this, SearchListActivity::class.java)
+                intent.putExtra("searchType", "none")
                 intent.flags = FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(intent)
 
             } else {
                 showSpecialMessage()
-                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+                binding.specialMessage.text = getString(R.string.noInternetMessage)
             }
         }
 
@@ -80,12 +81,13 @@ class MainActivity : AppCompatActivity() {
                 citySearcher.isIconified = true
 
                 val intent = Intent(this, SearchListActivity::class.java)
+                intent.putExtra("searchType", "none")
                 intent.flags = FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(intent)
 
             } else {
                 showSpecialMessage()
-                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+                binding.specialMessage.text = getString(R.string.noInternetMessage)
             }
         }
 
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 showSpecialMessage()
-                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+                binding.specialMessage.text = getString(R.string.noInternetMessage)
             }
         }
 
@@ -121,50 +123,127 @@ class MainActivity : AppCompatActivity() {
                 if (firstAppStart) {
                     binding.swiperefresh.isRefreshing = false
                     showSpecialMessage()
-                    binding.specialMessage?.text = getString(R.string.firstStartText)
+                    binding.specialMessage.text = getString(R.string.firstStartText)
                 } else {
                     setCoordinates()
                 }
             } else {
                 binding.swiperefresh.isRefreshing = false
                 showSpecialMessage()
-                binding.specialMessage?.text = getString(R.string.noInternetMessage)
+                binding.specialMessage.text = getString(R.string.noInternetMessage)
             }
         }
 
-        binding.sidePanel!!.englishRadioButton.englishRadioButton.setOnClickListener {
+        binding.sidePanel.englishRadioButton.englishRadioButton.setOnClickListener {
             editor.putString("language", "en")
             editor.apply()
 
             changeLanguage("en")
         }
 
-        binding.sidePanel!!.spanishRadioButton.spanishRadioButton.setOnClickListener {
+        binding.sidePanel.spanishRadioButton.spanishRadioButton.setOnClickListener {
             editor.putString("language", "es")
             editor.apply()
 
             changeLanguage("es")
         }
 
-        binding.sidePanel!!.celsiusRadioButton.setOnClickListener {
+        binding.sidePanel.celsiusRadioButton.setOnClickListener {
             editor.putString("units", "metric")
             editor.apply()
 
             changeUnits("metric")
         }
 
-        binding.sidePanel!!.fahrenheitRadioButton.setOnClickListener {
+        binding.sidePanel.fahrenheitRadioButton.setOnClickListener {
             editor.putString("units", "imperial")
             editor.apply()
 
             changeUnits("imperial")
         }
 
-        binding.sidePanel!!.kelvinRadioButton.setOnClickListener {
+        binding.sidePanel.kelvinRadioButton.setOnClickListener {
             editor.putString("units", "standard")
             editor.apply()
 
             changeUnits("standard")
+        }
+
+        binding.sidePanel.firstSaveLocation.setOnClickListener {
+            if (viewModel.isNetworkAvailable(this)) {
+
+                val firstSaveName = prefs.getString("firstSaveName", "none")
+
+                if(firstSaveName != "none") {
+                    binding.drawer.closeDrawers()
+
+                    viewModel.setCoordinates(
+                        prefs.getFloat("firstSaveLatitude", 0.0f),
+                        prefs.getFloat("firstSaveLongitude", 0.0f)
+                    )
+                } else {
+
+                    val intent = Intent(this, SearchListActivity::class.java)
+                    intent.putExtra("searchType", "firstSave")
+                    intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+                    startActivity(intent)
+                }
+            } else {
+                showSpecialMessage()
+                binding.specialMessage.text = getString(R.string.noInternetMessage)
+            }
+        }
+
+        binding.sidePanel.secondSaveLocation.setOnClickListener {
+            if (viewModel.isNetworkAvailable(this)) {
+
+                val secondSaveName = prefs.getString("secondSaveName", "none")
+
+                if(secondSaveName != "none") {
+                    binding.drawer.closeDrawers()
+
+                    viewModel.setCoordinates(
+                        prefs.getFloat("secondSaveLatitude", 0.0f),
+                        prefs.getFloat("secondSaveLongitude", 0.0f)
+                    )
+                } else {
+
+                    val intent = Intent(this, SearchListActivity::class.java)
+                    intent.putExtra("searchType", "secondSave")
+                    intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+                    startActivity(intent)
+                }
+
+            } else {
+                showSpecialMessage()
+                binding.specialMessage.text = getString(R.string.noInternetMessage)
+            }
+        }
+
+        binding.sidePanel.thirdSaveLocation.setOnClickListener {
+            if (viewModel.isNetworkAvailable(this)) {
+
+                val thirdSaveName = prefs.getString("thirdSaveName", "none")
+
+                if(thirdSaveName != "none") {
+                    binding.drawer.closeDrawers()
+
+                    viewModel.setCoordinates(
+                        prefs.getFloat("thirdSaveLatitude", 0.0f),
+                        prefs.getFloat("thirdSaveLongitude", 0.0f)
+                    )
+                } else {
+
+                    val intent = Intent(this, SearchListActivity::class.java)
+                    intent.putExtra("searchType", "thirdSave")
+                    intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+                    startActivity(intent)
+                }
+
+            } else {
+                showSpecialMessage()
+                binding.specialMessage.text = getString(R.string.noInternetMessage)
+            }
         }
 
         /*************************OBSERVERS*************************/
@@ -242,13 +321,13 @@ class MainActivity : AppCompatActivity() {
                 changeLanguage(languageCode!!)
 
                 if (languageCode == "en") {
-                    binding.sidePanel!!.englishRadioButton.isChecked = true
+                    binding.sidePanel.englishRadioButton.isChecked = true
                 } else {
-                    binding.sidePanel!!.spanishRadioButton.isChecked = true
+                    binding.sidePanel.spanishRadioButton.isChecked = true
                 }
 
                 showSpecialMessage()
-                binding.specialMessage?.text = getString(R.string.firstStartText)
+                binding.specialMessage.text = getString(R.string.firstStartText)
             } else {
 
                 UNITS = prefs.getString("units", "metric")!!
@@ -257,29 +336,30 @@ class MainActivity : AppCompatActivity() {
                 changeLanguage(LANG)
 
                 if (LANG == "en") {
-                    binding.sidePanel!!.englishRadioButton.isChecked = true
+                    binding.sidePanel.englishRadioButton.isChecked = true
                 } else {
-                    binding.sidePanel!!.spanishRadioButton.isChecked = true
+                    binding.sidePanel.spanishRadioButton.isChecked = true
                 }
 
                 when (UNITS) {
                     "metric" -> {
-                        binding.sidePanel!!.celsiusRadioButton.isChecked = true
+                        binding.sidePanel.celsiusRadioButton.isChecked = true
                     }
                     "imperial" -> {
-                        binding.sidePanel!!.fahrenheitRadioButton.isChecked = true
+                        binding.sidePanel.fahrenheitRadioButton.isChecked = true
                     }
                     else -> {
-                        binding.sidePanel!!.kelvinRadioButton.isChecked = true
+                        binding.sidePanel.kelvinRadioButton.isChecked = true
                     }
                 }
 
                 showProgressBar()
                 setCoordinates()
+                setSaveLocations()
             }
         } else {
             showSpecialMessage()
-            binding.specialMessage?.text = getString(R.string.noInternetMessage)
+            binding.specialMessage.text = getString(R.string.noInternetMessage)
         }
     }
 
@@ -303,9 +383,9 @@ class MainActivity : AppCompatActivity() {
         binding.principalCardView.visibility = View.GONE
         binding.next4Days.visibility = View.GONE
         binding.horizontalScrollView.visibility = View.GONE
-        binding.progressBar?.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
 
-        binding.specialMessage?.visibility = View.VISIBLE
+        binding.specialMessage.visibility = View.VISIBLE
     }
 
     private fun showProgressBar() {
@@ -313,9 +393,9 @@ class MainActivity : AppCompatActivity() {
         binding.principalCardView.visibility = View.GONE
         binding.next4Days.visibility = View.GONE
         binding.horizontalScrollView.visibility = View.GONE
-        binding.specialMessage?.visibility = View.GONE
+        binding.specialMessage.visibility = View.GONE
 
-        binding.progressBar?.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun hideProgressBar() {
@@ -323,9 +403,9 @@ class MainActivity : AppCompatActivity() {
         binding.principalCardView.visibility = View.VISIBLE
         binding.next4Days.visibility = View.VISIBLE
         binding.horizontalScrollView.visibility = View.VISIBLE
-        binding.specialMessage?.visibility = View.GONE
+        binding.specialMessage.visibility = View.GONE
 
-        binding.progressBar?.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun setCoordinates() {
@@ -336,6 +416,25 @@ class MainActivity : AppCompatActivity() {
             prefs.getFloat("lastLatitude", 0.0f),
             prefs.getFloat("lastLongitude", 0.0f)
         )
+    }
+
+    private fun setSaveLocations() {
+        val firstSaveName = prefs.getString("firstSaveName", "none")
+        val secondSaveName = prefs.getString("secondSaveName", "none")
+        val thirdSaveName = prefs.getString("thirdSaveName", "none")
+
+        if(firstSaveName != "none") {
+            binding.sidePanel.firstSaveLocationText.text = firstSaveName
+        }
+
+        if(secondSaveName != "none") {
+            binding.sidePanel.secondSaveLocationText.text = secondSaveName
+        }
+
+        if(thirdSaveName != "none") {
+            binding.sidePanel.thirdSaveLocationText.text = thirdSaveName
+        }
+
     }
 
     private fun refreshIcon(url:String, imageView: ImageView) {

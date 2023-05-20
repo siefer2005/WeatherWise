@@ -38,4 +38,7 @@
     <string name="celsius">Celsius (ºC)</string>
     <string name="fahrenheit">Fahrenheit (ºF)</string>
     <string name="kelvin">Kelvin</string>
+
+    <string name="more_locations">Más localizaciones</string>
+    <string name="touch_to_save_location">Toca para guardar una localización</string>
 </resources>
