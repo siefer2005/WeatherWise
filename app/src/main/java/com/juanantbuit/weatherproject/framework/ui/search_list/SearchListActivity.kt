@@ -29,7 +29,6 @@ class SearchListActivity: AppCompatActivity() {
         searchType = intent.getStringExtra("searchType")!!
 
         binding.citySearcher.setOnQueryTextFocusChangeListener { _, isFocused ->
-
             citySearcher.isIconified = !isFocused
         }
 

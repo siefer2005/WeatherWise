@@ -246,6 +246,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        binding.sidePanel.cancel1.setOnClickListener {
+            editor.remove("firstSaveName")
+            editor.apply()
+            binding.sidePanel.firstSaveLocationText.text = getString(R.string.touch_to_save_location)
+            binding.sidePanel.cancel1.visibility = View.GONE
+        }
+
+        binding.sidePanel.cancel2.setOnClickListener {
+            editor.remove("secondSaveName")
+            editor.apply()
+            binding.sidePanel.secondSaveLocationText.text = getString(R.string.touch_to_save_location)
+            binding.sidePanel.cancel2.visibility = View.GONE
+        }
+
+        binding.sidePanel.cancel3.setOnClickListener {
+            editor.remove("thirdSaveName")
+            editor.apply()
+            binding.sidePanel.thirdSaveLocationText.text = getString(R.string.touch_to_save_location)
+            binding.sidePanel.cancel3.visibility = View.GONE
+        }
+
         /*************************OBSERVERS*************************/
 
         //TODO: Refactor this function. Very long and repeated lines of code are used.
@@ -425,14 +446,17 @@ class MainActivity : AppCompatActivity() {
 
         if(firstSaveName != "none") {
             binding.sidePanel.firstSaveLocationText.text = firstSaveName
+            binding.sidePanel.cancel1.visibility = View.VISIBLE
         }
 
         if(secondSaveName != "none") {
             binding.sidePanel.secondSaveLocationText.text = secondSaveName
+            binding.sidePanel.cancel2.visibility = View.VISIBLE
         }
 
         if(thirdSaveName != "none") {
             binding.sidePanel.thirdSaveLocationText.text = thirdSaveName
+            binding.sidePanel.cancel3.visibility = View.VISIBLE
         }
 
     }
