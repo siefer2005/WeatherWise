@@ -10,7 +10,6 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.juanantbuit.weatherproject.databinding.SearchListBinding
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
-import kotlinx.android.synthetic.main.search_list.*
 
 class SearchListActivity: AppCompatActivity() {
 
@@ -25,11 +24,11 @@ class SearchListActivity: AppCompatActivity() {
         binding = SearchListBinding.inflate(this.layoutInflater)
         setContentView(binding.root)
 
-        citySearcher.isIconified = false
+        binding.citySearcher.isIconified = false
         searchType = intent.getStringExtra("searchType")!!
 
         binding.citySearcher.setOnQueryTextFocusChangeListener { _, isFocused ->
-            citySearcher.isIconified = !isFocused
+            binding.citySearcher.isIconified = !isFocused
         }
 
         binding.citySearcher.setOnQueryTextListener(object: SearchView.OnQueryTextListener {

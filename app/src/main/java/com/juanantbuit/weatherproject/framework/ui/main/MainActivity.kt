@@ -23,7 +23,6 @@ import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
 import com.juanantbuit.weatherproject.framework.ui.daily_details.DailyDetailsFragment
 import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivity
-import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import com.juanantbuit.weatherproject.utils.LANG
 import com.juanantbuit.weatherproject.utils.UNITS
@@ -267,17 +266,21 @@ class MainActivity : AppCompatActivity() {
 
         /*************************OBSERVERS*************************/
 
-        //TODO: Refactor this function. Very long and repeated lines of code are used.
         viewModel.currentDay.observe(this) { currentDay ->
             if(currentDay != null) {
+
+                val daysOfWeek: Array<String> = resources.getStringArray(R.array.days_of_week)
+
                 //Dynamically selects the id of the next 4 days, searches for the text by
                 //that identifier and adds it to the activity.
-                binding.nextDay1.text = resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 1)], "string", "com.juanantbuit.weatherproject")) as String
-                binding.nextDay2.text =  resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 2)], "string", "com.juanantbuit.weatherproject")) as String
-                binding.nextDay3.text =  resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 3)], "string", "com.juanantbuit.weatherproject")) as String
-                binding.nextDay4.text =  resources.getText(resources.getIdentifier(DAYS_Of_WEEK[viewModel.getCorrectIndex(currentDay + 4)], "string", "com.juanantbuit.weatherproject")) as String
+                binding.nextDay1.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 1)]
+                binding.nextDay2.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 2)]
+                binding.nextDay3.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 3)]
+                binding.nextDay4.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 4)]
             }
         }
+
+
 
         viewModel.coordinates.observe(this) { coordinates ->
             if(coordinates != null) {

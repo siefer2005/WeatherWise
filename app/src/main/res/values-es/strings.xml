@@ -33,4 +33,14 @@
 
     <string name="more_locations">Más localizaciones</string>
     <string name="touch_to_save_location">Toca para guardar una localización</string>
+
+    <string-array name="days_of_week">
+        <item>Domingo</item>
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miércoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sábado</item>
+    </string-array>
 </resources>

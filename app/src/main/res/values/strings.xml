@@ -32,4 +32,14 @@
 
     <string name="more_locations">More locations</string>
     <string name="touch_to_save_location">Touch to save location</string>
+
+    <string-array name="days_of_week">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
 </resources>
