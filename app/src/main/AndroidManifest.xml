@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.juanantbuit.weatherproject">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -21,9 +20,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+
             android:name=".framework.ui.search_list.SearchListActivity"
             android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".framework.ui.main.MainActivity"

@@ -13,7 +13,6 @@ class GetNextDaysInfoUseCase {
 
     private var averageTemp by Delegates.notNull<Int>()
 
-
     operator fun invoke(forecastResponse: ForecastResponseModel): MutableList<NextDayInfoModel> {
 
         val forecastsForFiveDays: List<List<ForecastInfoModel>> = getOnlyNextDaysInfo(forecastResponse).chunked(TRI_HOURS_IN_DAY)
@@ -42,7 +41,7 @@ class GetNextDaysInfoUseCase {
         for (i in 0 until forecastResponse.forecastInfoModels.size) {
             val nextDate = LocalDate.parse(forecastResponse.forecastInfoModels[i].date.substringBefore(" "), formatter)
 
-            if (!current.equals(nextDate)) {
+            if (current != nextDate) {
                 nextDaysForecast.add(forecastResponse.forecastInfoModels[i])
             }
         }

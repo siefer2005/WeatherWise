@@ -1,7 +1,6 @@
 package com.juanantbuit.weatherproject.usecases
 
 import com.juanantbuit.weatherproject.data.repositories.SearchItemsRepository
-import com.juanantbuit.weatherproject.domain.models.SearchItemListModel
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 
 class GetSearchItemsUseCase {

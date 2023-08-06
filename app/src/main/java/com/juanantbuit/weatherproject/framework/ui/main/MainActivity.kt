@@ -27,8 +27,6 @@ import com.juanantbuit.weatherproject.utils.DAYS_Of_WEEK
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import com.juanantbuit.weatherproject.utils.LANG
 import com.juanantbuit.weatherproject.utils.UNITS
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.side_panel.view.*
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import kotlin.properties.Delegates
@@ -77,8 +75,8 @@ class MainActivity : AppCompatActivity() {
         binding.citySearcher.setOnSearchClickListener {
             if (viewModel.isNetworkAvailable(this)) {
 
-                citySearcher.clearFocus()
-                citySearcher.isIconified = true
+                binding.citySearcher.clearFocus()
+                binding.citySearcher.isIconified = true
 
                 val intent = Intent(this, SearchListActivity::class.java)
                 intent.putExtra("searchType", "none")
@@ -134,14 +132,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.sidePanel.englishRadioButton.englishRadioButton.setOnClickListener {
+        binding.sidePanel.englishRadioButton.setOnClickListener {
             editor.putString("language", "en")
             editor.apply()
 
             changeLanguage("en")
         }
 
-        binding.sidePanel.spanishRadioButton.spanishRadioButton.setOnClickListener {
+        binding.sidePanel.spanishRadioButton.setOnClickListener {
             editor.putString("language", "es")
             editor.apply()
 

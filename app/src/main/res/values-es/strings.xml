@@ -22,14 +22,6 @@
     <string name="wind_speed_imperial">%1$d mph</string>
     <string name="wind_speed">%1$d m/s</string>
 
-    <string name="sunday_id">Domingo</string>
-    <string name="monday_id">Lunes</string>
-    <string name="tuesday_id">Martes</string>
-    <string name="wednesday_id">Miércoles</string>
-    <string name="thursday_id">Jueves</string>
-    <string name="friday_id">Viernes</string>
-    <string name="saturday_id">Sábado</string>
-
     <string name="english_language">Inglés</string>
     <string name="spanish_language">Español</string>
     <string name="choose_language">Selecciona un idioma</string>

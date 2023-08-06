@@ -20,6 +20,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
@@ -88,13 +89,12 @@ class MainViewModel : ViewModel() {
     @SuppressLint("MissingPermission")
     fun getCoordinatesFromGPS(activity: MainActivity) {
 
-        val locationRequest: LocationRequest?
         val coordinates: HashMap<String, Float> = hashMapOf()
+        val locationRequestBuilder: LocationRequest.Builder =
+            LocationRequest.Builder(PRIORITY_HIGH_ACCURACY, 5000)
+        locationRequestBuilder.setMinUpdateIntervalMillis(2000)
 
-        locationRequest = LocationRequest.create()
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 5000
-        locationRequest.fastestInterval = 2000
+        val locationRequest: LocationRequest = locationRequestBuilder.build()
 
         if (isGPSEnabled(activity)) {
 
@@ -106,7 +106,7 @@ class MainViewModel : ViewModel() {
                         LocationServices.getFusedLocationProviderClient(activity)
                                 .removeLocationUpdates(this)
 
-                        if (locationResult.locations.size > 0) {
+                        if (locationResult.locations.isNotEmpty()) {
 
                             val index: Int = locationResult.locations.size - 1
                             val latitude = locationResult.locations[index].latitude.toFloat()

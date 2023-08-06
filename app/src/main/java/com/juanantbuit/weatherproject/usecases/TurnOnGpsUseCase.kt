@@ -12,7 +12,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.tasks.Task
 import com.juanantbuit.weatherproject.framework.ui.main.MainActivity
 
-
 class TurnOnGpsUseCase(private val activity: MainActivity) {
 
     fun turnOnGPS(locationRequest: LocationRequest) {
@@ -25,7 +24,7 @@ class TurnOnGpsUseCase(private val activity: MainActivity) {
 
         result.addOnCompleteListener { task ->
             try {
-                //IDE marks "response" as not used, but it is used to trigger the exception.
+                //IDE marks "response" as not used, but it is used to trigger the exception if needed.
                 val response: LocationSettingsResponse? = task.getResult(ApiException::class.java)
                 Toast.makeText(activity.baseContext, "GPS is already turned on", Toast.LENGTH_SHORT)
                     .show()
