@@ -482,6 +482,10 @@ class MainActivity : AppCompatActivity() {
         bundle.putDoubleArray("temperatures", temperatures)
         bundle.putInt("averageTemp", averageTemp)
 
+        if(dailyDetailsFragment.isAdded) {
+            dailyDetailsFragment.dismiss();
+        }
+
         dailyDetailsFragment.arguments = bundle
         dailyDetailsFragment.show(supportFragmentManager, "dailyDetailsFragment")
     }

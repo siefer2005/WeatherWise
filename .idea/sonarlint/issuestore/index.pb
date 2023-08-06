@@ -53,7 +53,5 @@ Xapp/src/main/java/com/juanantbuit/weatherproject/data/repositories/CityInfoRepo
 Tapp/src/main/java/com/juanantbuit/weatherproject/domain/models/common/IconIdModel.kt,f\f\ff2f50c6f7b957eacda669a387172cc05556806f
 ƒ
 Sapp/src/main/java/com/juanantbuit/weatherproject/data/datasources/RetrofitHelper.kt,6\5\6581ebbf28c9c9a38636acc571836fd23d4fb7b9
-“
-capp/src/main/java/com/juanantbuit/weatherproject/framework/ui/daily_details/DailyDetailsFragment.kt,7\c\7c6c269b67287b16e185f3f78495326dfe4c5719
 @
 local.properties,0\7\0712df971a99ac4d2fccb8e0fb19f377f3374cca
