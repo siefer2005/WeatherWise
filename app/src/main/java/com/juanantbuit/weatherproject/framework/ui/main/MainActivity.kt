@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -264,6 +265,14 @@ class MainActivity : AppCompatActivity() {
             binding.sidePanel.cancel3.visibility = View.GONE
         }
 
+        binding.menuButton.setOnClickListener {
+            binding.drawer.openDrawer(GravityCompat.START)
+        }
+
+        binding.sidePanel.backButton.setOnClickListener {
+            binding.drawer.closeDrawer(GravityCompat.START)
+        }
+
         /*************************OBSERVERS*************************/
 
         viewModel.currentDay.observe(this) { currentDay ->
@@ -483,7 +492,7 @@ class MainActivity : AppCompatActivity() {
         bundle.putInt("averageTemp", averageTemp)
 
         if(dailyDetailsFragment.isAdded) {
-            dailyDetailsFragment.dismiss();
+            dailyDetailsFragment.dismiss()
         }
 
         dailyDetailsFragment.arguments = bundle

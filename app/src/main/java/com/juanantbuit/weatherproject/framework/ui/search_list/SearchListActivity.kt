@@ -47,6 +47,9 @@ class SearchListActivity: AppCompatActivity() {
             }
         })
 
+        binding.searchBackButton.setOnClickListener {
+            finish()
+        }
 
         viewModel.searchItemList.observe(this) { searchItemList ->
             hideProgressBar()

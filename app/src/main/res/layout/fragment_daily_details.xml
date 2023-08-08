@@ -8,10 +8,8 @@
 
     <TextView
         android:id="@+id/averageTemperature"
-        android:layout_width="172dp"
-        android:layout_height="118dp"
-        android:layout_marginStart="110dp"
-        android:layout_marginEnd="111dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text=" 22º"
         android:textColor="@color/black"
@@ -24,9 +22,7 @@
         android:id="@+id/dayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="126dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="126dp"
+        android:layout_marginTop="16dp"
         android:text="Monday"
         android:textColor="@color/black"
         android:textSize="50sp"
@@ -36,10 +32,9 @@
 
     <ImageView
         android:id="@+id/dayImage"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginStart="126dp"
-        android:layout_marginEnd="126dp"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        app:layout_constraintBottom_toTopOf="@+id/averageTemperature"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dayName"
@@ -48,13 +43,16 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:padding="9dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/averageTemperature" />
+        app:layout_constraintTop_toBottomOf="@+id/averageTemperature"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

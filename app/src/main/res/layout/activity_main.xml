@@ -15,9 +15,9 @@
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:elevation="3dp"
             android:gravity="center"
             android:orientation="horizontal"
@@ -27,6 +27,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
+
+            <ImageView
+                android:id="@+id/menuButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/menu_fill0_wght200_grad200_opsz48" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
@@ -48,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:contentDescription="@string/gps_button_description"
-                app:srcCompat="@android:drawable/ic_menu_mylocation" />
+                app:srcCompat="@drawable/my_location_fill0_wght200_grad200_opsz48" />
 
         </LinearLayout>
 
@@ -73,9 +80,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="14dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:elevation="0dp"
             app:cardBackgroundColor="#6d5df3"
             app:cardCornerRadius="15dp"
@@ -130,7 +137,6 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/thermalSensation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -155,7 +161,6 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/humidity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -180,7 +185,6 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/wind"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -209,7 +213,7 @@
             android:id="@+id/cityName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
@@ -225,7 +229,6 @@
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="1dp"
             android:elevation="3dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
