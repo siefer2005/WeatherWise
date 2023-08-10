@@ -14,7 +14,7 @@
     <TextView
         android:id="@+id/cityAndCountry"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="20sp"

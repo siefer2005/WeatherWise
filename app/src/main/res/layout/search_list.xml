@@ -6,17 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".framework.ui.search_list.SearchListActivity">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/searchBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:scaleType="centerInside"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:scaleType="center"
         app:layout_constraintEnd_toStartOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back_fill0_wght200_grad200_opsz48" />
+        app:srcCompat="@drawable/arrow_back_icon" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -33,7 +34,7 @@
         <android.widget.SearchView
             android:id="@+id/citySearcher"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:queryHint="@string/search_hint">
 
         </android.widget.SearchView>

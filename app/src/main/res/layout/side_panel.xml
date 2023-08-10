@@ -24,7 +24,7 @@
             app:layout_constraintTop_toBottomOf="@+id/backButton"
             app:layout_constraintVertical_bias="0.0" />
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -36,32 +36,28 @@
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintVertical_bias="0.00999999" />
 
-        <RadioGroup
-            android:id="@+id/languageRadioGroup"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/languageDropdownMenu"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="624dp"
-            app:layout_constraintBottom_toBottomOf="@id/textView2"
+            android:layout_marginEnd="24dp"
+            android:hint="Idioma"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintVertical_bias="0.0">
 
-            <RadioButton
-                android:id="@+id/englishRadioButton"
+            <AutoCompleteTextView
+                android:id="@+id/languageDropdownMenuText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/english_language" />
+                android:inputType="none" />
 
-            <RadioButton
-                android:id="@+id/spanishRadioButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/spanish_language" />
-        </RadioGroup>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/textView2"
@@ -73,10 +69,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/languageRadioGroup"
+            app:layout_constraintTop_toBottomOf="@+id/languageDropdownMenu"
             app:layout_constraintVertical_bias="0.05" />
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -88,54 +84,46 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintVertical_bias="0.00999999" />
 
-        <RadioGroup
-            android:id="@+id/metricsRadioGroup"
-            android:layout_width="match_parent"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/metricDropdownMenu"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="624dp"
+            android:layout_marginEnd="24dp"
+            android:hint="Unidad de Medida"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintVertical_bias="0.0">
 
-            <RadioButton
-                android:id="@+id/celsiusRadioButton"
+            <AutoCompleteTextView
+                android:id="@+id/metricDropdownMenuText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/celsius" />
+                android:inputType="none" />
 
-            <RadioButton
-                android:id="@+id/fahrenheitRadioButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/fahrenheit" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <RadioButton
-                android:id="@+id/kelvinRadioButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/kelvin" />
-
-        </RadioGroup>
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="@string/more_locations"
             android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/metricsRadioGroup"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintTop_toBottomOf="@+id/metricDropdownMenu"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -155,12 +143,11 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="8dp"
-            app:cardCornerRadius="15dp"
+            app:cardCornerRadius="16dp"
             app:layout_constraintBottom_toTopOf="@+id/secondSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view3"
-            app:layout_constraintVertical_bias="0.23000002">
+            app:layout_constraintTop_toBottomOf="@+id/view3">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -169,9 +156,10 @@
                 <TextView
                     android:id="@+id/firstSaveLocationText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:gravity="center"
                     android:text="@string/touch_to_save_location"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -190,7 +178,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="8dp"
-            app:cardCornerRadius="15dp"
+            app:cardCornerRadius="16dp"
             app:layout_constraintBottom_toTopOf="@+id/thirdSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -203,9 +191,10 @@
                 <TextView
                     android:id="@+id/secondSaveLocationText"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:gravity="center"
                     android:text="@string/touch_to_save_location"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -224,7 +213,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="24dp"
-            app:cardCornerRadius="15dp"
+            app:cardCornerRadius="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -236,10 +225,11 @@
 
                 <TextView
                     android:id="@+id/thirdSaveLocationText"
-                    android:layout_width="202dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:gravity="center"
                     android:text="@string/touch_to_save_location"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -250,61 +240,68 @@
 
         </androidx.cardview.widget.CardView>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/cancel1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:visibility="gone"
+            android:background="?android:selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="@+id/firstSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/firstSaveLocation"
             app:layout_constraintTop_toTopOf="@+id/firstSaveLocation"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            app:srcCompat="@drawable/close_icon"
             tools:visibility="visible" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/cancel2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:visibility="gone"
+            android:background="?android:selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="@+id/secondSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/secondSaveLocation"
             app:layout_constraintTop_toTopOf="@+id/secondSaveLocation"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            app:srcCompat="@drawable/close_icon"
             tools:visibility="visible" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/cancel3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:visibility="gone"
+            android:background="?android:selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="@+id/thirdSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/thirdSaveLocation"
             app:layout_constraintTop_toTopOf="@+id/thirdSaveLocation"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            app:srcCompat="@drawable/close_icon"
             tools:visibility="visible" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:background="?android:selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.002"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/arrow_back_fill0_wght200_grad200_opsz48" />
+            app:srcCompat="@drawable/arrow_back_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.navigation.NavigationView>

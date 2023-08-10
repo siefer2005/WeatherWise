@@ -43,4 +43,15 @@
         <item>Viernes</item>
         <item>Sábado</item>
     </string-array>
+
+    <string-array name="metric_units">
+        <item>@string/celsius</item>
+        <item>@string/fahrenheit</item>
+        <item>@string/kelvin</item>
+    </string-array>
+
+    <string-array name="languages">
+        <item>@string/english_language</item>
+        <item>@string/spanish_language</item>
+    </string-array>
 </resources>

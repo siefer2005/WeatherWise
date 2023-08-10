@@ -12,10 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="bottomSheetDialogTheme">@style/AppBottonSheetDialogTheme</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
-    <style name="AppBottonSheetDialogTheme"
+    <style name="AppBottomSheetDialogTheme"
         parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModelStyle</item>
     </style>

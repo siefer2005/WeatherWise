@@ -28,34 +28,38 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/menuButton"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
+                android:scaleType="center"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/menu_fill0_wght200_grad200_opsz48" />
+                android:background="?android:selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/menu_icon" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="7"
-                app:cardCornerRadius="15dp"
+                app:cardCornerRadius="16dp"
                 app:cardUseCompatPadding="true">
 
                 <android.widget.SearchView
                     android:id="@+id/citySearcher"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="48dp" />
 
             </androidx.cardview.widget.CardView>
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/gpsButton"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="48dp"
+                android:scaleType="center"
                 android:layout_weight="1"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:contentDescription="@string/gps_button_description"
-                app:srcCompat="@drawable/my_location_fill0_wght200_grad200_opsz48" />
+                app:srcCompat="@drawable/my_location_icon" />
 
         </LinearLayout>
 
@@ -85,7 +89,7 @@
             android:layout_marginBottom="16dp"
             android:elevation="0dp"
             app:cardBackgroundColor="#6d5df3"
-            app:cardCornerRadius="15dp"
+            app:cardCornerRadius="16dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -105,7 +109,7 @@
 
                     <TextView
                         android:id="@+id/currentTemp"
-                        android:layout_width="205dp"
+                        android:layout_width="208dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text=""
@@ -268,7 +272,7 @@
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
                         app:cardBackgroundColor="#41e1bc"
-                        app:cardCornerRadius="15dp">
+                        app:cardCornerRadius="16dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -316,7 +320,7 @@
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
                         app:cardBackgroundColor="#fb0d95"
-                        app:cardCornerRadius="15dp">
+                        app:cardCornerRadius="16dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -364,7 +368,7 @@
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
                         app:cardBackgroundColor="#fbbf28"
-                        app:cardCornerRadius="15dp">
+                        app:cardCornerRadius="16dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -412,7 +416,7 @@
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
                         app:cardBackgroundColor="#5c4ce4"
-                        app:cardCornerRadius="15dp">
+                        app:cardCornerRadius="16dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"

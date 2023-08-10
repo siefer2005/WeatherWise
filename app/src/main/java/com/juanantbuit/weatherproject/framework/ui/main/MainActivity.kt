@@ -19,6 +19,7 @@ import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
@@ -56,16 +57,18 @@ class MainActivity : AppCompatActivity() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         editor = prefs.edit()
 
-        /*************************LISTENERS*************************/
+        createListeners()
+        createObservers()
+    }
 
+
+    private fun createListeners() {
         binding.citySearcher.setOnClickListener {
             if (viewModel.isNetworkAvailable(this)) {
-
                 val intent = Intent(this, SearchListActivity::class.java)
                 intent.putExtra("searchType", "none")
                 intent.flags = FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(intent)
-
             } else {
                 showSpecialMessage()
                 binding.specialMessage.text = getString(R.string.noInternetMessage)
@@ -74,7 +77,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.citySearcher.setOnSearchClickListener {
             if (viewModel.isNetworkAvailable(this)) {
-
                 binding.citySearcher.clearFocus()
                 binding.citySearcher.isIconified = true
 
@@ -82,7 +84,6 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("searchType", "none")
                 intent.flags = FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(intent)
-
             } else {
                 showSpecialMessage()
                 binding.specialMessage.text = getString(R.string.noInternetMessage)
@@ -91,9 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.gpsButton.setOnClickListener {
             if (viewModel.isNetworkAvailable(this)) {
-
                 viewModel.checkGPSPermission(this)
-
             } else {
                 showSpecialMessage()
                 binding.specialMessage.text = getString(R.string.noInternetMessage)
@@ -101,19 +100,39 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.nextDayInfo1.setOnClickListener {
-            showDailyDetails(binding.nextDayImage1,  binding.nextDay1, nextDaysInfo[0].temperatures.toDoubleArray(), nextDaysInfo[0].averageTemp)
+            showDailyDetails(
+                binding.nextDayImage1,
+                binding.nextDay1,
+                nextDaysInfo[0].temperatures.toDoubleArray(),
+                nextDaysInfo[0].averageTemp
+            )
         }
 
         binding.nextDayInfo2.setOnClickListener {
-            showDailyDetails(binding.nextDayImage2,  binding.nextDay2, nextDaysInfo[1].temperatures.toDoubleArray(), nextDaysInfo[1].averageTemp)
+            showDailyDetails(
+                binding.nextDayImage2,
+                binding.nextDay2,
+                nextDaysInfo[1].temperatures.toDoubleArray(),
+                nextDaysInfo[1].averageTemp
+            )
         }
 
         binding.nextDayInfo3.setOnClickListener {
-            showDailyDetails(binding.nextDayImage3,  binding.nextDay3, nextDaysInfo[2].temperatures.toDoubleArray(), nextDaysInfo[2].averageTemp)
+            showDailyDetails(
+                binding.nextDayImage3,
+                binding.nextDay3,
+                nextDaysInfo[2].temperatures.toDoubleArray(),
+                nextDaysInfo[2].averageTemp
+            )
         }
 
         binding.nextDayInfo4.setOnClickListener {
-            showDailyDetails(binding.nextDayImage4,  binding.nextDay4, nextDaysInfo[3].temperatures.toDoubleArray(), nextDaysInfo[3].averageTemp)
+            showDailyDetails(
+                binding.nextDayImage4,
+                binding.nextDay4,
+                nextDaysInfo[3].temperatures.toDoubleArray(),
+                nextDaysInfo[3].averageTemp
+            )
         }
 
         binding.swiperefresh.setOnRefreshListener {
@@ -132,39 +151,37 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.sidePanel.englishRadioButton.setOnClickListener {
-            editor.putString("language", "en")
-            editor.apply()
+        binding.sidePanel.languageDropdownMenuText.setOnItemClickListener { _, _, position, _ ->
+            when (position) {
+                0 -> { //english
+                    saveLanguageUsed("en")
+                    changeLanguage("en")
+                }
 
-            changeLanguage("en")
+                1 -> { //spanish
+                    saveLanguageUsed("es")
+                    changeLanguage("es")
+                }
+            }
         }
 
-        binding.sidePanel.spanishRadioButton.setOnClickListener {
-            editor.putString("language", "es")
-            editor.apply()
+        binding.sidePanel.metricDropdownMenuText.setOnItemClickListener { _, _, position, _ ->
+            when (position) {
+                0 -> { //metric system
+                    saveUnitUsed("metrics")
+                    changeUnits("metric")
+                }
 
-            changeLanguage("es")
-        }
+                1 -> { //imperial system
+                    saveUnitUsed("imperial")
+                    changeUnits("imperial")
+                }
 
-        binding.sidePanel.celsiusRadioButton.setOnClickListener {
-            editor.putString("units", "metric")
-            editor.apply()
-
-            changeUnits("metric")
-        }
-
-        binding.sidePanel.fahrenheitRadioButton.setOnClickListener {
-            editor.putString("units", "imperial")
-            editor.apply()
-
-            changeUnits("imperial")
-        }
-
-        binding.sidePanel.kelvinRadioButton.setOnClickListener {
-            editor.putString("units", "standard")
-            editor.apply()
-
-            changeUnits("standard")
+                2 -> { //standard system
+                    saveUnitUsed("standard")
+                    changeUnits("standard")
+                }
+            }
         }
 
         binding.sidePanel.firstSaveLocation.setOnClickListener {
@@ -172,7 +189,7 @@ class MainActivity : AppCompatActivity() {
 
                 val firstSaveName = prefs.getString("firstSaveName", "none")
 
-                if(firstSaveName != "none") {
+                if (firstSaveName != "none") {
                     binding.drawer.closeDrawers()
 
                     viewModel.setCoordinates(
@@ -197,7 +214,7 @@ class MainActivity : AppCompatActivity() {
 
                 val secondSaveName = prefs.getString("secondSaveName", "none")
 
-                if(secondSaveName != "none") {
+                if (secondSaveName != "none") {
                     binding.drawer.closeDrawers()
 
                     viewModel.setCoordinates(
@@ -220,10 +237,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.sidePanel.thirdSaveLocation.setOnClickListener {
             if (viewModel.isNetworkAvailable(this)) {
-
                 val thirdSaveName = prefs.getString("thirdSaveName", "none")
 
-                if(thirdSaveName != "none") {
+                if (thirdSaveName != "none") {
                     binding.drawer.closeDrawers()
 
                     viewModel.setCoordinates(
@@ -231,13 +247,11 @@ class MainActivity : AppCompatActivity() {
                         prefs.getFloat("thirdSaveLongitude", 0.0f)
                     )
                 } else {
-
                     val intent = Intent(this, SearchListActivity::class.java)
                     intent.putExtra("searchType", "thirdSave")
                     intent.flags = FLAG_ACTIVITY_NO_ANIMATION
                     startActivity(intent)
                 }
-
             } else {
                 showSpecialMessage()
                 binding.specialMessage.text = getString(R.string.noInternetMessage)
@@ -245,24 +259,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.sidePanel.cancel1.setOnClickListener {
-            editor.remove("firstSaveName")
-            editor.apply()
-            binding.sidePanel.firstSaveLocationText.text = getString(R.string.touch_to_save_location)
-            binding.sidePanel.cancel1.visibility = View.GONE
+            removeSavedCity("firstSaveName")
         }
 
         binding.sidePanel.cancel2.setOnClickListener {
-            editor.remove("secondSaveName")
-            editor.apply()
-            binding.sidePanel.secondSaveLocationText.text = getString(R.string.touch_to_save_location)
-            binding.sidePanel.cancel2.visibility = View.GONE
+            removeSavedCity("secondSaveName")
         }
 
         binding.sidePanel.cancel3.setOnClickListener {
-            editor.remove("thirdSaveName")
-            editor.apply()
-            binding.sidePanel.thirdSaveLocationText.text = getString(R.string.touch_to_save_location)
-            binding.sidePanel.cancel3.visibility = View.GONE
+            removeSavedCity("thirdSaveName")
         }
 
         binding.menuButton.setOnClickListener {
@@ -272,27 +277,23 @@ class MainActivity : AppCompatActivity() {
         binding.sidePanel.backButton.setOnClickListener {
             binding.drawer.closeDrawer(GravityCompat.START)
         }
-
-        /*************************OBSERVERS*************************/
-
+    }
+    private fun createObservers() {
         viewModel.currentDay.observe(this) { currentDay ->
-            if(currentDay != null) {
-
+            if (currentDay != null) {
                 val daysOfWeek: Array<String> = resources.getStringArray(R.array.days_of_week)
 
                 //Dynamically selects the id of the next 4 days, searches for the text by
                 //that identifier and adds it to the activity.
-                binding.nextDay1.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 1)]
-                binding.nextDay2.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 2)]
-                binding.nextDay3.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 3)]
-                binding.nextDay4.text =  daysOfWeek[viewModel.getCorrectIndex(currentDay + 4)]
+                binding.nextDay1.text = daysOfWeek[viewModel.getCorrectIndex(currentDay + 1)]
+                binding.nextDay2.text = daysOfWeek[viewModel.getCorrectIndex(currentDay + 2)]
+                binding.nextDay3.text = daysOfWeek[viewModel.getCorrectIndex(currentDay + 3)]
+                binding.nextDay4.text = daysOfWeek[viewModel.getCorrectIndex(currentDay + 4)]
             }
         }
 
-
-
         viewModel.coordinates.observe(this) { coordinates ->
-            if(coordinates != null) {
+            if (coordinates != null) {
                 editor.putFloat("lastLatitude", coordinates["latitude"]!!)
                 editor.putFloat("lastLongitude", coordinates["longitude"]!!)
                 editor.apply()
@@ -306,15 +307,21 @@ class MainActivity : AppCompatActivity() {
         viewModel.cityInfo.observe(this) { cityInfo ->
             if (cityInfo != null) {
                 refreshIcon(viewModel.getImageUrl(cityInfo.iconId[0].idIcon), binding.currentImage)
-                binding.cityName.text = getString(R.string.city_name, cityInfo.name, cityInfo.country.countryId)
-                binding.currentTemp.text = getString(R.string.temperature, cityInfo.mainInfo.temp.toInt())
-                binding.tempFeelsLike.text = getString(R.string.temperature, cityInfo.mainInfo.thermalSensation.toInt())
-                binding.humidityPercentage.text = getString(R.string.humidity_template, cityInfo.mainInfo.humidity)
+                binding.cityName.text =
+                    getString(R.string.city_name, cityInfo.name, cityInfo.country.countryId)
+                binding.currentTemp.text =
+                    getString(R.string.temperature, cityInfo.mainInfo.temp.toInt())
+                binding.tempFeelsLike.text =
+                    getString(R.string.temperature, cityInfo.mainInfo.thermalSensation.toInt())
+                binding.humidityPercentage.text =
+                    getString(R.string.humidity_template, cityInfo.mainInfo.humidity)
 
-                if(UNITS == "imperial") {
-                    binding.windVelocity.text = getString(R.string.wind_speed_imperial, cityInfo.windVelocity.speed.toInt())
+                if (UNITS == "imperial") {
+                    binding.windVelocity.text =
+                        getString(R.string.wind_speed_imperial, cityInfo.windVelocity.speed.toInt())
                 } else {
-                    binding.windVelocity.text = getString(R.string.wind_speed, cityInfo.windVelocity.speed.toInt())
+                    binding.windVelocity.text =
+                        getString(R.string.wind_speed, cityInfo.windVelocity.speed.toInt())
                 }
             }
         }
@@ -338,12 +345,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
 
         firstAppStart = prefs.getBoolean("firstAppStart", true)
 
+        val languagesStringArray = resources.getStringArray(R.array.languages)
+        (binding.sidePanel.languageDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(languagesStringArray)
+
+        val metricUnitsStringArray = resources.getStringArray(R.array.metric_units)
+        (binding.sidePanel.metricDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(metricUnitsStringArray)
+
         if (viewModel.isNetworkAvailable(this)) {
+
             if (firstAppStart) {
                 //Selects the user's preferred language as default language
                 AppCompatDelegate.getApplicationLocales()
@@ -351,10 +366,13 @@ class MainActivity : AppCompatActivity() {
                 val languageCode = prefs.getString("language", "en")
                 changeLanguage(languageCode!!)
 
-                if (languageCode == "en") {
-                    binding.sidePanel.englishRadioButton.isChecked = true
-                } else {
-                    binding.sidePanel.spanishRadioButton.isChecked = true
+                when (languageCode) {
+                    "en" -> {
+                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.english_language), false)
+                    }
+                    else -> {
+                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.spanish_language), false)
+                    }
                 }
 
                 showSpecialMessage()
@@ -366,21 +384,24 @@ class MainActivity : AppCompatActivity() {
 
                 changeLanguage(LANG)
 
-                if (LANG == "en") {
-                    binding.sidePanel.englishRadioButton.isChecked = true
-                } else {
-                    binding.sidePanel.spanishRadioButton.isChecked = true
+                when (LANG) {
+                    "en" -> {
+                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.english_language), false)
+                    }
+                    else -> {
+                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.spanish_language), false)
+                    }
                 }
 
                 when (UNITS) {
                     "metric" -> {
-                        binding.sidePanel.celsiusRadioButton.isChecked = true
+                        binding.sidePanel.metricDropdownMenuText.setText(getString(R.string.celsius), false)
                     }
                     "imperial" -> {
-                        binding.sidePanel.fahrenheitRadioButton.isChecked = true
+                        binding.sidePanel.metricDropdownMenuText.setText(getString(R.string.fahrenheit), false)
                     }
                     else -> {
-                        binding.sidePanel.kelvinRadioButton.isChecked = true
+                        binding.sidePanel.metricDropdownMenuText.setText(getString(R.string.kelvin), false)
                     }
                 }
 
@@ -513,6 +534,22 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun removeSavedCity(saveName: String) {
+        editor.remove(saveName)
+        editor.apply()
+        binding.sidePanel.firstSaveLocationText.text = getString(R.string.touch_to_save_location)
+        binding.sidePanel.cancel1.visibility = View.GONE
+    }
+
+    private fun saveLanguageUsed(language: String) {
+        editor.putString("language", language)
+        editor.apply()
+    }
+    private fun saveUnitUsed(unit: String) {
+        editor.putString("units", unit)
+        editor.apply()
     }
 
     private fun changeLanguage(languageCode: String) {
