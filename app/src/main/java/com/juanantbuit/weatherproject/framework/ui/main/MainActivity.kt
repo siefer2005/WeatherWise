@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         binding.sidePanel.metricDropdownMenuText.setOnItemClickListener { _, _, position, _ ->
             when (position) {
                 0 -> { //metric system
-                    saveUnitUsed("metrics")
+                    saveUnitUsed("metric")
                     changeUnits("metric")
                 }
 
@@ -272,10 +272,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.menuButton.setOnClickListener {
             binding.drawer.openDrawer(GravityCompat.START)
-        }
-
-        binding.sidePanel.backButton.setOnClickListener {
-            binding.drawer.closeDrawer(GravityCompat.START)
         }
     }
     private fun createObservers() {
