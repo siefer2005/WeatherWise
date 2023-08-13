@@ -63,23 +63,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun createListeners() {
+
         binding.citySearcher.setOnClickListener {
             if (viewModel.isNetworkAvailable(this)) {
-                val intent = Intent(this, SearchListActivity::class.java)
-                intent.putExtra("searchType", "none")
-                intent.flags = FLAG_ACTIVITY_NO_ANIMATION
-                startActivity(intent)
-            } else {
-                showSpecialMessage()
-                binding.specialMessage.text = getString(R.string.noInternetMessage)
-            }
-        }
-
-        binding.citySearcher.setOnSearchClickListener {
-            if (viewModel.isNetworkAvailable(this)) {
-                binding.citySearcher.clearFocus()
-                binding.citySearcher.isIconified = true
-
                 val intent = Intent(this, SearchListActivity::class.java)
                 intent.putExtra("searchType", "none")
                 intent.flags = FLAG_ACTIVITY_NO_ANIMATION
@@ -472,17 +458,17 @@ class MainActivity : AppCompatActivity() {
         val thirdSaveName = prefs.getString("thirdSaveName", "none")
 
         if(firstSaveName != "none") {
-            binding.sidePanel.firstSaveLocationText.text = firstSaveName
+            binding.sidePanel.firstSaveLocation.text = firstSaveName
             binding.sidePanel.cancel1.visibility = View.VISIBLE
         }
 
         if(secondSaveName != "none") {
-            binding.sidePanel.secondSaveLocationText.text = secondSaveName
+            binding.sidePanel.secondSaveLocation.text = secondSaveName
             binding.sidePanel.cancel2.visibility = View.VISIBLE
         }
 
         if(thirdSaveName != "none") {
-            binding.sidePanel.thirdSaveLocationText.text = thirdSaveName
+            binding.sidePanel.thirdSaveLocation.text = thirdSaveName
             binding.sidePanel.cancel3.visibility = View.VISIBLE
         }
 
@@ -513,7 +499,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         dailyDetailsFragment.arguments = bundle
-        dailyDetailsFragment.show(supportFragmentManager, "dailyDetailsFragment")
+        dailyDetailsFragment.show(supportFragmentManager, DailyDetailsFragment.TAG)
     }
 
     private fun saveImageFromBitmap(bitmap: Bitmap) {
@@ -535,7 +521,7 @@ class MainActivity : AppCompatActivity() {
     private fun removeSavedCity(saveName: String) {
         editor.remove(saveName)
         editor.apply()
-        binding.sidePanel.firstSaveLocationText.text = getString(R.string.touch_to_save_location)
+        binding.sidePanel.firstSaveLocation.text = getString(R.string.touch_to_save_location)
         binding.sidePanel.cancel1.visibility = View.GONE
     }
 

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
+    style="@style/Widget.Material3.DrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,66 +12,68 @@
         android:layout_height="match_parent"
         tools:context=".framework.ui.main.MainActivity">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+
+        <Button
+            android:id="@+id/menuButton"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:elevation="3dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/cityName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="16dp"
+            app:icon="@drawable/menu_icon"
+            app:iconGravity="textStart"
+            app:iconSize="40dp"
+            app:layout_constraintBottom_toTopOf="@+id/swiperefresh"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/menuButton"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:scaleType="center"
-                android:layout_weight="1"
-                android:background="?android:selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/menu_icon" />
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/citySearcher"
+            style="@style/Widget.Material3.SearchBar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Buscar ciudad..."
+            app:layout_constraintEnd_toStartOf="@+id/gpsButton"
+            app:layout_constraintStart_toEndOf="@+id/menuButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                app:cardCornerRadius="16dp"
-                app:cardUseCompatPadding="true">
+        <Button
+            android:id="@+id/gpsButton"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/gps_button_description"
+            app:icon="@drawable/my_location_icon"
+            app:iconGravity="textStart"
+            app:iconSize="40dp"
+            app:layout_constraintBottom_toTopOf="@+id/swiperefresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <android.widget.SearchView
-                    android:id="@+id/citySearcher"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp" />
-
-            </androidx.cardview.widget.CardView>
-
-            <ImageButton
-                android:id="@+id/gpsButton"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:scaleType="center"
-                android:layout_weight="1"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:contentDescription="@string/gps_button_description"
-                app:srcCompat="@drawable/my_location_icon" />
-
-        </LinearLayout>
+        <com.google.android.material.search.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_anchor="@id/citySearcher"
+            tools:layout_editor_absoluteY="8dp"
+            tools:visibility="gone">
+            <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+        </com.google.android.material.search.SearchView>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swiperefresh"
             android:layout_width="0dp"
             android:layout_height="480dp"
             android:elevation="3dp"
+            tools:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/citySearcher">
 
             <ListView
                 android:layout_width="match_parent"
@@ -79,17 +82,16 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/principalCardView"
+            style="@style/Widget.Material3.CardView.Elevated"
+            app:cardBackgroundColor="@color/principal_card_background"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="15dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:elevation="0dp"
-            app:cardBackgroundColor="#6d5df3"
-            app:cardCornerRadius="16dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -109,12 +111,13 @@
 
                     <TextView
                         android:id="@+id/currentTemp"
+                        android:textColor="@color/card_text"
                         android:layout_width="208dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="92sp" />
+                        tools:text="22º"
+                        android:textSize="96sp" />
 
                     <ImageView
                         android:id="@+id/currentImage"
@@ -123,7 +126,7 @@
                         android:layout_gravity="top"
                         android:layout_marginEnd="5dp"
                         android:contentDescription="@string/Icon_weather_description"
-                        tools:srcCompat="@drawable/ic_launcher_background" />
+                        tools:srcCompat="@tools:sample/avatars" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,22 +144,23 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/thermal_sensation"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tempFeelsLike"
+                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="34sp" />
+                            tools:text="22º"
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -165,22 +169,23 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/humidity"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:textColor="@color/card_text"
                             android:id="@+id/humidityPercentage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="34sp" />
+                            tools:text="22%"
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -189,29 +194,30 @@
                         android:layout_weight="1">
 
                         <TextView
+                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/wind"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:textColor="@color/card_text"
                             android:id="@+id/windVelocity"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="30sp" />
+                            tools:text="2 m/s"
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
                     </RelativeLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/cityName"
@@ -220,14 +226,14 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text=""
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
             app:layout_constraintBottom_toTopOf="@+id/principalCardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/citySearcher"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Madrid, ES" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -249,8 +255,7 @@
                 android:layout_marginStart="15dp"
                 android:gravity="bottom"
                 android:text="@string/next_4_days"
-                android:textColor="@color/black"
-                android:textSize="32sp" />
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
@@ -265,14 +270,14 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/nextDayInfo1"
+                        style="@style/Widget.Material3.CardView.Elevated"
                         android:layout_width="130dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="#41e1bc"
-                        app:cardCornerRadius="16dp">
+                        app:cardBackgroundColor="@color/first_day_card_background">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -280,6 +285,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay1"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -287,7 +293,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="Monday"
                                 android:textSize="18sp" />
 
                             <ImageView
@@ -300,6 +306,7 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp1"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -307,20 +314,20 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="22º"
                                 android:textSize="34sp" />
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/nextDayInfo2"
+                        style="@style/Widget.Material3.CardView.Elevated"
                         android:layout_width="130dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="#fb0d95"
-                        app:cardCornerRadius="16dp">
+                        app:cardBackgroundColor="@color/second_day_card_background">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -328,6 +335,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay2"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -335,7 +343,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="Tuesday"
                                 android:textSize="18sp" />
 
                             <ImageView
@@ -348,6 +356,7 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp2"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -355,20 +364,20 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="22º"
                                 android:textSize="34sp" />
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/nextDayInfo3"
+                        style="@style/Widget.Material3.CardView.Elevated"
                         android:layout_width="130dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="#fbbf28"
-                        app:cardCornerRadius="16dp">
+                        app:cardBackgroundColor="@color/third_day_card_background">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -376,6 +385,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay3"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -383,7 +393,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="Wednesday"
                                 android:textSize="18sp" />
 
                             <ImageView
@@ -396,6 +406,7 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp3"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -403,20 +414,20 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="22º"
                                 android:textSize="34sp" />
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/nextDayInfo4"
+                        style="@style/Widget.Material3.CardView.Elevated"
                         android:layout_width="130dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="7dp"
                         android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="#5c4ce4"
-                        app:cardCornerRadius="16dp">
+                        app:cardBackgroundColor="@color/fourth_day_card_background">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -424,6 +435,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay4"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -431,7 +443,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="Thursday"
                                 android:textSize="18sp" />
 
                             <ImageView
@@ -444,6 +456,7 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
+                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp4"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -451,11 +464,11 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                android:textColor="@color/white"
+                                tools:text="22º"
                                 android:textSize="34sp" />
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -471,14 +484,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:indeterminate="true" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

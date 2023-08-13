@@ -17,8 +17,6 @@ Uapp/src/main/java/com/juanantbuit/weatherproject/domain/models/SearchItemListMo
 Qapp/src/main/java/com/juanantbuit/weatherproject/domain/models/SearchItemModel.kt,0\8\08845c32defae90b5ea27dc6f911a033f79e847a
 É
 Sapp/src/main/java/com/juanantbuit/weatherproject/domain/models/WindVelocityModel.kt,b\8\b8121a2e40bbbaaf2f42d41e4f250e139afb1375
-ê
-`app/src/main/java/com/juanantbuit/weatherproject/framework/ui/search_list/SearchListViewModel.kt,0\5\051a057d86cad0893612675e9b1f16f9a8528924
 ä
 Zapp/src/main/java/com/juanantbuit/weatherproject/data/datasources/openweather/ApiClient.kt,2\b\2bdb9c97dfb0a42a30160d4d5ac973494ebfb803
 É
@@ -49,12 +47,6 @@ X
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
 A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
-ë
-aapp/src/main/java/com/juanantbuit/weatherproject/framework/ui/search_list/SearchItemViewHolder.kt,9\f\9fa92bc8bc0fca9f54345e0643f0bc9e42c6b22c
-è
-_app/src/main/java/com/juanantbuit/weatherproject/framework/ui/search_list/SearchListActivity.kt,4\7\47b0a2dc976aeda33cd548650c99b092a37e554f
-è
-_app/src/main/java/com/juanantbuit/weatherproject/framework/ui/search_list/SearchItemsAdapter.kt,d\0\d06af1d427e26a8e03d99371d34ffac7f306ba2a
 }
 Mapp/src/main/java/com/juanantbuit/weatherproject/usecases/TurnOnGpsUseCase.kt,b\9\b91ab75eccf73915bfea3598c889ad321e265bf2
 Ç
@@ -65,11 +57,13 @@ Sapp/src/main/java/com/juanantbuit/weatherproject/usecases/GetNextDaysInfoUseCas
 Wapp/src/main/java/com/juanantbuit/weatherproject/usecases/GetForecastResponseUseCase.kt,9\2\92ee01ebf8303810ba37bea1da2535b08562503f
 
 Oapp/src/main/java/com/juanantbuit/weatherproject/usecases/GetCityInfoUseCase.kt,9\4\94dcbf973ba021cb2c77b44cee836cf628c94bcc
-ì
-capp/src/main/java/com/juanantbuit/weatherproject/framework/ui/daily_details/DailyDetailsFragment.kt,7\c\7c6c269b67287b16e185f3f78495326dfe4c5719
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 ê
 `app/src/main/java/com/juanantbuit/weatherproject/data/datasources/openweather/CityInfoService.kt,3\3\3318271aa5a6428f4cb2bc9351102dec1531a96c
 ò
 happ/src/main/java/com/juanantbuit/weatherproject/data/datasources/openweather/ForecastResponseService.kt,5\4\544cf4a9e7b8a64606bff947422212a502651a74
+s
+Capp/src/main/java/com/juanantbuit/weatherproject/utils/Constants.kt,c\d\cd73b4f919438abe0e702564b821de39005d8dee
+É
+Sapp/src/main/java/com/juanantbuit/weatherproject/framework/ui/main/MainViewModel.kt,1\0\10ba5f531b180ba1f10b82a4c52d3b9421482899
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
