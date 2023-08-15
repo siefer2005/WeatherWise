@@ -18,5 +18,4 @@ class SearchItemsAdapter(private val searchItemList: List<SearchItemModel>, priv
     }
 
     override fun getItemCount(): Int = searchItemList.size
-
 }

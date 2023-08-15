@@ -14,7 +14,6 @@ import com.juanantbuit.weatherproject.databinding.SearchListBinding
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 
 class SearchListActivity: AppCompatActivity() {
-
     private val viewModel by viewModels<SearchListViewModel>()
     private lateinit var binding: SearchListBinding
     private lateinit var prefs: SharedPreferences
@@ -26,24 +25,18 @@ class SearchListActivity: AppCompatActivity() {
         binding = SearchListBinding.inflate(this.layoutInflater)
         setContentView(binding.root)
 
+        viewModel.initSearchSettings()
+
         binding.citySearcherList.post {
             binding.citySearcherList.show()
         }
 
-        //binding.citySearcher.isIconified = false
         searchType = intent.getStringExtra("searchType")!!
 
-/*
-        binding.citySearcher.editText setOnQueryTextFocusChangeListener { _, isFocused ->
-            binding.citySearcher.isIconified = !isFocused
-        }
- */
-
-
-        binding.citySearcherList.addTransitionListener { searchView, previousState, newState ->
+        binding.citySearcherList.addTransitionListener { _, _, newState ->
             if(newState == SearchView.TransitionState.HIDDEN) {
-                finish();
-                overridePendingTransition(0, 0);
+                finish()
+                overridePendingTransition(0, 0)
             }
         }
 
@@ -79,32 +72,28 @@ class SearchListActivity: AppCompatActivity() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         editor = prefs.edit()
 
+
         when(searchType) {
             "firstSave" -> {
-                editor.putFloat("firstSaveLatitude", searchItem.lat.toFloat())
-                editor.putFloat("firstSaveLongitude", searchItem.lon.toFloat())
+                editor.putString("firstSaveGeoId", searchItem.geonameid)
                 editor.putString("firstSaveName", searchItem.name)
             }
 
             "secondSave" -> {
-                editor.putFloat("secondSaveLatitude", searchItem.lat.toFloat())
-                editor.putFloat("secondSaveLongitude", searchItem.lon.toFloat())
+                editor.putString("secondSaveGeoId", searchItem.geonameid)
                 editor.putString("secondSaveName", searchItem.name)
             }
 
             "thirdSave" -> {
-                editor.putFloat("thirdSaveLatitude", searchItem.lat.toFloat())
-                editor.putFloat("thirdSaveLongitude", searchItem.lon.toFloat())
+                editor.putString("thirdSaveGeoId", searchItem.geonameid)
                 editor.putString("thirdSaveName", searchItem.name)
             }
 
             else -> {
-                editor.putFloat("lastLatitude", searchItem.lat.toFloat())
-                editor.putFloat("lastLongitude", searchItem.lon.toFloat())
+                editor.putString("lastGeoId", searchItem.geonameid)
                 editor.putBoolean("firstAppStart", false)
             }
         }
-
         editor.apply()
         binding.citySearcherList.hide()
     }

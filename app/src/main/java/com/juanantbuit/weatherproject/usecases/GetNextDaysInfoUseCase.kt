@@ -10,11 +10,9 @@ import java.time.format.DateTimeFormatter
 import kotlin.properties.Delegates
 
 class GetNextDaysInfoUseCase {
-
     private var averageTemp by Delegates.notNull<Int>()
 
     operator fun invoke(forecastResponse: ForecastResponseModel): MutableList<NextDayInfoModel> {
-
         val forecastsForFiveDays: List<List<ForecastInfoModel>> = getOnlyNextDaysInfo(forecastResponse).chunked(TRI_HOURS_IN_DAY)
         val nextDaysInfo: MutableList<NextDayInfoModel> = arrayListOf()
 
@@ -32,7 +30,6 @@ class GetNextDaysInfoUseCase {
         return nextDaysInfo
     }
 
-
     private fun getOnlyNextDaysInfo(forecastResponse: ForecastResponseModel): MutableList<ForecastInfoModel> {
         val nextDaysForecast: MutableList<ForecastInfoModel> = ArrayList()
         val current = LocalDate.now()
@@ -45,7 +42,6 @@ class GetNextDaysInfoUseCase {
                 nextDaysForecast.add(forecastResponse.forecastInfoModels[i])
             }
         }
-
         return nextDaysForecast
     }
 

@@ -4,9 +4,13 @@ import com.juanantbuit.weatherproject.data.datasources.openweather.CityInfoServi
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 
 class CityInfoRepository {
-
     private val api = CityInfoService()
-    suspend fun getCityInfo(latitude: Float?, longitude: Float?): CityInfoModel {
+
+    suspend fun getCityInfo(latitude: Float, longitude: Float): CityInfoModel {
         return api.getCityInfo(latitude, longitude)
+    }
+
+    suspend fun getCityInfo(geoId: String): CityInfoModel {
+        return api.getCityInfo(geoId)
     }
 }

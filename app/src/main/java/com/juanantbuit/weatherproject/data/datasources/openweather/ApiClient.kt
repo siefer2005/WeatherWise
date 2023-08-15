@@ -2,13 +2,11 @@ package com.juanantbuit.weatherproject.data.datasources.openweather
 
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
-import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiClient {
-
     @GET("/data/2.5/weather")
     suspend fun getCityInfo(@Query("lat") latitude: Float?,
                             @Query("lon") longitude: Float?,
@@ -16,6 +14,13 @@ interface ApiClient {
                             @Query("units") units: String,
                             @Query("lang") lang: String)
                             :Response<CityInfoModel>
+
+    @GET("/data/2.5/weather")
+    suspend fun getCityInfo(@Query("id") geoId: String,
+                            @Query("appid") apiKey: String,
+                            @Query("units") units: String,
+                            @Query("lang") lang: String)
+            :Response<CityInfoModel>
 
     @GET("/data/2.5/forecast")
     suspend fun getForecastResponse(@Query("lat") latitude: Float?,
@@ -25,11 +30,10 @@ interface ApiClient {
                                     @Query("lang") lang: String)
                                     :Response<ForecastResponseModel>
 
-    @GET("/geo/1.0/direct")
-    suspend fun getSearchItemList(@Query("q") searchText: String,
-                                  @Query("limit") searchLimit: Int,
-                                  @Query("appid") apiKey: String,
-                                  @Query("lang") lang: String)
-                                  :Response<List<SearchItemModel>>
-
+    @GET("/data/2.5/forecast")
+    suspend fun getForecastResponse(@Query("id") geoId: String,
+                                    @Query("appid") apiKey: String,
+                                    @Query("units") units: String,
+                                    @Query("lang") lang: String)
+            :Response<ForecastResponseModel>
 }

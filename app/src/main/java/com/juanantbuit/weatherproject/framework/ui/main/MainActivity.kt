@@ -27,6 +27,7 @@ import com.juanantbuit.weatherproject.framework.ui.daily_details.DailyDetailsFra
 import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivity
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import com.juanantbuit.weatherproject.utils.LANG
+import com.juanantbuit.weatherproject.utils.Quadruple
 import com.juanantbuit.weatherproject.utils.UNITS
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
@@ -34,7 +35,6 @@ import kotlin.properties.Delegates
 
 
 class MainActivity : AppCompatActivity() {
-
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
 
@@ -61,18 +61,12 @@ class MainActivity : AppCompatActivity() {
         createObservers()
     }
 
-
     private fun createListeners() {
-
         binding.citySearcher.setOnClickListener {
             if (viewModel.isNetworkAvailable(this)) {
-                val intent = Intent(this, SearchListActivity::class.java)
-                intent.putExtra("searchType", "none")
-                intent.flags = FLAG_ACTIVITY_NO_ANIMATION
-                startActivity(intent)
+                launchCitySearchActivity("none")
             } else {
-                showSpecialMessage()
-                binding.specialMessage.text = getString(R.string.noInternetMessage)
+                showNoInternetMessage()
             }
         }
 
@@ -80,45 +74,27 @@ class MainActivity : AppCompatActivity() {
             if (viewModel.isNetworkAvailable(this)) {
                 viewModel.checkGPSPermission(this)
             } else {
-                showSpecialMessage()
-                binding.specialMessage.text = getString(R.string.noInternetMessage)
+                showNoInternetMessage()
             }
         }
 
-        binding.nextDayInfo1.setOnClickListener {
-            showDailyDetails(
-                binding.nextDayImage1,
-                binding.nextDay1,
-                nextDaysInfo[0].temperatures.toDoubleArray(),
-                nextDaysInfo[0].averageTemp
-            )
-        }
+        val nextDayInfoComponents = listOf(
+            Triple(binding.nextDayInfo1, binding.nextDayImage1, binding.nextDay1),
+            Triple(binding.nextDayInfo2, binding.nextDayImage2, binding.nextDay2),
+            Triple(binding.nextDayInfo3, binding.nextDayImage3, binding.nextDay3),
+            Triple(binding.nextDayInfo4, binding.nextDayImage4, binding.nextDay4)
+        )
 
-        binding.nextDayInfo2.setOnClickListener {
-            showDailyDetails(
-                binding.nextDayImage2,
-                binding.nextDay2,
-                nextDaysInfo[1].temperatures.toDoubleArray(),
-                nextDaysInfo[1].averageTemp
-            )
-        }
-
-        binding.nextDayInfo3.setOnClickListener {
-            showDailyDetails(
-                binding.nextDayImage3,
-                binding.nextDay3,
-                nextDaysInfo[2].temperatures.toDoubleArray(),
-                nextDaysInfo[2].averageTemp
-            )
-        }
-
-        binding.nextDayInfo4.setOnClickListener {
-            showDailyDetails(
-                binding.nextDayImage4,
-                binding.nextDay4,
-                nextDaysInfo[3].temperatures.toDoubleArray(),
-                nextDaysInfo[3].averageTemp
-            )
+        for ((nextDayInfo, nextDayImage, nextDayView) in nextDayInfoComponents) {
+            nextDayInfo.setOnClickListener {
+                val index = nextDayInfoComponents.indexOfFirst { it.first == nextDayInfo }
+                showDailyDetails(
+                    nextDayImage,
+                    nextDayView,
+                    nextDaysInfo[index].temperatures.toDoubleArray(),
+                    nextDaysInfo[index].averageTemp
+                )
+            }
         }
 
         binding.swiperefresh.setOnRefreshListener {
@@ -129,11 +105,11 @@ class MainActivity : AppCompatActivity() {
                     binding.specialMessage.text = getString(R.string.firstStartText)
                 } else {
                     setCoordinates()
+                    setGeonameId()
                 }
             } else {
                 binding.swiperefresh.isRefreshing = false
-                showSpecialMessage()
-                binding.specialMessage.text = getString(R.string.noInternetMessage)
+                showNoInternetMessage()
             }
         }
 
@@ -170,96 +146,68 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.sidePanel.firstSaveLocation.setOnClickListener {
-            if (viewModel.isNetworkAvailable(this)) {
+        val saveLocationQuadruples = listOf(
+            Quadruple(binding.sidePanel.firstSaveLocation, "firstSaveName", "firstSaveGeoId", "firstSave"),
+            Quadruple(binding.sidePanel.secondSaveLocation, "secondSaveName", "secondSaveGeoId", "secondSave"),
+            Quadruple(binding.sidePanel.thirdSaveLocation, "thirdSaveName", "thirdSaveGeoId", "thirdSave")
+        )
 
-                val firstSaveName = prefs.getString("firstSaveName", "none")
-
-                if (firstSaveName != "none") {
-                    binding.drawer.closeDrawers()
-
-                    viewModel.setCoordinates(
-                        prefs.getFloat("firstSaveLatitude", 0.0f),
-                        prefs.getFloat("firstSaveLongitude", 0.0f)
-                    )
-                } else {
-
-                    val intent = Intent(this, SearchListActivity::class.java)
-                    intent.putExtra("searchType", "firstSave")
-                    intent.flags = FLAG_ACTIVITY_NO_ANIMATION
-                    startActivity(intent)
-                }
-            } else {
-                showSpecialMessage()
-                binding.specialMessage.text = getString(R.string.noInternetMessage)
+        for ((locationView, saveNameKey, geoIdKey, searchType) in saveLocationQuadruples) {
+            locationView.setOnClickListener {
+                handleLocationClickBehavior(saveNameKey, geoIdKey, searchType)
             }
         }
 
-        binding.sidePanel.secondSaveLocation.setOnClickListener {
-            if (viewModel.isNetworkAvailable(this)) {
+        val cancelButtonTriples = listOf(
+            Triple("firstSaveName", binding.sidePanel.firstSaveLocation, binding.sidePanel.cancel1),
+            Triple("secondSaveName", binding.sidePanel.secondSaveLocation, binding.sidePanel.cancel2),
+            Triple("thirdSaveName", binding.sidePanel.thirdSaveLocation, binding.sidePanel.cancel3)
+        )
 
-                val secondSaveName = prefs.getString("secondSaveName", "none")
-
-                if (secondSaveName != "none") {
-                    binding.drawer.closeDrawers()
-
-                    viewModel.setCoordinates(
-                        prefs.getFloat("secondSaveLatitude", 0.0f),
-                        prefs.getFloat("secondSaveLongitude", 0.0f)
-                    )
-                } else {
-
-                    val intent = Intent(this, SearchListActivity::class.java)
-                    intent.putExtra("searchType", "secondSave")
-                    intent.flags = FLAG_ACTIVITY_NO_ANIMATION
-                    startActivity(intent)
-                }
-
-            } else {
-                showSpecialMessage()
-                binding.specialMessage.text = getString(R.string.noInternetMessage)
+        for ((saveName, saveLocation, cancelButton) in cancelButtonTriples) {
+            cancelButton.setOnClickListener {
+                removeSavedCity(saveName, saveLocation, cancelButton)
             }
-        }
-
-        binding.sidePanel.thirdSaveLocation.setOnClickListener {
-            if (viewModel.isNetworkAvailable(this)) {
-                val thirdSaveName = prefs.getString("thirdSaveName", "none")
-
-                if (thirdSaveName != "none") {
-                    binding.drawer.closeDrawers()
-
-                    viewModel.setCoordinates(
-                        prefs.getFloat("thirdSaveLatitude", 0.0f),
-                        prefs.getFloat("thirdSaveLongitude", 0.0f)
-                    )
-                } else {
-                    val intent = Intent(this, SearchListActivity::class.java)
-                    intent.putExtra("searchType", "thirdSave")
-                    intent.flags = FLAG_ACTIVITY_NO_ANIMATION
-                    startActivity(intent)
-                }
-            } else {
-                showSpecialMessage()
-                binding.specialMessage.text = getString(R.string.noInternetMessage)
-            }
-        }
-
-        binding.sidePanel.cancel1.setOnClickListener {
-            removeSavedCity("firstSaveName")
-        }
-
-        binding.sidePanel.cancel2.setOnClickListener {
-            removeSavedCity("secondSaveName")
-        }
-
-        binding.sidePanel.cancel3.setOnClickListener {
-            removeSavedCity("thirdSaveName")
         }
 
         binding.menuButton.setOnClickListener {
             binding.drawer.openDrawer(GravityCompat.START)
         }
     }
+
+    private fun handleLocationClickBehavior(
+        saveNameKey: String,
+        geoIdKey: String,
+        searchType: String
+    ) {
+        if (viewModel.isNetworkAvailable(this)) {
+            val saveName = prefs.getString(saveNameKey, "none")
+
+            if (saveName != "none") {
+                getSavedCityInfo(geoIdKey)
+            } else {
+                launchCitySearchActivity(searchType)
+            }
+        } else {
+            showNoInternetMessage()
+        }
+    }
+
+    private fun launchCitySearchActivity(searchType: String) {
+        val intent = Intent(this, SearchListActivity::class.java)
+        intent.putExtra("searchType", searchType)
+        intent.flags = FLAG_ACTIVITY_NO_ANIMATION
+        startActivity(intent)
+    }
+
+    private fun getSavedCityInfo(geoIdKey: String) {
+        binding.drawer.closeDrawers()
+
+        viewModel.setGeonameId(
+            prefs.getString(geoIdKey, "3117735")!!
+        )
+    }
+
     private fun createObservers() {
         viewModel.currentDay.observe(this) { currentDay ->
             if (currentDay != null) {
@@ -274,14 +222,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.coordinates.observe(this) { coordinates ->
-            if (coordinates != null) {
-                editor.putFloat("lastLatitude", coordinates["latitude"]!!)
-                editor.putFloat("lastLongitude", coordinates["longitude"]!!)
+        viewModel.geonameId.observe(this) { geoId ->
+            if (!geoId.isNullOrEmpty()) {
+                editor.putString("lastGeoId", geoId)
                 editor.apply()
 
-                viewModel.getCityInfo(coordinates["latitude"], coordinates["longitude"])
-                viewModel.getForecastResponse(coordinates["latitude"], coordinates["longitude"])
+                viewModel.getCityInfoByGeonameId(geoId)
+                viewModel.getForecastResponseByGeonameId(geoId)
+            }
+            viewModel.getCurrentDay()
+        }
+
+        viewModel.coordinates.observe(this) { coordinates ->
+            if (coordinates != null) {
+                coordinates["latitude"]?.let { editor.putFloat("lastLatitude", it) }
+                coordinates["longitude"]?.let { editor.putFloat("lastLongitude", it) }
+                editor.apply()
+
+                viewModel.getCityInfoByCoordinates(coordinates["latitude"]!!, coordinates["longitude"]!!)
+                viewModel.getForecastResponseByCoordinates(coordinates["latitude"]!!, coordinates["longitude"]!!)
             }
             viewModel.getCurrentDay()
         }
@@ -309,7 +268,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.forecastResponse.observe(this) { forecastResponse ->
-
             nextDaysInfo = viewModel.getNextDaysInfo(forecastResponse!!)
 
             binding.nextDayTemp1.text = getString(R.string.temperature, nextDaysInfo[0].averageTemp)
@@ -327,7 +285,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
 
@@ -340,7 +297,6 @@ class MainActivity : AppCompatActivity() {
         (binding.sidePanel.metricDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(metricUnitsStringArray)
 
         if (viewModel.isNetworkAvailable(this)) {
-
             if (firstAppStart) {
                 //Selects the user's preferred language as default language
                 AppCompatDelegate.getApplicationLocales()
@@ -356,11 +312,9 @@ class MainActivity : AppCompatActivity() {
                         binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.spanish_language), false)
                     }
                 }
-
                 showSpecialMessage()
                 binding.specialMessage.text = getString(R.string.firstStartText)
             } else {
-
                 UNITS = prefs.getString("units", "metric")!!
                 LANG = prefs.getString("language", "en")!!
 
@@ -386,14 +340,13 @@ class MainActivity : AppCompatActivity() {
                         binding.sidePanel.metricDropdownMenuText.setText(getString(R.string.kelvin), false)
                     }
                 }
-
                 showProgressBar()
                 setCoordinates()
+                setGeonameId()
                 setSaveLocations()
             }
         } else {
-            showSpecialMessage()
-            binding.specialMessage.text = getString(R.string.noInternetMessage)
+            showNoInternetMessage()
         }
     }
 
@@ -452,6 +405,15 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private fun setGeonameId() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        editor = prefs.edit()
+
+        viewModel.setGeonameId(
+            prefs.getString("lastGeoId", "3117735")!!
+        )
+    }
+
     private fun setSaveLocations() {
         val firstSaveName = prefs.getString("firstSaveName", "none")
         val secondSaveName = prefs.getString("secondSaveName", "none")
@@ -475,7 +437,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshIcon(url:String, imageView: ImageView) {
-
         Glide.with(this)
             .load(url)
             .error(R.drawable.ic_launcher_foreground)
@@ -485,7 +446,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDailyDetails(imageView: ImageView, textView: TextView, temperatures: DoubleArray, averageTemp: Int) {
-
         val bundle = Bundle()
         val bitMap = (imageView.drawable as BitmapDrawable).bitmap
         saveImageFromBitmap(bitMap)
@@ -518,11 +478,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeSavedCity(saveName: String) {
+    private fun removeSavedCity(saveName: String, saveLocation: TextView, cancelButton: View) {
         editor.remove(saveName)
         editor.apply()
-        binding.sidePanel.firstSaveLocation.text = getString(R.string.touch_to_save_location)
-        binding.sidePanel.cancel1.visibility = View.GONE
+
+        saveLocation.text = getString(R.string.touch_to_save_location)
+        cancelButton.visibility = View.GONE
     }
 
     private fun saveLanguageUsed(language: String) {
@@ -540,7 +501,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun changeUnits(units: String) {
-        LANG = units
+        UNITS = units
         recreate()
+    }
+
+    private fun showNoInternetMessage() {
+        showSpecialMessage()
+        binding.specialMessage.text = getString(R.string.noInternetMessage)
     }
 }

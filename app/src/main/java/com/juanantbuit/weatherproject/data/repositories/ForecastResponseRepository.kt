@@ -4,10 +4,13 @@ import com.juanantbuit.weatherproject.data.datasources.openweather.ForecastRespo
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
 
 class ForecastResponseRepository {
-
     private val api = ForecastResponseService()
-    suspend fun getForecastResponse(latitude: Float?, longitude: Float?): ForecastResponseModel {
+    suspend fun getForecastResponse(latitude: Float, longitude: Float): ForecastResponseModel {
         return api.getForecastResponse(latitude, longitude)
+    }
+
+    suspend fun getForecastResponse(geoId: String): ForecastResponseModel {
+        return api.getForecastResponse(geoId)
     }
 
 }

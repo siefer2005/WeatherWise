@@ -51,10 +51,10 @@
 
             <AutoCompleteTextView
                 android:id="@+id/languageDropdownMenuText"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="none" />
+                android:inputType="none"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,10 +99,10 @@
 
             <AutoCompleteTextView
                 android:id="@+id/metricDropdownMenuText"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="none" />
+                android:inputType="none"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,48 +134,46 @@
         <Button
             android:id="@+id/firstSaveLocation"
             style="@style/Widget.Material3.Button.TonalButton"
-            android:text="@string/touch_to_save_location"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="8dp"
+            android:text="@string/touch_to_save_location"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             app:layout_constraintBottom_toTopOf="@+id/secondSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view3">
-        </Button>
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
 
         <Button
             android:id="@+id/secondSaveLocation"
             style="@style/Widget.Material3.Button.TonalButton"
-            android:text="@string/touch_to_save_location"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="8dp"
+            android:text="@string/touch_to_save_location"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             app:layout_constraintBottom_toTopOf="@+id/thirdSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/firstSaveLocation">
-        </Button>
+            app:layout_constraintTop_toBottomOf="@+id/firstSaveLocation" />
 
         <Button
             android:id="@+id/thirdSaveLocation"
             style="@style/Widget.Material3.Button.TonalButton"
-            android:text="@string/touch_to_save_location"
-            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="24dp"
+            android:text="@string/touch_to_save_location"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -188,17 +186,17 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:scaleType="center"
             android:visibility="gone"
+            app:icon="@drawable/close_icon"
+            app:iconGravity="textStart"
+            app:iconSize="40dp"
             app:layout_constraintBottom_toBottomOf="@+id/firstSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/firstSaveLocation"
             app:layout_constraintTop_toTopOf="@+id/firstSaveLocation"
-            app:icon="@drawable/close_icon"
-            app:iconSize="40dp"
-            app:iconGravity="textStart"
             tools:visibility="visible" />
 
         <Button
@@ -206,17 +204,17 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:scaleType="center"
             android:visibility="gone"
+            app:icon="@drawable/close_icon"
+            app:iconGravity="textStart"
+            app:iconSize="40dp"
             app:layout_constraintBottom_toBottomOf="@+id/secondSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/secondSaveLocation"
             app:layout_constraintTop_toTopOf="@+id/secondSaveLocation"
-            app:icon="@drawable/close_icon"
-            app:iconSize="40dp"
-            app:iconGravity="textStart"
             tools:visibility="visible" />
 
         <Button
@@ -224,17 +222,17 @@
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:scaleType="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:scaleType="center"
             android:visibility="gone"
+            app:icon="@drawable/close_icon"
+            app:iconGravity="textStart"
+            app:iconSize="40dp"
             app:layout_constraintBottom_toBottomOf="@+id/thirdSaveLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/thirdSaveLocation"
             app:layout_constraintTop_toTopOf="@+id/thirdSaveLocation"
-            app:icon="@drawable/close_icon"
-            app:iconSize="40dp"
-            app:iconGravity="textStart"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

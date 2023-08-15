@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         tools:context=".framework.ui.main.MainActivity">
 
-
         <Button
             android:id="@+id/menuButton"
             style="@style/Widget.Material3.Button.IconButton"
@@ -70,10 +69,10 @@
             android:layout_width="0dp"
             android:layout_height="480dp"
             android:elevation="3dp"
-            tools:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/citySearcher">
+            app:layout_constraintTop_toBottomOf="@+id/citySearcher"
+            tools:visibility="invisible">
 
             <ListView
                 android:layout_width="match_parent"
@@ -85,13 +84,13 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/principalCardView"
             style="@style/Widget.Material3.CardView.Elevated"
-            app:cardBackgroundColor="@color/principal_card_background"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="15dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/principal_card_background"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -111,13 +110,13 @@
 
                     <TextView
                         android:id="@+id/currentTemp"
-                        android:textColor="@color/card_text"
                         android:layout_width="208dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text=""
-                        tools:text="22º"
-                        android:textSize="96sp" />
+                        android:textColor="@color/card_text"
+                        android:textSize="96sp"
+                        tools:text="22º" />
 
                     <ImageView
                         android:id="@+id/currentImage"
@@ -144,23 +143,23 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/thermal_sensation"
                             android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                            android:textColor="@color/card_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tempFeelsLike"
-                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text=""
-                            tools:text="22º"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                            android:textColor="@color/card_text"
+                            tools:text="22º" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -169,23 +168,23 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/humidity"
                             android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                            android:textColor="@color/card_text"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:textColor="@color/card_text"
                             android:id="@+id/humidityPercentage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text=""
-                            tools:text="22%"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                            android:textColor="@color/card_text"
+                            tools:text="22%" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -194,23 +193,23 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:textColor="@color/card_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/wind"
                             android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                            android:textColor="@color/card_text"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:textColor="@color/card_text"
                             android:id="@+id/windVelocity"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text=""
-                            tools:text="2 m/s"
-                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
+                            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                            android:textColor="@color/card_text"
+                            tools:text="2 m/s" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -255,7 +254,7 @@
                 android:layout_marginStart="15dp"
                 android:gravity="bottom"
                 android:text="@string/next_4_days"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"/>
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
@@ -285,7 +284,6 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay1"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -293,8 +291,9 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="Monday"
-                                android:textSize="18sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="18sp"
+                                tools:text="Monday" />
 
                             <ImageView
                                 android:id="@+id/nextDayImage1"
@@ -306,7 +305,6 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp1"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -314,8 +312,9 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="22º"
-                                android:textSize="34sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="34sp"
+                                tools:text="22º" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -335,7 +334,6 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay2"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -343,8 +341,9 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="Tuesday"
-                                android:textSize="18sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="18sp"
+                                tools:text="Tuesday" />
 
                             <ImageView
                                 android:id="@+id/nextDayImage2"
@@ -356,7 +355,6 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp2"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -364,8 +362,9 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="22º"
-                                android:textSize="34sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="34sp"
+                                tools:text="22º" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -385,7 +384,6 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay3"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -393,8 +391,9 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="Wednesday"
-                                android:textSize="18sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="18sp"
+                                tools:text="Wednesday" />
 
                             <ImageView
                                 android:id="@+id/nextDayImage3"
@@ -406,7 +405,6 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp3"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -414,8 +412,9 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="22º"
-                                android:textSize="34sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="34sp"
+                                tools:text="22º" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -435,7 +434,6 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDay4"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -443,8 +441,9 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="Thursday"
-                                android:textSize="18sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="18sp"
+                                tools:text="Thursday" />
 
                             <ImageView
                                 android:id="@+id/nextDayImage4"
@@ -456,7 +455,6 @@
                                 tools:srcCompat="@tools:sample/avatars" />
 
                             <TextView
-                                android:textColor="@color/card_text"
                                 android:id="@+id/nextDayTemp4"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
@@ -464,8 +462,9 @@
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:text=""
-                                tools:text="22º"
-                                android:textSize="34sp" />
+                                android:textColor="@color/card_text"
+                                android:textSize="34sp"
+                                tools:text="22º" />
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
@@ -488,15 +487,17 @@
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminate="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:indeterminate="true" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/side_panel" android:id="@+id/sidePanel"/>
+    <include
+        android:id="@+id/sidePanel"
+        layout="@layout/side_panel" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

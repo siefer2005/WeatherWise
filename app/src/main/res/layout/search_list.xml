@@ -11,10 +11,10 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp">
 
             <com.google.android.material.search.SearchBar
                 android:id="@+id/search_bar"
@@ -42,12 +42,12 @@
         android:id="@+id/progressBar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="invisible"
-        android:visibility="gone"
-        android:indeterminate="true"/>
+        tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

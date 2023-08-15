@@ -13,9 +13,7 @@ import com.google.android.gms.tasks.Task
 import com.juanantbuit.weatherproject.framework.ui.main.MainActivity
 
 class TurnOnGpsUseCase(private val activity: MainActivity) {
-
     fun turnOnGPS(locationRequest: LocationRequest) {
-
         val builder: LocationSettingsRequest.Builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
         builder.setAlwaysShow(true)
 
@@ -46,7 +44,6 @@ class TurnOnGpsUseCase(private val activity: MainActivity) {
 
                     LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {/* Device doesn't have GPS */
                     }
-
                 }
             }
         }

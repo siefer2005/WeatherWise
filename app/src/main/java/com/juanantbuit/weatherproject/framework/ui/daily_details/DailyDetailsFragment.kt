@@ -18,7 +18,6 @@ import com.juanantbuit.weatherproject.databinding.FragmentDailyDetailsBinding
 
 
 class DailyDetailsFragment: BottomSheetDialogFragment() {
-
     private lateinit var binding: FragmentDailyDetailsBinding
 
     private lateinit var lineList: ArrayList<Entry>

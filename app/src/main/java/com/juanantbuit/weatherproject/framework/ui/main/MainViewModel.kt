@@ -47,8 +47,11 @@ class MainViewModel : ViewModel() {
     private val _forecastResponse = MutableLiveData<ForecastResponseModel?>()
     val forecastResponse: LiveData<ForecastResponseModel?> get() = _forecastResponse
 
-    private val _coordinates = MutableLiveData<HashMap<String, Float>?>()
-    val coordinates: LiveData<HashMap<String, Float>?> get() = _coordinates
+    private val _coordinates = MutableLiveData<HashMap<String, Float>>()
+    val coordinates: LiveData<HashMap<String, Float>> get() = _coordinates
+
+    private val _geonameId = MutableLiveData<String>()
+    val geonameId: LiveData<String> get() = _geonameId
 
     private val getCityInfoUseCase = GetCityInfoUseCase()
     private val getForecastResponseUseCase = GetForecastResponseUseCase()
@@ -61,14 +64,28 @@ class MainViewModel : ViewModel() {
         _currentDay.postValue(result)
     }
 
-    fun getCityInfo(latitude: Float?, longitude: Float?) {
+    fun getCityInfoByGeonameId(geoId: String) {
+        viewModelScope.launch {
+            val result = getCityInfoUseCase.getCityInfo(geoId)
+            _cityInfo.postValue(result)
+        }
+    }
+
+    fun getForecastResponseByGeonameId(geoId: String) {
+        viewModelScope.launch {
+            val result = getForecastResponseUseCase.getForecastResponse(geoId)
+            _forecastResponse.postValue(result)
+        }
+    }
+
+    fun getCityInfoByCoordinates(latitude: Float, longitude: Float) {
         viewModelScope.launch {
             val result = getCityInfoUseCase.getCityInfo(latitude, longitude)
             _cityInfo.postValue(result)
         }
     }
 
-    fun getForecastResponse(latitude: Float?, longitude: Float?) {
+    fun getForecastResponseByCoordinates(latitude: Float, longitude: Float) {
         viewModelScope.launch {
             val result = getForecastResponseUseCase.getForecastResponse(latitude, longitude)
             _forecastResponse.postValue(result)
@@ -88,7 +105,6 @@ class MainViewModel : ViewModel() {
 
     @SuppressLint("MissingPermission")
     fun getCoordinatesFromGPS(activity: MainActivity) {
-
         val coordinates: HashMap<String, Float> = hashMapOf()
         val locationRequestBuilder: LocationRequest.Builder =
             LocationRequest.Builder(PRIORITY_HIGH_ACCURACY, 5000)
@@ -121,8 +137,7 @@ class MainViewModel : ViewModel() {
 
                         }
                     }
-                    }, Looper.getMainLooper())
-
+                }, Looper.getMainLooper())
         } else {
             val turnOnGpsUseCase = TurnOnGpsUseCase(activity)
             turnOnGpsUseCase.turnOnGPS(locationRequest)
@@ -137,6 +152,10 @@ class MainViewModel : ViewModel() {
         coordinates["longitude"] = long
 
         _coordinates.postValue(coordinates)
+    }
+
+    fun setGeonameId(geoId: String) {
+        _geonameId.postValue(geoId)
     }
 
     private fun isGPSEnabled(activity: MainActivity): Boolean {

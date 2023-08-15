@@ -6,7 +6,6 @@ import com.juanantbuit.weatherproject.databinding.SearchItemBinding
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 
 class SearchItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
-
     private val binding = SearchItemBinding.bind(view)
 
     fun render(searchItem: SearchItemModel, onClickListener: (SearchItemModel) -> Unit) {
