@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                     showSpecialMessage()
                     binding.specialMessage.text = getString(R.string.firstStartText)
                 } else {
-                    if (prefs.getBoolean("lastSavesIsCoordinated", false)) {
+                    if (prefs.getBoolean("lastSavedIsCoordinated", false)) {
                         setCoordinates()
                     }
                     setGeonameId()
@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity() {
             if (coordinates != null) {
                 coordinates["latitude"]?.let { editor.putFloat("lastLatitude", it) }
                 coordinates["longitude"]?.let { editor.putFloat("lastLongitude", it) }
-                editor.putBoolean("lastSavesIsCoordinated", true)
+                editor.putBoolean("lastSavedIsCoordinated", true)
                 editor.apply()
 
                 viewModel.getCityInfoByCoordinates(
@@ -378,7 +378,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 showProgressBar()
 
-                if (prefs.getBoolean("lastSavesIsCoordinated", false)) {
+                if (prefs.getBoolean("lastSavedIsCoordinated", false)) {
                     setCoordinates()
                 }
                 setGeonameId()

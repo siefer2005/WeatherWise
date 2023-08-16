@@ -77,8 +77,8 @@ class SearchListActivity : AppCompatActivity() {
 
 
         lifecycleScope.launch @FlowPreview {
-            searchQueryFlow.debounce(1100) // Tiempo de espera después de que el usuario haya dejado de escribir
-                .distinctUntilChanged() // Emitir solo si el valor cambia
+            searchQueryFlow.debounce(1100) // Time to wait for the user to stop typing
+                .distinctUntilChanged() // Emit only if the value changes
                 .collect { query ->
                     if (query.isNotBlank()) {
                         viewModel.getSearchItemList(query)
@@ -156,7 +156,7 @@ class SearchListActivity : AppCompatActivity() {
                 editor.putBoolean("firstAppStart", false)
             }
         }
-        editor.putBoolean("lastSavesIsCoordinated", false)
+        editor.putBoolean("lastSavedIsCoordinated", false)
         editor.apply()
         binding.citySearcherList.hide()
     }
