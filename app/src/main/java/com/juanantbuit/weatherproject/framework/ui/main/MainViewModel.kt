@@ -93,13 +93,15 @@ class MainViewModel : ViewModel() {
     }
 
     fun checkGPSPermission(activity: MainActivity) {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                activity, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             getCoordinatesFromGPS(activity)
         } else {
             ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                GPS_REQUEST_CODE)
+                activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), GPS_REQUEST_CODE
+            )
         }
     }
 
@@ -120,7 +122,7 @@ class MainViewModel : ViewModel() {
                         super.onLocationResult(locationResult)
 
                         LocationServices.getFusedLocationProviderClient(activity)
-                                .removeLocationUpdates(this)
+                            .removeLocationUpdates(this)
 
                         if (locationResult.locations.isNotEmpty()) {
 
@@ -160,14 +162,15 @@ class MainViewModel : ViewModel() {
 
     private fun isGPSEnabled(activity: MainActivity): Boolean {
 
-        val locationManager: LocationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager: LocationManager =
+            activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     //Necessary to stay in the index range of DAYS_OF_WEEK
-    fun getCorrectIndex(day: Int) : Int {
-        return if(day <= 6) {
+    fun getCorrectIndex(day: Int): Int {
+        return if (day <= 6) {
             day
         } else {
             day - 7
@@ -183,14 +186,15 @@ class MainViewModel : ViewModel() {
     }
 
     fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val network = connectivityManager.activeNetwork ?: return false
-            val actNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-            return when {
-                actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val actNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return when {
+            actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            else -> false
+        }
     }
 
     private fun setFirstAppStartFalse(activity: MainActivity) {

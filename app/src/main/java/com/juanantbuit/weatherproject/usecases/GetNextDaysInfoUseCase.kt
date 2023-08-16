@@ -13,19 +13,22 @@ class GetNextDaysInfoUseCase {
     private var averageTemp by Delegates.notNull<Int>()
 
     operator fun invoke(forecastResponse: ForecastResponseModel): MutableList<NextDayInfoModel> {
-        val forecastsForFiveDays: List<List<ForecastInfoModel>> = getOnlyNextDaysInfo(forecastResponse).chunked(TRI_HOURS_IN_DAY)
+        val forecastsForFiveDays: List<List<ForecastInfoModel>> =
+            getOnlyNextDaysInfo(forecastResponse).chunked(TRI_HOURS_IN_DAY)
         val nextDaysInfo: MutableList<NextDayInfoModel> = arrayListOf()
 
-        for(day in 0..3) {
+        for (day in 0..3) {
 
             val dayTemps = getAllTempsOfDay(forecastsForFiveDays, day)
             averageTemp = dayTemps.average().toInt()
 
-            nextDaysInfo.add(NextDayInfoModel(averageTemp,
-                             forecastsForFiveDays[day][AFTERNOON_TIME_INDEX]
-                                 .iconId[0]
-                                 .idIcon,
-                             dayTemps))
+            nextDaysInfo.add(
+                NextDayInfoModel(
+                    averageTemp,
+                    forecastsForFiveDays[day][AFTERNOON_TIME_INDEX].iconId[0].idIcon,
+                    dayTemps
+                )
+            )
         }
         return nextDaysInfo
     }
@@ -36,7 +39,9 @@ class GetNextDaysInfoUseCase {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
         for (i in 0 until forecastResponse.forecastInfoModels.size) {
-            val nextDate = LocalDate.parse(forecastResponse.forecastInfoModels[i].date.substringBefore(" "), formatter)
+            val nextDate = LocalDate.parse(
+                forecastResponse.forecastInfoModels[i].date.substringBefore(" "), formatter
+            )
 
             if (current != nextDate) {
                 nextDaysForecast.add(forecastResponse.forecastInfoModels[i])
@@ -45,7 +50,9 @@ class GetNextDaysInfoUseCase {
         return nextDaysForecast
     }
 
-    private fun getAllTempsOfDay(forecastsForFiveDays: List<List<ForecastInfoModel>>, day: Int): MutableList<Double> {
+    private fun getAllTempsOfDay(
+        forecastsForFiveDays: List<List<ForecastInfoModel>>, day: Int
+    ): MutableList<Double> {
         val dayTemps: MutableList<Double> = arrayListOf()
 
         for (triHourlyForecast in forecastsForFiveDays[day].indices) {

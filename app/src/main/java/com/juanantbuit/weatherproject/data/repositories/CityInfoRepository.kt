@@ -10,7 +10,7 @@ class CityInfoRepository {
         return api.getCityInfo(latitude, longitude)
     }
 
-    suspend fun getCityInfo(geoId: String): CityInfoModel {
+    suspend fun getCityInfo(geoId: String): CityInfoModel? {
         return api.getCityInfo(geoId)
     }
 }

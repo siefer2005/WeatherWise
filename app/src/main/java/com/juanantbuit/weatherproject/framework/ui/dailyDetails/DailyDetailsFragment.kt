@@ -1,4 +1,4 @@
-package com.juanantbuit.weatherproject.framework.ui.daily_details
+package com.juanantbuit.weatherproject.framework.ui.dailyDetails
 
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -17,7 +17,7 @@ import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.FragmentDailyDetailsBinding
 
 
-class DailyDetailsFragment: BottomSheetDialogFragment() {
+class DailyDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentDailyDetailsBinding
 
     private lateinit var lineList: ArrayList<Entry>
@@ -25,14 +25,17 @@ class DailyDetailsFragment: BottomSheetDialogFragment() {
     private lateinit var lineData: LineData
     private lateinit var xAxis: XAxis
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         binding = FragmentDailyDetailsBinding.inflate(inflater, container, false)
 
         val imageBitmap = BitmapFactory.decodeStream(context?.openFileInput("dayImage"))
 
         val temperatures = arguments?.getDoubleArray("temperatures")
         binding.dayName.text = arguments?.getString("dayName")
-        binding.averageTemperature.text = getString(R.string.temperature, arguments?.getInt("averageTemp"))
+        binding.averageTemperature.text =
+            getString(R.string.temperature, arguments?.getInt("averageTemp"))
         binding.dayImage.setImageBitmap(imageBitmap)
 
 
@@ -71,7 +74,7 @@ class DailyDetailsFragment: BottomSheetDialogFragment() {
 
     private fun setLineListData(temperatures: DoubleArray?) {
         lineList = ArrayList()
-        for(i in 0 until temperatures!!.size) {
+        for (i in 0 until temperatures!!.size) {
             lineList.add(Entry(i.toFloat() + 1, temperatures[i].toFloat()))
         }
     }

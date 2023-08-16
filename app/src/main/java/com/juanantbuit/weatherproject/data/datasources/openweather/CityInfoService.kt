@@ -10,20 +10,35 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class CityInfoService (private val dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+class CityInfoService(private val dispatcher: CoroutineDispatcher = Dispatchers.IO) {
     private val retrofit = RetrofitHelper.getRetrofit()
     suspend fun getCityInfo(latitude: Float, longitude: Float): CityInfoModel {
         return withContext(dispatcher) {
-            val response: Response<CityInfoModel> = retrofit.create(ApiClient::class.java).getCityInfo(latitude, longitude, API_KEY, UNITS, LANG)
+            val response: Response<CityInfoModel> = retrofit.create(ApiClient::class.java)
+                .getCityInfo(latitude, longitude, API_KEY, UNITS, LANG)
             response.body()!!
         }
     }
 
-    suspend fun getCityInfo(geoId: String): CityInfoModel {
+    suspend fun getCityInfo(geoId: String): CityInfoModel? {
+        if (geoId.isNullOrBlank()) {
+            return null
+        }
         return withContext(dispatcher) {
-            val response: Response<CityInfoModel> = retrofit.create(ApiClient::class.java).getCityInfo(geoId, API_KEY, UNITS, LANG)
-            response.body()!!
+            val response: Response<CityInfoModel> =
+                retrofit.create(ApiClient::class.java).getCityInfo(geoId, API_KEY, UNITS, LANG)
+
+            if (response.isSuccessful) {
+                val responseBody = response.body()
+
+                if (responseBody != null) {
+                    return@withContext responseBody
+                } else {
+                    return@withContext null
+                }
+            } else {
+                return@withContext null
+            }
         }
     }
-
 }

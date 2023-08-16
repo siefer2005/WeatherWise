@@ -14,10 +14,12 @@ import com.juanantbuit.weatherproject.framework.ui.main.MainActivity
 
 class TurnOnGpsUseCase(private val activity: MainActivity) {
     fun turnOnGPS(locationRequest: LocationRequest) {
-        val builder: LocationSettingsRequest.Builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val builder: LocationSettingsRequest.Builder =
+            LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
         builder.setAlwaysShow(true)
 
-        val result: Task<LocationSettingsResponse> = LocationServices.getSettingsClient(activity.applicationContext)
+        val result: Task<LocationSettingsResponse> =
+            LocationServices.getSettingsClient(activity.applicationContext)
                 .checkLocationSettings(builder.build())
 
         result.addOnCompleteListener { task ->
@@ -31,16 +33,15 @@ class TurnOnGpsUseCase(private val activity: MainActivity) {
 
                 when (e.statusCode) {
 
-                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
-                        try {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
 
-                            val resolvableApiException: ResolvableApiException =
-                                e as ResolvableApiException
-                            resolvableApiException.startResolutionForResult(activity, 2)
+                        val resolvableApiException: ResolvableApiException =
+                            e as ResolvableApiException
+                        resolvableApiException.startResolutionForResult(activity, 2)
 
-                        } catch (ex: IntentSender.SendIntentException) {
-                            ex.printStackTrace()
-                        }
+                    } catch (ex: IntentSender.SendIntentException) {
+                        ex.printStackTrace()
+                    }
 
                     LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {/* Device doesn't have GPS */
                     }

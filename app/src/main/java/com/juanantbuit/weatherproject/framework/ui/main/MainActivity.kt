@@ -23,8 +23,8 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
-import com.juanantbuit.weatherproject.framework.ui.daily_details.DailyDetailsFragment
-import com.juanantbuit.weatherproject.framework.ui.search_list.SearchListActivity
+import com.juanantbuit.weatherproject.framework.ui.dailyDetails.DailyDetailsFragment
+import com.juanantbuit.weatherproject.framework.ui.searchList.SearchListActivity
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import com.juanantbuit.weatherproject.utils.LANG
 import com.juanantbuit.weatherproject.utils.Quadruple
@@ -104,7 +104,9 @@ class MainActivity : AppCompatActivity() {
                     showSpecialMessage()
                     binding.specialMessage.text = getString(R.string.firstStartText)
                 } else {
-                    setCoordinates()
+                    if (prefs.getBoolean("lastSavesIsCoordinated", false)) {
+                        setCoordinates()
+                    }
                     setGeonameId()
                 }
             } else {
@@ -147,9 +149,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         val saveLocationQuadruples = listOf(
-            Quadruple(binding.sidePanel.firstSaveLocation, "firstSaveName", "firstSaveGeoId", "firstSave"),
-            Quadruple(binding.sidePanel.secondSaveLocation, "secondSaveName", "secondSaveGeoId", "secondSave"),
-            Quadruple(binding.sidePanel.thirdSaveLocation, "thirdSaveName", "thirdSaveGeoId", "thirdSave")
+            Quadruple(
+                binding.sidePanel.firstSaveLocation, "firstSaveName", "firstSaveGeoId", "firstSave"
+            ), Quadruple(
+                binding.sidePanel.secondSaveLocation,
+                "secondSaveName",
+                "secondSaveGeoId",
+                "secondSave"
+            ), Quadruple(
+                binding.sidePanel.thirdSaveLocation, "thirdSaveName", "thirdSaveGeoId", "thirdSave"
+            )
         )
 
         for ((locationView, saveNameKey, geoIdKey, searchType) in saveLocationQuadruples) {
@@ -160,7 +169,9 @@ class MainActivity : AppCompatActivity() {
 
         val cancelButtonTriples = listOf(
             Triple("firstSaveName", binding.sidePanel.firstSaveLocation, binding.sidePanel.cancel1),
-            Triple("secondSaveName", binding.sidePanel.secondSaveLocation, binding.sidePanel.cancel2),
+            Triple(
+                "secondSaveName", binding.sidePanel.secondSaveLocation, binding.sidePanel.cancel2
+            ),
             Triple("thirdSaveName", binding.sidePanel.thirdSaveLocation, binding.sidePanel.cancel3)
         )
 
@@ -176,9 +187,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleLocationClickBehavior(
-        saveNameKey: String,
-        geoIdKey: String,
-        searchType: String
+        saveNameKey: String, geoIdKey: String, searchType: String
     ) {
         if (viewModel.isNetworkAvailable(this)) {
             val saveName = prefs.getString(saveNameKey, "none")
@@ -237,17 +246,22 @@ class MainActivity : AppCompatActivity() {
             if (coordinates != null) {
                 coordinates["latitude"]?.let { editor.putFloat("lastLatitude", it) }
                 coordinates["longitude"]?.let { editor.putFloat("lastLongitude", it) }
+                editor.putBoolean("lastSavesIsCoordinated", true)
                 editor.apply()
 
-                viewModel.getCityInfoByCoordinates(coordinates["latitude"]!!, coordinates["longitude"]!!)
-                viewModel.getForecastResponseByCoordinates(coordinates["latitude"]!!, coordinates["longitude"]!!)
+                viewModel.getCityInfoByCoordinates(
+                    coordinates["latitude"]!!, coordinates["longitude"]!!
+                )
+                viewModel.getForecastResponseByCoordinates(
+                    coordinates["latitude"]!!, coordinates["longitude"]!!
+                )
             }
             viewModel.getCurrentDay()
         }
 
         viewModel.cityInfo.observe(this) { cityInfo ->
             if (cityInfo != null) {
-                refreshIcon(viewModel.getImageUrl(cityInfo.iconId[0].idIcon), binding.currentImage)
+                loadIcon(viewModel.getImageUrl(cityInfo.iconId[0].idIcon), binding.currentImage)
                 binding.cityName.text =
                     getString(R.string.city_name, cityInfo.name, cityInfo.country.countryId)
                 binding.currentTemp.text =
@@ -275,10 +289,10 @@ class MainActivity : AppCompatActivity() {
             binding.nextDayTemp3.text = getString(R.string.temperature, nextDaysInfo[2].averageTemp)
             binding.nextDayTemp4.text = getString(R.string.temperature, nextDaysInfo[3].averageTemp)
 
-            refreshIcon(viewModel.getImageUrl(nextDaysInfo[0].iconId), binding.nextDayImage1)
-            refreshIcon(viewModel.getImageUrl(nextDaysInfo[1].iconId), binding.nextDayImage2)
-            refreshIcon(viewModel.getImageUrl(nextDaysInfo[2].iconId), binding.nextDayImage3)
-            refreshIcon(viewModel.getImageUrl(nextDaysInfo[3].iconId), binding.nextDayImage4)
+            loadIcon(viewModel.getImageUrl(nextDaysInfo[0].iconId), binding.nextDayImage1)
+            loadIcon(viewModel.getImageUrl(nextDaysInfo[1].iconId), binding.nextDayImage2)
+            loadIcon(viewModel.getImageUrl(nextDaysInfo[2].iconId), binding.nextDayImage3)
+            loadIcon(viewModel.getImageUrl(nextDaysInfo[3].iconId), binding.nextDayImage4)
 
             hideProgressBar()
             binding.swiperefresh.isRefreshing = false
@@ -291,10 +305,14 @@ class MainActivity : AppCompatActivity() {
         firstAppStart = prefs.getBoolean("firstAppStart", true)
 
         val languagesStringArray = resources.getStringArray(R.array.languages)
-        (binding.sidePanel.languageDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(languagesStringArray)
+        (binding.sidePanel.languageDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            languagesStringArray
+        )
 
         val metricUnitsStringArray = resources.getStringArray(R.array.metric_units)
-        (binding.sidePanel.metricDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(metricUnitsStringArray)
+        (binding.sidePanel.metricDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
+            metricUnitsStringArray
+        )
 
         if (viewModel.isNetworkAvailable(this)) {
             if (firstAppStart) {
@@ -306,10 +324,15 @@ class MainActivity : AppCompatActivity() {
 
                 when (languageCode) {
                     "en" -> {
-                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.english_language), false)
+                        binding.sidePanel.languageDropdownMenuText.setText(
+                            getString(R.string.english_language), false
+                        )
                     }
+
                     else -> {
-                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.spanish_language), false)
+                        binding.sidePanel.languageDropdownMenuText.setText(
+                            getString(R.string.spanish_language), false
+                        )
                     }
                 }
                 showSpecialMessage()
@@ -322,26 +345,42 @@ class MainActivity : AppCompatActivity() {
 
                 when (LANG) {
                     "en" -> {
-                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.english_language), false)
+                        binding.sidePanel.languageDropdownMenuText.setText(
+                            getString(R.string.english_language), false
+                        )
                     }
+
                     else -> {
-                        binding.sidePanel.languageDropdownMenuText.setText(getString(R.string.spanish_language), false)
+                        binding.sidePanel.languageDropdownMenuText.setText(
+                            getString(R.string.spanish_language), false
+                        )
                     }
                 }
 
                 when (UNITS) {
                     "metric" -> {
-                        binding.sidePanel.metricDropdownMenuText.setText(getString(R.string.celsius), false)
+                        binding.sidePanel.metricDropdownMenuText.setText(
+                            getString(R.string.celsius), false
+                        )
                     }
+
                     "imperial" -> {
-                        binding.sidePanel.metricDropdownMenuText.setText(getString(R.string.fahrenheit), false)
+                        binding.sidePanel.metricDropdownMenuText.setText(
+                            getString(R.string.fahrenheit), false
+                        )
                     }
+
                     else -> {
-                        binding.sidePanel.metricDropdownMenuText.setText(getString(R.string.kelvin), false)
+                        binding.sidePanel.metricDropdownMenuText.setText(
+                            getString(R.string.kelvin), false
+                        )
                     }
                 }
                 showProgressBar()
-                setCoordinates()
+
+                if (prefs.getBoolean("lastSavesIsCoordinated", false)) {
+                    setCoordinates()
+                }
                 setGeonameId()
                 setSaveLocations()
             }
@@ -350,7 +389,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
@@ -400,8 +441,7 @@ class MainActivity : AppCompatActivity() {
         editor = prefs.edit()
 
         viewModel.setCoordinates(
-            prefs.getFloat("lastLatitude", 0.0f),
-            prefs.getFloat("lastLongitude", 0.0f)
+            prefs.getFloat("lastLatitude", 0.0f), prefs.getFloat("lastLongitude", 0.0f)
         )
     }
 
@@ -419,33 +459,31 @@ class MainActivity : AppCompatActivity() {
         val secondSaveName = prefs.getString("secondSaveName", "none")
         val thirdSaveName = prefs.getString("thirdSaveName", "none")
 
-        if(firstSaveName != "none") {
+        if (firstSaveName != "none") {
             binding.sidePanel.firstSaveLocation.text = firstSaveName
             binding.sidePanel.cancel1.visibility = View.VISIBLE
         }
 
-        if(secondSaveName != "none") {
+        if (secondSaveName != "none") {
             binding.sidePanel.secondSaveLocation.text = secondSaveName
             binding.sidePanel.cancel2.visibility = View.VISIBLE
         }
 
-        if(thirdSaveName != "none") {
+        if (thirdSaveName != "none") {
             binding.sidePanel.thirdSaveLocation.text = thirdSaveName
             binding.sidePanel.cancel3.visibility = View.VISIBLE
         }
 
     }
 
-    private fun refreshIcon(url:String, imageView: ImageView) {
-        Glide.with(this)
-            .load(url)
-            .error(R.drawable.ic_launcher_foreground)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .fitCenter()
-            .into(imageView)
+    private fun loadIcon(url: String, imageView: ImageView) {
+        Glide.with(this).load(url).error(R.drawable.ic_launcher_foreground)
+            .diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().into(imageView)
     }
 
-    private fun showDailyDetails(imageView: ImageView, textView: TextView, temperatures: DoubleArray, averageTemp: Int) {
+    private fun showDailyDetails(
+        imageView: ImageView, textView: TextView, temperatures: DoubleArray, averageTemp: Int
+    ) {
         val bundle = Bundle()
         val bitMap = (imageView.drawable as BitmapDrawable).bitmap
         saveImageFromBitmap(bitMap)
@@ -454,7 +492,7 @@ class MainActivity : AppCompatActivity() {
         bundle.putDoubleArray("temperatures", temperatures)
         bundle.putInt("averageTemp", averageTemp)
 
-        if(dailyDetailsFragment.isAdded) {
+        if (dailyDetailsFragment.isAdded) {
             dailyDetailsFragment.dismiss()
         }
 
@@ -490,6 +528,7 @@ class MainActivity : AppCompatActivity() {
         editor.putString("language", language)
         editor.apply()
     }
+
     private fun saveUnitUsed(unit: String) {
         editor.putString("units", unit)
         editor.apply()

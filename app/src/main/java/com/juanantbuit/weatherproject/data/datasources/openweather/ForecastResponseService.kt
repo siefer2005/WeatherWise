@@ -14,14 +14,16 @@ class ForecastResponseService(private val dispatcher: CoroutineDispatcher = Disp
     private val retrofit = RetrofitHelper.getRetrofit()
     suspend fun getForecastResponse(latitude: Float, longitude: Float): ForecastResponseModel {
         return withContext(dispatcher) {
-            val response: Response<ForecastResponseModel> = retrofit.create(ApiClient::class.java).getForecastResponse(latitude, longitude, API_KEY, UNITS, LANG)
+            val response: Response<ForecastResponseModel> = retrofit.create(ApiClient::class.java)
+                .getForecastResponse(latitude, longitude, API_KEY, UNITS, LANG)
             response.body()!!
         }
     }
 
     suspend fun getForecastResponse(geoId: String): ForecastResponseModel {
         return withContext(dispatcher) {
-            val response: Response<ForecastResponseModel> = retrofit.create(ApiClient::class.java).getForecastResponse(geoId, API_KEY, UNITS, LANG)
+            val response: Response<ForecastResponseModel> = retrofit.create(ApiClient::class.java)
+                .getForecastResponse(geoId, API_KEY, UNITS, LANG)
             response.body()!!
         }
     }
