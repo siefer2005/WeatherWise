@@ -20,14 +20,13 @@
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Buscar ciudad..." />
+                android:hint="@string/search_hint" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.search.SearchView
             android:id="@+id/citySearcherList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Buscar ciudad"
             app:layout_anchor="@id/search_bar">
 
             <androidx.recyclerview.widget.RecyclerView

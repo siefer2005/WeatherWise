@@ -34,7 +34,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:hint="Buscar ciudad..."
+            android:hint="@string/search_hint"
             app:layout_constraintEnd_toStartOf="@+id/gpsButton"
             app:layout_constraintStart_toEndOf="@+id/menuButton"
             app:layout_constraintTop_toTopOf="parent" />

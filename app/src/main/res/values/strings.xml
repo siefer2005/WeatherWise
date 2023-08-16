@@ -10,7 +10,7 @@
     <string name="wind">Wind</string>
     <string name="next_4_days">Next 4 Days</string>
 
-    <string name="search_hint">Search a city</string>
+    <string name="search_hint">Search city…</string>
 
     <string name="noInternetMessage">No internet connection. Please connect to a network.</string>
     <string name="firstStartText">First, look for a city in the browser or with the GPS button</string>
@@ -21,11 +21,13 @@
     <string name="wind_speed_imperial">%1$d mph</string>
     <string name="wind_speed">%1$d m/s</string>
 
+    <string name="choose_language">Choose a language</string>
+    <string name="language">Language</string>
     <string name="english_language">English</string>
     <string name="spanish_language">Spanish</string>
-    <string name="choose_language">Choose a language</string>
 
     <string name="choose_a_metric_unit">Choose a metric unit</string>
+    <string name="measurement_unit">Measurement Unit</string>
     <string name="celsius">Celsius (ºC)</string>
     <string name="fahrenheit">Fahrenheit (ºF)</string>
     <string name="kelvin">Kelvin (K)</string>
