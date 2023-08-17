@@ -39,4 +39,7 @@
         <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
     </style>
 
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+    </style>
 </resources>
