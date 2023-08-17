@@ -261,21 +261,21 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.cityInfo.observe(this) { cityInfo ->
             if (cityInfo != null) {
-                loadIcon(viewModel.getImageUrl(cityInfo.iconId[0].idIcon), binding.currentImage)
+                loadIcon(viewModel.getImageUrl(cityInfo.iconId[0].idIcon), binding.principalCardView.currentImage)
                 binding.cityName.text =
                     getString(R.string.city_name, cityInfo.name, cityInfo.country.countryId)
-                binding.currentTemp.text =
+                binding.principalCardView.currentTemp.text =
                     getString(R.string.temperature, cityInfo.mainInfo.temp.toInt())
-                binding.tempFeelsLike.text =
+                binding.principalCardView.tempFeelsLike.text =
                     getString(R.string.temperature, cityInfo.mainInfo.thermalSensation.toInt())
-                binding.humidityPercentage.text =
+                binding.principalCardView.humidityPercentage.text =
                     getString(R.string.humidity_template, cityInfo.mainInfo.humidity)
 
                 if (UNITS == "imperial") {
-                    binding.windVelocity.text =
+                    binding.principalCardView.windVelocity.text =
                         getString(R.string.wind_speed_imperial, cityInfo.windVelocity.speed.toInt())
                 } else {
-                    binding.windVelocity.text =
+                    binding.principalCardView.windVelocity.text =
                         getString(R.string.wind_speed, cityInfo.windVelocity.speed.toInt())
                 }
             }
@@ -408,7 +408,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSpecialMessage() {
         binding.cityName.visibility = View.GONE
-        binding.principalCardView.visibility = View.GONE
+        binding.principalCardView.card.visibility = View.GONE
         binding.next4Days.visibility = View.GONE
         binding.horizontalScrollView.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
@@ -418,7 +418,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showProgressBar() {
         binding.cityName.visibility = View.GONE
-        binding.principalCardView.visibility = View.GONE
+        binding.principalCardView.card.visibility = View.GONE
         binding.next4Days.visibility = View.GONE
         binding.horizontalScrollView.visibility = View.GONE
         binding.specialMessage.visibility = View.GONE
@@ -428,7 +428,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun hideProgressBar() {
         binding.cityName.visibility = View.VISIBLE
-        binding.principalCardView.visibility = View.VISIBLE
+        binding.principalCardView.card.visibility = View.VISIBLE
         binding.next4Days.visibility = View.VISIBLE
         binding.horizontalScrollView.visibility = View.VISIBLE
         binding.specialMessage.visibility = View.GONE
