@@ -19,6 +19,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:contentDescription="@string/menu_icon_descriptor"
             app:icon="@drawable/menu_icon"
             app:iconGravity="textStart"
             app:iconSize="40dp"
@@ -46,7 +47,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:contentDescription="@string/gps_button_description"
+            android:contentDescription="@string/gps_button_descriptor"
             app:icon="@drawable/my_location_icon"
             app:iconGravity="textStart"
             app:iconSize="40dp"
@@ -60,9 +61,7 @@
             android:layout_height="match_parent"
             app:layout_anchor="@id/citySearcher"
             tools:layout_editor_absoluteY="8dp"
-            tools:visibility="gone">
-            <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
-        </com.google.android.material.search.SearchView>
+            tools:visibility="gone" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swiperefresh"
@@ -80,21 +79,6 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <include
-            android:id="@+id/principalCardView"
-            layout="@layout/principal_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cityName" />
-
         <TextView
             android:id="@+id/cityName"
             android:layout_width="match_parent"
@@ -111,244 +95,254 @@
             app:layout_constraintVertical_bias="0.0"
             tools:text="Madrid, ES" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
+        <include
+            android:id="@+id/principalCardView"
+            layout="@layout/principal_card_view"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:elevation="3dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/next4Days"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/principalCardView">
+            app:layout_constraintTop_toBottomOf="@id/cityName" />
 
-            <TextView
-                android:id="@+id/next4Days"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_gravity="top"
-                android:layout_marginStart="15dp"
-                android:gravity="bottom"
-                android:text="@string/next_4_days"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
+        <TextView
+            android:id="@+id/next4Days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="bottom"
+            android:text="@string/next_4_days"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/principalCardView" />
 
-            <HorizontalScrollView
-                android:id="@+id/horizontalScrollView"
-                android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="4dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/next4Days">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:scrollbars="none">
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/nextDayInfo1"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="130dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="16dp"
+                    app:cardBackgroundColor="@color/first_day_card_background">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/nextDayInfo1"
-                        style="@style/Widget.Material3.CardView.Elevated"
-                        android:layout_width="130dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="7dp"
-                        android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="@color/first_day_card_background">
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/nextDay1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="18sp"
+                            tools:text="Monday" />
 
-                            <TextView
-                                android:id="@+id/nextDay1"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="18sp"
-                                tools:text="Monday" />
+                        <ImageView
+                            android:id="@+id/nextDayImage1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:contentDescription="@string/next_day_icon_descriptor"
+                            tools:srcCompat="@tools:sample/avatars" />
 
-                            <ImageView
-                                android:id="@+id/nextDayImage1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="3"
-                                android:contentDescription="@string/next_day_icon"
-                                tools:srcCompat="@tools:sample/avatars" />
+                        <TextView
+                            android:id="@+id/nextDayTemp1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="34sp"
+                            tools:text="22º" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/nextDayTemp1"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_margin="5dp"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="34sp"
-                                tools:text="22º" />
-                        </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/nextDayInfo2"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="16dp"
+                    app:cardBackgroundColor="@color/second_day_card_background">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/nextDayInfo2"
-                        style="@style/Widget.Material3.CardView.Elevated"
-                        android:layout_width="130dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="7dp"
-                        android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="@color/second_day_card_background">
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/nextDay2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="18sp"
+                            tools:text="Tuesday" />
 
-                            <TextView
-                                android:id="@+id/nextDay2"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="18sp"
-                                tools:text="Tuesday" />
+                        <ImageView
+                            android:id="@+id/nextDayImage2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:contentDescription="@string/next_day_icon_descriptor"
+                            tools:srcCompat="@tools:sample/avatars" />
 
-                            <ImageView
-                                android:id="@+id/nextDayImage2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="3"
-                                android:contentDescription="@string/next_day_icon"
-                                tools:srcCompat="@tools:sample/avatars" />
+                        <TextView
+                            android:id="@+id/nextDayTemp2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="34sp"
+                            tools:text="22º" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/nextDayTemp2"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_margin="5dp"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="34sp"
-                                tools:text="22º" />
-                        </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/nextDayInfo3"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="16dp"
+                    app:cardBackgroundColor="@color/third_day_card_background">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/nextDayInfo3"
-                        style="@style/Widget.Material3.CardView.Elevated"
-                        android:layout_width="130dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="7dp"
-                        android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="@color/third_day_card_background">
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/nextDay3"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="18sp"
+                            tools:text="Wednesday" />
 
-                            <TextView
-                                android:id="@+id/nextDay3"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="18sp"
-                                tools:text="Wednesday" />
+                        <ImageView
+                            android:id="@+id/nextDayImage3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:contentDescription="@string/next_day_icon_descriptor"
+                            tools:srcCompat="@tools:sample/avatars" />
 
-                            <ImageView
-                                android:id="@+id/nextDayImage3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="3"
-                                android:contentDescription="@string/next_day_icon"
-                                tools:srcCompat="@tools:sample/avatars" />
+                        <TextView
+                            android:id="@+id/nextDayTemp3"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="34sp"
+                            tools:text="22º" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/nextDayTemp3"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_margin="5dp"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="34sp"
-                                tools:text="22º" />
-                        </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/nextDayInfo4"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="16dp"
+                    app:cardBackgroundColor="@color/fourth_day_card_background">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/nextDayInfo4"
-                        style="@style/Widget.Material3.CardView.Elevated"
-                        android:layout_width="130dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginHorizontal="7dp"
-                        android:layout_marginVertical="14dp"
-                        app:cardBackgroundColor="@color/fourth_day_card_background">
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/nextDay4"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="18sp"
+                            tools:text="Thursday" />
 
-                            <TextView
-                                android:id="@+id/nextDay4"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="18sp"
-                                tools:text="Thursday" />
+                        <ImageView
+                            android:id="@+id/nextDayImage4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="3"
+                            android:contentDescription="@string/next_day_icon_descriptor"
+                            tools:srcCompat="@tools:sample/avatars" />
 
-                            <ImageView
-                                android:id="@+id/nextDayImage4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:layout_gravity="center"
-                                android:layout_weight="3"
-                                android:contentDescription="@string/next_day_icon"
-                                tools:srcCompat="@tools:sample/avatars" />
+                        <TextView
+                            android:id="@+id/nextDayTemp4"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/card_text"
+                            android:textSize="34sp"
+                            tools:text="22º" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/nextDayTemp4"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_margin="5dp"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:text=""
-                                android:textColor="@color/card_text"
-                                android:textSize="34sp"
-                                tools:text="22º" />
-                        </LinearLayout>
-
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-            </HorizontalScrollView>
-
-        </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <TextView
             android:id="@+id/specialMessage"

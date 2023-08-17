@@ -3,9 +3,10 @@
     <string name="app_name">WeatherProject</string>
     <string name="credits">Hecho por Juan Antonio Buitrago B.</string>
 
-    <string name="gps_button_description">Botón con imagen gps</string>
-    <string name="Icon_weather_description">Icono del tiempo actual</string>
-    <string name="next_day_icon">Icono día siguiente</string>
+    <string name="gps_button_descriptor">Icono de gps</string>
+    <string name="menu_icon_descriptor">Icono de menú</string>
+    <string name="Icon_weather_descriptor">Icono del tiempo actual</string>
+    <string name="next_day_icon_descriptor">Icono día siguiente</string>
 
     <string name="thermal_sensation">Sensación térmica</string>
     <string name="humidity">Humedad</string>
@@ -22,6 +23,9 @@
     <string name="humidity_template"> %1$d%%</string>
     <string name="wind_speed_imperial">%1$d mph</string>
     <string name="wind_speed">%1$d m/s</string>
+
+
+    <string name="settings_label">Configuración</string>
 
     <string name="choose_language">Selecciona un idioma</string>
     <string name="language">Idioma</string>

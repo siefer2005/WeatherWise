@@ -2,9 +2,9 @@
     <string name="app_name">WeatherProject</string>
     <string name="credits">Made by Juan Antonio Buitrago B.</string>
 
-    <string name="gps_button_description">gps image button</string>
-    <string name="Icon_weather_description">Current weather icon</string>
-    <string name="next_day_icon">Next day icon</string>
+    <string name="gps_button_descriptor">gps icon</string>
+    <string name="Icon_weather_descriptor">Current weather icon</string>
+    <string name="next_day_icon_descriptor">Next day icon</string>
 
     <string name="thermal_sensation">Thermal sensation</string>
     <string name="humidity">Humidity</string>
@@ -21,6 +21,8 @@
     <string name="humidity_template"> %1$d%%</string>
     <string name="wind_speed_imperial">%1$d mph</string>
     <string name="wind_speed">%1$d m/s</string>
+
+    <string name="settings_label">Settings</string>
 
     <string name="choose_language">Choose a language</string>
     <string name="language">Language</string>
@@ -251,4 +253,5 @@
     <string name="dj">Yibuti</string>
     <string name="zm">Zambia</string>
     <string name="zw">Zimbabue</string>
+    <string name="menu_icon_descriptor">Menu Icon</string>
 </resources>
