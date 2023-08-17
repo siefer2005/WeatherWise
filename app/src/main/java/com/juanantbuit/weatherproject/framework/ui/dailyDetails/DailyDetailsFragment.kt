@@ -1,17 +1,20 @@
 package com.juanantbuit.weatherproject.framework.ui.dailyDetails
 
+import android.app.Dialog
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.FragmentDailyDetailsBinding
@@ -24,6 +27,10 @@ class DailyDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var lineDataSet: LineDataSet
     private lateinit var lineData: LineData
     private lateinit var xAxis: XAxis
+
+    companion object {
+        const val TAG = "dailyDetailsFragment"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -49,8 +56,21 @@ class DailyDetailsFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    companion object {
-        const val TAG = "dailyDetailsFragment"
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        var styleResId: Int = R.style.ModalBottomSheetDialog
+
+        // It is necessary to change the backgroundColor of the dialog via styles to preserve
+        // the rounded corners.
+        when (arguments?.getInt("dayNumber")) {
+            0 -> styleResId = R.style.ModalBottomSheetDialog1
+            1 -> styleResId = R.style.ModalBottomSheetDialog2
+            2 -> styleResId = R.style.ModalBottomSheetDialog3
+            3 -> styleResId = R.style.ModalBottomSheetDialog4
+        }
+        setStyle(DialogFragment.STYLE_NORMAL, styleResId)
+
+        return BottomSheetDialog(requireContext(), styleResId)
     }
 
     private fun setLineChartView() {

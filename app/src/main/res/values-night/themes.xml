@@ -38,4 +38,24 @@
     <style name="ModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
     </style>
+
+    <style name="ModalBottomSheetDialog1" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
+        <item name="android:backgroundTint">@color/first_day_card_background</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog2" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
+        <item name="android:backgroundTint">@color/second_day_card_background</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog3" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
+        <item name="android:backgroundTint">@color/third_day_card_background</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog4" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheet</item>
+        <item name="android:backgroundTint">@color/fourth_day_card_background</item>
+    </style>
 </resources>

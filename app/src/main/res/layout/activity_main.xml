@@ -129,7 +129,6 @@
             android:layout_width="match_parent"
             android:layout_height="256dp"
             android:layout_gravity="bottom"
-            android:layout_marginStart="4dp"
             android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

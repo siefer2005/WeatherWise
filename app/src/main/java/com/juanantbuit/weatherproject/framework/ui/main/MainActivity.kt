@@ -92,7 +92,8 @@ class MainActivity : AppCompatActivity() {
                     nextDayImage,
                     nextDayView,
                     nextDaysInfo[index].temperatures.toDoubleArray(),
-                    nextDaysInfo[index].averageTemp
+                    nextDaysInfo[index].averageTemp,
+                    index
                 )
             }
         }
@@ -261,7 +262,10 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.cityInfo.observe(this) { cityInfo ->
             if (cityInfo != null) {
-                loadIcon(viewModel.getImageUrl(cityInfo.iconId[0].idIcon), binding.principalCardView.currentImage)
+                loadIcon(
+                    viewModel.getImageUrl(cityInfo.iconId[0].idIcon),
+                    binding.principalCardView.currentImage
+                )
                 binding.cityName.text =
                     getString(R.string.city_name, cityInfo.name, cityInfo.country.countryId)
                 binding.principalCardView.currentTemp.text =
@@ -482,7 +486,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDailyDetails(
-        imageView: ImageView, textView: TextView, temperatures: DoubleArray, averageTemp: Int
+        imageView: ImageView,
+        textView: TextView,
+        temperatures: DoubleArray,
+        averageTemp: Int,
+        dayNumber: Int
     ) {
         val bundle = Bundle()
         val bitMap = (imageView.drawable as BitmapDrawable).bitmap
@@ -491,6 +499,7 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("dayName", textView.text as String?)
         bundle.putDoubleArray("temperatures", temperatures)
         bundle.putInt("averageTemp", averageTemp)
+        bundle.putInt("dayNumber", dayNumber)
 
         if (dailyDetailsFragment.isAdded) {
             dailyDetailsFragment.dismiss()
