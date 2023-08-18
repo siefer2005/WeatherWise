@@ -89,11 +89,7 @@ class MainActivity : AppCompatActivity() {
             nextDayInfo.setOnClickListener {
                 val index = nextDayInfoComponents.indexOfFirst { it.first == nextDayInfo }
                 showDailyDetails(
-                    nextDayImage,
-                    nextDayView,
-                    nextDaysInfo[index].temperatures.toDoubleArray(),
-                    nextDaysInfo[index].averageTemp,
-                    index
+                    nextDayImage, nextDayView, nextDaysInfo[index], index
                 )
             }
         }
@@ -486,19 +482,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showDailyDetails(
-        imageView: ImageView,
-        textView: TextView,
-        temperatures: DoubleArray,
-        averageTemp: Int,
-        dayNumber: Int
+        imageView: ImageView, textView: TextView, nextDayInfo: NextDayInfoModel, dayNumber: Int
     ) {
         val bundle = Bundle()
         val bitMap = (imageView.drawable as BitmapDrawable).bitmap
         saveImageFromBitmap(bitMap)
 
         bundle.putString("dayName", textView.text as String?)
-        bundle.putDoubleArray("temperatures", temperatures)
-        bundle.putInt("averageTemp", averageTemp)
+        bundle.putDoubleArray("temperatures", nextDayInfo.temperatures.toDoubleArray())
+        bundle.putInt("averageTemp", nextDayInfo.averageTemp)
+        bundle.putInt("lowestTemp", nextDayInfo.lowestTemp)
+        bundle.putInt("highestTemp", nextDayInfo.highestTemp)
         bundle.putInt("dayNumber", dayNumber)
 
         if (dailyDetailsFragment.isAdded) {

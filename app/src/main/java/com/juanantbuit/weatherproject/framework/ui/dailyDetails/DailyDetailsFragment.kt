@@ -43,6 +43,8 @@ class DailyDetailsFragment : BottomSheetDialogFragment() {
         binding.dayName.text = arguments?.getString("dayName")
         binding.averageTemperature.text =
             getString(R.string.temperature, arguments?.getInt("averageTemp"))
+        binding.lowestTemp.text = getString(R.string.temperature, arguments?.getInt("lowestTemp"))
+        binding.highestTemp.text = getString(R.string.temperature, arguments?.getInt("highestTemp"))
         binding.dayImage.setImageBitmap(imageBitmap)
 
 

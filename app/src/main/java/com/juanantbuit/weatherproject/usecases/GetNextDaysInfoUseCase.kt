@@ -7,11 +7,8 @@ import com.juanantbuit.weatherproject.utils.AFTERNOON_TIME_INDEX
 import com.juanantbuit.weatherproject.utils.TRI_HOURS_IN_DAY
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.properties.Delegates
 
 class GetNextDaysInfoUseCase {
-    private var averageTemp by Delegates.notNull<Int>()
-
     operator fun invoke(forecastResponse: ForecastResponseModel): MutableList<NextDayInfoModel> {
         val forecastsForFiveDays: List<List<ForecastInfoModel>> =
             getOnlyNextDaysInfo(forecastResponse).chunked(TRI_HOURS_IN_DAY)
@@ -20,13 +17,17 @@ class GetNextDaysInfoUseCase {
         for (day in 0..3) {
 
             val dayTemps = getAllTempsOfDay(forecastsForFiveDays, day)
-            averageTemp = dayTemps.average().toInt()
+            val averageTemp = dayTemps.average().toInt()
+            val lowestTemp = dayTemps.min().toInt()
+            val highestTemp = dayTemps.max().toInt()
 
             nextDaysInfo.add(
                 NextDayInfoModel(
-                    averageTemp,
                     forecastsForFiveDays[day][AFTERNOON_TIME_INDEX].iconId[0].idIcon,
-                    dayTemps
+                    dayTemps,
+                    averageTemp,
+                    lowestTemp,
+                    highestTemp
                 )
             )
         }
