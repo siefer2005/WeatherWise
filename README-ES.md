@@ -43,6 +43,7 @@
     </li>
     <li><a href="#hoja-de-ruta">Hoja de Ruta</a></li>
     <li><a href="#licencia">Licencia</a></li>
+    <li><a href="#diseño">Diseño</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ol>
 </details>
