@@ -42,6 +42,7 @@
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#design">Design</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -68,31 +69,31 @@
 
 ### Technologies used
 
-* **Kotlin**: Modern programming language for Android development known for concise and expressive syntax.
+* **Kotlin**: Modern programming language for Android development known for concise and expressive syntax
   
-* **Android SDK**: Software Development Kit that provides tools and APIs for building Android applications.
+* **Android SDK**: Software Development Kit that provides tools and APIs for building Android applications
   
-* **MVVM architecture**: A design pattern that separates an app into three parts - Model, View, and ViewModel - making code more organized and maintaining a smooth user experience. It helps manage data, user interface, and business logic effectively.
+* **MVVM architecture**: A design pattern that separates an app into three parts - Model, View, and ViewModel - making code more organized and maintaining a smooth user experience. It helps manage data, user interface, and business logic effectively
   
-* **Shared Preferences**: Mechanism in Android for storing small amounts of data persistently, often used for app settings.
+* **Shared Preferences**: Mechanism in Android for storing small amounts of data persistently, often used for app settings
   
-* **ViewModel**: MVVM architecture component that holds UI-related data, surviving configuration changes, and lifecycle events.
+* **ViewModel**: MVVM architecture component that holds UI-related data, surviving configuration changes, and lifecycle events
   
-* **LiveData**: Architecture component that allows data observation for UI components, automatically updating when the underlying data changes.
+* **LiveData**: Architecture component that allows data observation for UI components, automatically updating when the underlying data changes
   
-* **ViewBinding**: Library that generates binding classes for XML layouts, enabling direct interaction with views while improving type safety.
+* **ViewBinding**: Library that generates binding classes for XML layouts, enabling direct interaction with views while improving type safety
   
-* **Coroutines**: Kotlin library for managing asynchronous tasks more concisely and safely, simplifying multithreaded programming.
+* **Coroutines**: Kotlin library for managing asynchronous tasks more concisely and safely, simplifying multithreaded programming
   
-* **Flows**: Kotlin-based reactive streams that handle asynchronous data streams with support for flow control and error handling.
+* **Flows**: Kotlin reactive streams that handle asynchronous data streams with support for flow control and error handling
   
-* **Retrofit**: Networking library for Android that simplifies HTTP requests and responses, often used for communicating with APIs.
+* **Retrofit**: Networking library for Android that simplifies HTTP requests and responses, often used for communicating with APIs
   
-* **MPAndroidChart**:  Powerful ibrary for creating various types of charts and graphs in Android applications.
+* **MPAndroidChart**: Powerful ibrary for creating various types of charts and graphs in Android applications
   
-* **Glide**: Image loading library for efficient image loading and caching in Android apps.
+* **Glide**: Image loading library for efficient image loading and caching in Android apps
   
-* **Algolia Search API Client**: Client library for integrating Algolia's search services into Android applications, enabling powerful search functionalities.
+* **Algolia Search API Client**: Client library for integrating Algolia's search services into Android applications, enabling powerful search functionalities
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -118,7 +119,7 @@
    git clone https://github.com/JuanAntBuit/WeatherProject.git
    ```
    
-2. Create a local.properties file in the project root if it does not exist.
+2. Create a local.properties file in the project root if it does not exist
    
 4. Get a free OpenWeatherMap API Key at [https://home.openweathermap.org/users/sign_in](https://home.openweathermap.org/users/sign_in)
    
@@ -127,9 +128,9 @@
    OPENWEATHER_KEY=your_openweather_key
    ```
    
-6. You will need to create a free account on <a href="https://www.algolia.com/es/">Algolia</a>. Then, create an application.
+6. You will need to create a free account on <a href="https://www.algolia.com/es/">Algolia</a>. Then, create an application
    
-7. Generate a search API key, save the ID of the app you have created, and then create an index under that app. You will need to save the index name to set up the search functionality in this app.
+7. Generate a search API key, save the ID of the app you have created, and then create an index under that app. You will need to save the index name to set up the search functionality in this app
 
 8. Next, populate the index with the following <a href="https://drive.google.com/file/d/1ImLwmPhV83evkeQs1zu2iR8N6k7bQ-Je/view?usp=sharing">records</a>
 
@@ -152,6 +153,15 @@
 - Refactoring code and extracting some logic to other classes (Glide, Jetpack Datastore, etc.)
 - Apply dependency injection with Dagger Hilt
 - Testing
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- Design -->
+## Design
+
+The design of the main screen is inspired by the [Weather App Freebie](https://www.uplabs.com/posts/weather-app-freebie) concept by [Raman Yv](https://www.uplabs.com/ramandesigns9).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
