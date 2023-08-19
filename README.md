@@ -1,5 +1,6 @@
 <!-- Improved compatibility of back to top link-->
 <a name="readme-top"></a>
+[![es](https://img.shields.io/badge/Idioma-Español-red.svg)](/README-ES.md)
 
 
 
@@ -7,7 +8,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/JuanAntBuit/WeatherProject">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.webp" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">WeatherProject</h3>
@@ -30,6 +31,7 @@
       <ul>
         <li><a href="#features">Features</a></li>
         <li><a href="#technologies-used">Technologies used</a></li>
+        <li><a href="#images">Images</a></li>
       </ul>
     </li>
     <li>
@@ -50,16 +52,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 ### Features
 
 * Real-time weather data
 * 4-day forecast
-* English and Spanish support
+* Search engine for worldwide locations
 * Change of measurement system between Metric/Celsius, Imperial/Fahrenheit and Standard/Kelvin.
-* Save up to 3 locations
 * GPS integration to easily locate the weather in your location
+* English and Spanish support
+* Save up to 3 locations for easy access to their information
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -95,6 +96,12 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+### Images
+
+<img src="images/english/english_light.jpg" alt="Logo" width="800">
+<img src="images/english/english_dark.jpg" alt="Logo" width="800">
 
 
 <!-- GETTING STARTED -->
@@ -153,7 +160,7 @@
 <!-- LICENSE -->
 ## License
 
-Distributed under the Apache License 2.0. See `LICENSE` for more information.
+Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -173,5 +180,5 @@ Project Link: [https://github.com/JuanAntBuit/WeatherProject](https://github.com
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[license-url]: https://github.com/JuanAntBuit/WeatherProject/blob/master/LICENSE.txt
+[license-url]: https://github.com/JuanAntBuit/WeatherProject/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png
