@@ -29,16 +29,16 @@
     <li>
       <a href="#acerca-del-proyecto">Acerca del Proyecto</a>
       <ul>
-        <li><a href="#caracteristicas">Características</a></li>
-        <li><a href="#tecnologias-utilizadas">Tecnologías Utilizadas</a></li>
-        <li><a href="#imagenes">Imágenes</a></li>
+        <li><a href="#características">Características</a></li>
+        <li><a href="#tecnologías-utilizadas">Tecnologías Utilizadas</a></li>
+        <li><a href="#imágenes">Imágenes</a></li>
       </ul>
     </li>
     <li>
-      <a href="#guia-de-instalacion">Guía de Instalación</a>
+      <a href="#guia-de-instalación">Guía de Instalación</a>
       <ul>
         <li><a href="#requisitos-previos">Requisitos Previos</a></li>
-        <li><a href="#instalacion">Instalación</a></li>
+        <li><a href="#instalación">Instalación</a></li>
       </ul>
     </li>
     <li><a href="#hoja-de-ruta">Hoja de Ruta</a></li>
