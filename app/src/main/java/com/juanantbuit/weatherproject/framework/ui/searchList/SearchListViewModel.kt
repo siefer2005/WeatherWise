@@ -91,4 +91,8 @@ class SearchListViewModel : ViewModel() {
     fun setLoading() {
         _uiState.value = SearchListUIState.Loading
     }
+
+    fun setNotFound() {
+        _uiState.value = SearchListUIState.NotFound
+    }
 }

@@ -63,6 +63,8 @@ class SearchListActivity : AppCompatActivity() {
                 if (query.isNotEmpty() || query.isNotBlank()) {
                     viewModel.setLoading()
                     searchQueryFlow.value = query
+                } else {
+                    viewModel.setNotFound()
                 }
             }
 
@@ -74,7 +76,6 @@ class SearchListActivity : AppCompatActivity() {
                 return
             }
         })
-
 
         lifecycleScope.launch @FlowPreview {
             searchQueryFlow.debounce(1100) // Time to wait for the user to stop typing
