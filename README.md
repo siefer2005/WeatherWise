@@ -95,6 +95,8 @@
   
 * **Algolia Search API Client**: Client library for integrating Algolia's search services into Android applications, enabling powerful search functionalities
 
+* **Firebase Crashlytics**: A tool for real-time crash reporting that helps developers track and analyze app crashes.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -148,7 +150,6 @@
 <!-- ROADMAP -->
 ## Roadmap
 
-- Incorporate Firebase Crashlytics
 - Migration of Shader preferences to Jetpack Datastore
 - Refactoring code and extracting some logic to other classes (Glide, Jetpack Datastore, etc.)
 - Apply dependency injection with Dagger Hilt
