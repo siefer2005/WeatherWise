@@ -1,6 +1,7 @@
 package com.juanantbuit.weatherproject.framework.ui.searchList
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.algolia.search.client.ClientSearch
 import com.algolia.search.dsl.query
@@ -16,6 +17,7 @@ import com.google.gson.Gson
 import com.juanantbuit.weatherproject.BuildConfig
 import com.juanantbuit.weatherproject.domain.models.ItemModel
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
+import com.juanantbuit.weatherproject.framework.helpers.DataStoreHelper
 import com.juanantbuit.weatherproject.usecases.GetCityInfoUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SearchListViewModel : ViewModel() {
+class SearchListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow<SearchListUIState>(SearchListUIState.NotFound)
     val uiState: StateFlow<SearchListUIState> = _uiState
@@ -33,6 +35,8 @@ class SearchListViewModel : ViewModel() {
     private val algoliaIndexName = BuildConfig.ALGOLIA_INDEX_NAME
 
     private val getCityInfoUseCase = GetCityInfoUseCase()
+
+    private val dataStoreHelper = DataStoreHelper(getApplication<Application>().applicationContext)
 
     private val client = ClientSearch(
         ApplicationID(applicationID), APIKey(algoliaAPIKey)
@@ -95,4 +99,48 @@ class SearchListViewModel : ViewModel() {
     fun setNotFound() {
         _uiState.value = SearchListUIState.NotFound
     }
+
+    fun saveFirstSaveName(firstSaveName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeFirstSaveName(firstSaveName)
+        }
+    }
+
+    fun saveSecondSaveName(secondSaveName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeSecondSaveName(secondSaveName)
+        }
+    }
+
+    fun saveThirdSaveName(thirdSaveName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeThirdSaveName(thirdSaveName)
+        }
+    }
+
+    fun saveLastGeonameId(geoId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeLastGeonameId(geoId)
+        }
+    }
+
+    fun saveGeonameId(geoIdKey:String, geoId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeGeonameId(geoIdKey, geoId)
+        }
+    }
+
+    fun saveLastSavedIsCoordinated(lastSavedIsCoordinated: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeLastSavedIsCoordinated(lastSavedIsCoordinated)
+        }
+    }
+
+    fun saveIsFirstAppStar(isFirstAppStart: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeIsFirstAppStart(isFirstAppStart)
+        }
+    }
+
+
 }

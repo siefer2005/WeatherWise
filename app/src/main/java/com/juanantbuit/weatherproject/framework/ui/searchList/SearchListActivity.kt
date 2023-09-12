@@ -1,6 +1,5 @@
 package com.juanantbuit.weatherproject.framework.ui.searchList
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.search.SearchView
 import com.juanantbuit.weatherproject.databinding.SearchListBinding
@@ -27,8 +25,6 @@ import kotlinx.coroutines.withContext
 class SearchListActivity : AppCompatActivity() {
     private val viewModel by viewModels<SearchListViewModel>()
     private lateinit var binding: SearchListBinding
-    private lateinit var prefs: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
     private lateinit var searchType: String
 
     @FlowPreview
@@ -133,32 +129,28 @@ class SearchListActivity : AppCompatActivity() {
     }
 
     private fun onItemSelected(searchItem: SearchItemModel) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        editor = prefs.edit()
-
         when (searchType) {
             "firstSave" -> {
-                editor.putString("firstSaveGeoId", searchItem.geonameid)
-                editor.putString("firstSaveName", searchItem.name)
+                viewModel.saveGeonameId("firstSaveGeoId", searchItem.geonameid)
+                viewModel.saveFirstSaveName(searchItem.name)
             }
 
             "secondSave" -> {
-                editor.putString("secondSaveGeoId", searchItem.geonameid)
-                editor.putString("secondSaveName", searchItem.name)
+                viewModel.saveGeonameId("secondSaveGeoId", searchItem.geonameid)
+                viewModel.saveSecondSaveName(searchItem.name)
             }
 
             "thirdSave" -> {
-                editor.putString("thirdSaveGeoId", searchItem.geonameid)
-                editor.putString("thirdSaveName", searchItem.name)
+                viewModel.saveGeonameId("thirdSaveGeoId", searchItem.geonameid)
+                viewModel.saveThirdSaveName(searchItem.name)
             }
 
             else -> {
-                editor.putString("lastGeoId", searchItem.geonameid)
-                editor.putBoolean("firstAppStart", false)
+                viewModel.saveLastGeonameId(searchItem.geonameid)
+                viewModel.saveIsFirstAppStar(false)
             }
         }
-        editor.putBoolean("lastSavedIsCoordinated", false)
-        editor.apply()
+        viewModel.saveLastSavedIsCoordinated(false)
         binding.citySearcherList.hide()
     }
 

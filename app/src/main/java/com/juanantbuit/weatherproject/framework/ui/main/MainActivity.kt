@@ -3,7 +3,6 @@ package com.juanantbuit.weatherproject.framework.ui.main
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -16,10 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.core.view.GravityCompat
-import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
@@ -33,32 +34,32 @@ import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import kotlin.properties.Delegates
 
-
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var prefs: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
-
-    private var firstAppStart by Delegates.notNull<Boolean>()
-
     private lateinit var dailyDetailsFragment: DailyDetailsFragment
 
     private lateinit var nextDaysInfo: MutableList<NextDayInfoModel>
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    private var isFirstAppStart by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(this.layoutInflater)
         setContentView(binding.root)
 
+        firebaseAnalytics = Firebase.analytics
+
         dailyDetailsFragment = DailyDetailsFragment()
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        editor = prefs.edit()
+        isFirstAppStart = viewModel.isFirstAppStart()
 
         createListeners()
         createObservers()
+
     }
 
     private fun createListeners() {
@@ -95,32 +96,35 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.swiperefresh.setOnRefreshListener {
-            if (viewModel.isNetworkAvailable(this)) {
-                if (firstAppStart) {
+            if (viewModel.isNetworkAvailable(this@MainActivity)) {
+
+                if (viewModel.isFirstAppStart()) {
                     binding.swiperefresh.isRefreshing = false
                     showSpecialMessage()
                     binding.specialMessage.text = getString(R.string.firstStartText)
                 } else {
-                    if (prefs.getBoolean("lastSavedIsCoordinated", false)) {
+                    if (viewModel.lastSavedIsCoordinated()) {
                         setCoordinates()
+                    } else {
+                        viewModel.setLastSavedGeonameId()
                     }
-                    setGeonameId()
                 }
             } else {
                 binding.swiperefresh.isRefreshing = false
                 showNoInternetMessage()
             }
+
         }
 
         binding.sidePanel.languageDropdownMenuText.setOnItemClickListener { _, _, position, _ ->
             when (position) {
                 0 -> { //english
-                    saveLanguageUsed("en")
+                    viewModel.saveLanguageCode("en")
                     changeLanguage("en")
                 }
 
                 1 -> { //spanish
-                    saveLanguageUsed("es")
+                    viewModel.saveLanguageCode("es")
                     changeLanguage("es")
                 }
             }
@@ -129,17 +133,17 @@ class MainActivity : AppCompatActivity() {
         binding.sidePanel.metricDropdownMenuText.setOnItemClickListener { _, _, position, _ ->
             when (position) {
                 0 -> { //metric system
-                    saveUnitUsed("metric")
+                    viewModel.saveUnitSystem("metric")
                     changeUnits("metric")
                 }
 
                 1 -> { //imperial system
-                    saveUnitUsed("imperial")
+                    viewModel.saveUnitSystem("imperial")
                     changeUnits("imperial")
                 }
 
                 2 -> { //standard system
-                    saveUnitUsed("standard")
+                    viewModel.saveUnitSystem("standard")
                     changeUnits("standard")
                 }
             }
@@ -187,13 +191,15 @@ class MainActivity : AppCompatActivity() {
         saveNameKey: String, geoIdKey: String, searchType: String
     ) {
         if (viewModel.isNetworkAvailable(this)) {
-            val saveName = prefs.getString(saveNameKey, "none")
+            val saveName = viewModel.getSavedCityName(saveNameKey)
 
             if (saveName != "none") {
                 getSavedCityInfo(geoIdKey)
             } else {
                 launchCitySearchActivity(searchType)
+
             }
+
         } else {
             showNoInternetMessage()
         }
@@ -209,9 +215,7 @@ class MainActivity : AppCompatActivity() {
     private fun getSavedCityInfo(geoIdKey: String) {
         binding.drawer.closeDrawers()
 
-        viewModel.setGeonameId(
-            prefs.getString(geoIdKey, "3117735")!!
-        )
+        viewModel.setGeonameId(geoIdKey)
     }
 
     private fun createObservers() {
@@ -230,8 +234,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.geonameId.observe(this) { geoId ->
             if (!geoId.isNullOrEmpty()) {
-                editor.putString("lastGeoId", geoId)
-                editor.apply()
+                viewModel.saveLastGeonameId(geoId)
 
                 viewModel.getCityInfoByGeonameId(geoId)
                 viewModel.getForecastResponseByGeonameId(geoId)
@@ -241,10 +244,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.coordinates.observe(this) { coordinates ->
             if (coordinates != null) {
-                coordinates["latitude"]?.let { editor.putFloat("lastLatitude", it) }
-                coordinates["longitude"]?.let { editor.putFloat("lastLongitude", it) }
-                editor.putBoolean("lastSavedIsCoordinated", true)
-                editor.apply()
+                coordinates["latitude"]?.let { viewModel.saveLastLatitude(it) }
+                coordinates["longitude"]?.let { viewModel.saveLastLongitude(it) }
+                viewModel.saveLastSavedIsCoordinated(true)
 
                 viewModel.getCityInfoByCoordinates(
                     coordinates["latitude"]!!, coordinates["longitude"]!!
@@ -302,7 +304,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        firstAppStart = prefs.getBoolean("firstAppStart", true)
+        isFirstAppStart = viewModel.isFirstAppStart()
 
         val languagesStringArray = resources.getStringArray(R.array.languages)
         (binding.sidePanel.languageDropdownMenu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(
@@ -315,12 +317,13 @@ class MainActivity : AppCompatActivity() {
         )
 
         if (viewModel.isNetworkAvailable(this)) {
-            if (firstAppStart) {
+            if (isFirstAppStart) {
                 //Selects the user's preferred language as default language
                 AppCompatDelegate.getApplicationLocales()
 
-                val languageCode = prefs.getString("language", "en")
-                changeLanguage(languageCode!!)
+                val languageCode = viewModel.getLanguageCode()
+
+                changeLanguage(languageCode)
 
                 when (languageCode) {
                     "en" -> {
@@ -337,9 +340,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 showSpecialMessage()
                 binding.specialMessage.text = getString(R.string.firstStartText)
+
             } else {
-                UNITS = prefs.getString("units", "metric")!!
-                LANG = prefs.getString("language", "en")!!
+
+                UNITS = viewModel.getUnitSystem()
+                LANG = viewModel.getLanguageCode()
 
                 changeLanguage(LANG)
 
@@ -357,36 +362,39 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                when (UNITS) {
-                    "metric" -> {
-                        binding.sidePanel.metricDropdownMenuText.setText(
-                            getString(R.string.celsius), false
-                        )
-                    }
-
-                    "imperial" -> {
-                        binding.sidePanel.metricDropdownMenuText.setText(
-                            getString(R.string.fahrenheit), false
-                        )
-                    }
-
-                    else -> {
-                        binding.sidePanel.metricDropdownMenuText.setText(
-                            getString(R.string.kelvin), false
-                        )
-                    }
-                }
                 showProgressBar()
 
-                if (prefs.getBoolean("lastSavedIsCoordinated", false)) {
+                if (viewModel.lastSavedIsCoordinated()) {
                     setCoordinates()
+                } else {
+                    viewModel.setLastSavedGeonameId()
                 }
-                setGeonameId()
-                setSaveLocations()
             }
+            setSaveLocations()
         } else {
             showNoInternetMessage()
         }
+
+        when (UNITS) {
+            "metric" -> {
+                binding.sidePanel.metricDropdownMenuText.setText(
+                    getString(R.string.celsius), false
+                )
+            }
+
+            "imperial" -> {
+                binding.sidePanel.metricDropdownMenuText.setText(
+                    getString(R.string.fahrenheit), false
+                )
+            }
+
+            else -> {
+                binding.sidePanel.metricDropdownMenuText.setText(
+                    getString(R.string.kelvin), false
+                )
+            }
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -437,27 +445,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setCoordinates() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        editor = prefs.edit()
-
-        viewModel.setCoordinates(
-            prefs.getFloat("lastLatitude", 0.0f), prefs.getFloat("lastLongitude", 0.0f)
-        )
-    }
-
-    private fun setGeonameId() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        editor = prefs.edit()
-
-        viewModel.setGeonameId(
-            prefs.getString("lastGeoId", "3117735")!!
-        )
+        viewModel.setLastSavedCoordinates()
     }
 
     private fun setSaveLocations() {
-        val firstSaveName = prefs.getString("firstSaveName", "none")
-        val secondSaveName = prefs.getString("secondSaveName", "none")
-        val thirdSaveName = prefs.getString("thirdSaveName", "none")
+        val firstSaveName = viewModel.getFirstSaveName()
+        val secondSaveName = viewModel.getSecondSaveName()
+        val thirdSaveName = viewModel.getThirdSaveName()
 
         if (firstSaveName != "none") {
             binding.sidePanel.firstSaveLocation.text = firstSaveName
@@ -519,22 +513,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeSavedCity(saveName: String, saveLocation: TextView, cancelButton: View) {
-        editor.remove(saveName)
-        editor.apply()
+    private fun removeSavedCity(saveNameId: String, saveLocation: TextView, cancelButton: View) {
+        viewModel.saveSavedCityName(saveNameId, "none")
 
         saveLocation.text = getString(R.string.touch_to_save_location)
         cancelButton.visibility = View.GONE
-    }
-
-    private fun saveLanguageUsed(language: String) {
-        editor.putString("language", language)
-        editor.apply()
-    }
-
-    private fun saveUnitUsed(unit: String) {
-        editor.putString("units", unit)
-        editor.apply()
     }
 
     private fun changeLanguage(languageCode: String) {
