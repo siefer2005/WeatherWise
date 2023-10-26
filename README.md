@@ -150,8 +150,6 @@
 <!-- ROADMAP -->
 ## Roadmap
 
-- Migration of Shader preferences to Jetpack Datastore
-- Refactoring code and extracting some logic to other classes (Glide, Jetpack Datastore, etc.)
 - Apply dependency injection with Dagger Hilt
 - Testing
 
