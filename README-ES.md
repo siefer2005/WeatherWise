@@ -146,8 +146,6 @@
 <!-- HOJA DE RUTA -->
 ## Hoja de Ruta
 
-- Migración de Shader Preferences a Jetpack Datastore
-- Refactorización del código y extracción de cierta lógica a otras clases (Glide, Jetpack Datastore, etc.)
 - Aplicación de inyección de dependencias con Dagger Hilt
 - Testing
 
