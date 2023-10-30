@@ -7,8 +7,9 @@ import com.juanantbuit.weatherproject.utils.AFTERNOON_TIME_INDEX
 import com.juanantbuit.weatherproject.utils.TRI_HOURS_IN_DAY
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class GetNextDaysInfoUseCase {
+class GetNextDaysInfoUseCase @Inject constructor() {
     operator fun invoke(forecastResponse: ForecastResponseModel): MutableList<NextDayInfoModel> {
         val forecastsForFiveDays: List<List<ForecastInfoModel>> =
             getOnlyNextDaysInfo(forecastResponse).chunked(TRI_HOURS_IN_DAY)

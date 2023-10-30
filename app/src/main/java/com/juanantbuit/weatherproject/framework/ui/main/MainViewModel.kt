@@ -2,9 +2,7 @@ package com.juanantbuit.weatherproject.framework.ui.main
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.net.ConnectivityManager
@@ -12,11 +10,10 @@ import android.net.NetworkCapabilities
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.preference.PreferenceManager
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -31,14 +28,19 @@ import com.juanantbuit.weatherproject.usecases.GetForecastResponseUseCase
 import com.juanantbuit.weatherproject.usecases.GetNextDaysInfoUseCase
 import com.juanantbuit.weatherproject.usecases.TurnOnGpsUseCase
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    private lateinit var prefs: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getCityInfoUseCase: GetCityInfoUseCase,
+    private val getForecastResponseUseCase: GetForecastResponseUseCase,
+    private val getNextDaysInfoUseCase: GetNextDaysInfoUseCase,
+    private val dataStoreHelper: DataStoreHelper
+) : ViewModel() {
 
     private val _currentDay = MutableLiveData<Int?>()
     val currentDay: LiveData<Int?> get() = _currentDay
@@ -54,12 +56,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _geonameId = MutableLiveData<String>()
     val geonameId: LiveData<String> get() = _geonameId
-
-    private val getCityInfoUseCase = GetCityInfoUseCase()
-    private val getForecastResponseUseCase = GetForecastResponseUseCase()
-    private val getNextDaysInfoUseCase = GetNextDaysInfoUseCase()
-
-    private val dataStoreHelper = DataStoreHelper(getApplication<Application>().applicationContext)
 
     fun getCurrentDay() {
         val calendar = Calendar.getInstance()
@@ -137,10 +133,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                             coordinates["latitude"] = latitude
                             coordinates["longitude"] = longitude
 
-                            setFirstAppStartFalse(activity)
+                            saveIsFirstAppStar(false)
 
                             _coordinates.postValue(coordinates)
-
                         }
                     }
                 }, Looper.getMainLooper())
@@ -308,6 +303,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun saveIsFirstAppStar(isFirstAppStart: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreHelper.writeIsFirstAppStart(isFirstAppStart)
+        }
+    }
+
     private fun isGPSEnabled(activity: MainActivity): Boolean {
         val locationManager: LocationManager =
             activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -342,13 +343,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             actNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             else -> false
         }
-    }
-
-    private fun setFirstAppStartFalse(activity: MainActivity) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-        editor = prefs.edit()
-
-        editor.putBoolean("firstAppStart", false)
-        editor.apply()
     }
 }

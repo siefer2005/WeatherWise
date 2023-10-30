@@ -30,21 +30,24 @@ import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import com.juanantbuit.weatherproject.utils.LANG
 import com.juanantbuit.weatherproject.utils.Quadruple
 import com.juanantbuit.weatherproject.utils.UNITS
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
-import kotlin.properties.Delegates
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var dailyDetailsFragment: DailyDetailsFragment
+    @Inject
+    lateinit var dailyDetailsFragment: DailyDetailsFragment
 
     private lateinit var nextDaysInfo: MutableList<NextDayInfoModel>
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    private var isFirstAppStart by Delegates.notNull<Boolean>()
+    private var isFirstAppStart: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +56,10 @@ class MainActivity : AppCompatActivity() {
 
         firebaseAnalytics = Firebase.analytics
 
-        dailyDetailsFragment = DailyDetailsFragment()
-
         isFirstAppStart = viewModel.isFirstAppStart()
 
         createListeners()
         createObservers()
-
     }
 
     private fun createListeners() {
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                     binding.specialMessage.text = getString(R.string.firstStartText)
                 } else {
                     if (viewModel.lastSavedIsCoordinated()) {
-                        setCoordinates()
+                        viewModel.setLastSavedCoordinates()
                     } else {
                         viewModel.setLastSavedGeonameId()
                     }
@@ -197,7 +197,6 @@ class MainActivity : AppCompatActivity() {
                 getSavedCityInfo(geoIdKey)
             } else {
                 launchCitySearchActivity(searchType)
-
             }
 
         } else {
@@ -365,7 +364,7 @@ class MainActivity : AppCompatActivity() {
                 showProgressBar()
 
                 if (viewModel.lastSavedIsCoordinated()) {
-                    setCoordinates()
+                    viewModel.setLastSavedCoordinates()
                 } else {
                     viewModel.setLastSavedGeonameId()
                 }
@@ -381,13 +380,11 @@ class MainActivity : AppCompatActivity() {
                     getString(R.string.celsius), false
                 )
             }
-
             "imperial" -> {
                 binding.sidePanel.metricDropdownMenuText.setText(
                     getString(R.string.fahrenheit), false
                 )
             }
-
             else -> {
                 binding.sidePanel.metricDropdownMenuText.setText(
                     getString(R.string.kelvin), false
@@ -442,10 +439,6 @@ class MainActivity : AppCompatActivity() {
         binding.specialMessage.visibility = View.GONE
 
         binding.progressBar.visibility = View.GONE
-    }
-
-    private fun setCoordinates() {
-        viewModel.setLastSavedCoordinates()
     }
 
     private fun setSaveLocations() {

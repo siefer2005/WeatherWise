@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.search.SearchView
 import com.juanantbuit.weatherproject.databinding.SearchListBinding
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@AndroidEntryPoint
 class SearchListActivity : AppCompatActivity() {
     private val viewModel by viewModels<SearchListViewModel>()
     private lateinit var binding: SearchListBinding

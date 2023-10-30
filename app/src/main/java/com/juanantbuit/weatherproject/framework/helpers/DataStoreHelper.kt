@@ -1,20 +1,17 @@
 package com.juanantbuit.weatherproject.framework.helpers
 
-import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-private val Context.dataStore by preferencesDataStore(name = "USER_PREFERENCES")
-
-class DataStoreHelper(context: Context) {
-
-    private val dataStore = context.dataStore
-
+class DataStoreHelper @Inject constructor(
+    private val dataStore: DataStore<Preferences>
+) {
     companion object {
         val FIRST_APP_START_KEY = booleanPreferencesKey("isFirstAppStart")
         val LAST_GEO_ID_KEY = stringPreferencesKey("lastGeoId")

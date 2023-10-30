@@ -3,9 +3,11 @@ package com.juanantbuit.weatherproject.usecases
 import com.juanantbuit.weatherproject.data.repositories.CityInfoRepository
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
+import javax.inject.Inject
 
-class GetCityInfoUseCase {
-    private val repository = CityInfoRepository()
+class GetCityInfoUseCase @Inject constructor(
+    private val repository: CityInfoRepository
+) {
     suspend fun getCityInfo(latitude: Float, longitude: Float): CityInfoModel =
         repository.getCityInfo(latitude, longitude)
 

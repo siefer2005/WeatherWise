@@ -18,8 +18,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.juanantbuit.weatherproject.R
 import com.juanantbuit.weatherproject.databinding.FragmentDailyDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DailyDetailsFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentDailyDetailsBinding
 
