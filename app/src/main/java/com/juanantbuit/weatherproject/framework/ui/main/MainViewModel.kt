@@ -1,15 +1,10 @@
 package com.juanantbuit.weatherproject.framework.ui.main
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Looper
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +13,6 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import com.juanantbuit.weatherproject.domain.models.CityInfoModel
 import com.juanantbuit.weatherproject.domain.models.ForecastResponseModel
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
@@ -26,9 +20,8 @@ import com.juanantbuit.weatherproject.framework.helpers.DataStoreHelper
 import com.juanantbuit.weatherproject.usecases.GetCityInfoUseCase
 import com.juanantbuit.weatherproject.usecases.GetForecastResponseUseCase
 import com.juanantbuit.weatherproject.usecases.GetNextDaysInfoUseCase
-import com.juanantbuit.weatherproject.usecases.TurnOnGpsUseCase
-import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -39,7 +32,8 @@ class MainViewModel @Inject constructor(
     private val getCityInfoUseCase: GetCityInfoUseCase,
     private val getForecastResponseUseCase: GetForecastResponseUseCase,
     private val getNextDaysInfoUseCase: GetNextDaysInfoUseCase,
-    private val dataStoreHelper: DataStoreHelper
+    private val dataStoreHelper: DataStoreHelper,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val _currentDay = MutableLiveData<Int?>()
@@ -51,8 +45,8 @@ class MainViewModel @Inject constructor(
     private val _forecastResponse = MutableLiveData<ForecastResponseModel?>()
     val forecastResponse: LiveData<ForecastResponseModel?> get() = _forecastResponse
 
-    private val _coordinates = MutableLiveData<HashMap<String, Float?>>()
-    val coordinates: LiveData<HashMap<String, Float?>> get() = _coordinates
+    private val _coordinates = MutableLiveData<HashMap<String, Float?>?>()
+    val coordinates: LiveData<HashMap<String, Float?>?> get() = _coordinates
 
     private val _geonameId = MutableLiveData<String>()
     val geonameId: LiveData<String> get() = _geonameId
@@ -92,62 +86,36 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun checkGPSPermission(activity: MainActivity) {
-        if (ContextCompat.checkSelfPermission(
-                activity, Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            getCoordinatesFromGPS(activity)
-        } else {
-            ActivityCompat.requestPermissions(
-                activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), GPS_REQUEST_CODE
-            )
-        }
-    }
-
     @SuppressLint("MissingPermission")
-    fun getCoordinatesFromGPS(activity: MainActivity) {
+    fun getCoordinatesFromGPS(activity: MainActivity, locationRequest: LocationRequest) {
         val coordinates: HashMap<String, Float?> = hashMapOf()
-        val locationRequestBuilder: LocationRequest.Builder =
-            LocationRequest.Builder(PRIORITY_HIGH_ACCURACY, 5000)
-        locationRequestBuilder.setMinUpdateIntervalMillis(2000)
 
-        val locationRequest: LocationRequest = locationRequestBuilder.build()
+        LocationServices.getFusedLocationProviderClient(activity)
+            .requestLocationUpdates(locationRequest, object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    super.onLocationResult(locationResult)
 
-        if (isGPSEnabled(activity)) {
+                    LocationServices.getFusedLocationProviderClient(activity)
+                        .removeLocationUpdates(this)
 
-            LocationServices.getFusedLocationProviderClient(activity)
-                .requestLocationUpdates(locationRequest, object : LocationCallback() {
-                    override fun onLocationResult(locationResult: LocationResult) {
-                        super.onLocationResult(locationResult)
+                    if (locationResult.locations.isNotEmpty()) {
 
-                        LocationServices.getFusedLocationProviderClient(activity)
-                            .removeLocationUpdates(this)
+                        val index: Int = locationResult.locations.size - 1
+                        val latitude = locationResult.locations[index].latitude.toFloat()
+                        val longitude = locationResult.locations[index].longitude.toFloat()
 
-                        if (locationResult.locations.isNotEmpty()) {
+                        coordinates["latitude"] = latitude
+                        coordinates["longitude"] = longitude
 
-                            val index: Int = locationResult.locations.size - 1
-                            val latitude = locationResult.locations[index].latitude.toFloat()
-                            val longitude = locationResult.locations[index].longitude.toFloat()
-
-                            coordinates["latitude"] = latitude
-                            coordinates["longitude"] = longitude
-
-                            saveIsFirstAppStar(false)
-
-                            _coordinates.postValue(coordinates)
-                        }
+                        saveIsFirstAppStar(false)
+                        _coordinates.postValue(coordinates)
                     }
-                }, Looper.getMainLooper())
-        } else {
-            val turnOnGpsUseCase = TurnOnGpsUseCase(activity)
-            turnOnGpsUseCase.turnOnGPS(locationRequest)
-        }
-
+                }
+        }, Looper.getMainLooper())
     }
 
     fun setLastSavedCoordinates() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             val coordinates: HashMap<String, Float?> = hashMapOf()
 
             dataStoreHelper.read(DataStoreHelper.LAST_LATITUDE_KEY).collect { lastLatitude ->
@@ -162,25 +130,34 @@ class MainViewModel @Inject constructor(
     }
 
     fun setLastSavedGeonameId() {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreHelper.read(DataStoreHelper.LAST_GEO_ID_KEY).collect { savedGeonameId ->
-                val geoId = savedGeonameId as String? ?: "3117735"
-                _geonameId.postValue(geoId)
+        if(!lastSavedIsCoordinated()) {
+            viewModelScope.launch(dispatcher) {
+                dataStoreHelper.read(DataStoreHelper.LAST_GEO_ID_KEY).collect { savedGeonameId ->
+                    val geoId = savedGeonameId as String? ?: "3117735"
+                    _geonameId.postValue(geoId)
+                }
             }
         }
     }
 
     fun setGeonameId(geoIdkey: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreHelper.readGeonameId(geoIdkey).collect { savedGeonameId ->
-                val geoId = savedGeonameId ?: "3117735"
-                _geonameId.postValue(geoId)
+        var notExecuted = true
+
+        if(!lastSavedIsCoordinated()) {
+            viewModelScope.launch(dispatcher) {
+                dataStoreHelper.readGeonameId(geoIdkey).collect { savedGeonameId ->
+                    val geoId = savedGeonameId ?: "3117735"
+                    if(notExecuted) {
+                        saveLastGeonameId(geoId)
+                        notExecuted = false
+                    }
+                }
             }
         }
     }
 
     fun lastSavedIsCoordinated(): Boolean {
-        var result = true
+        var result = false
         viewModelScope.launch {
             dataStoreHelper.read(DataStoreHelper.LAST_SAVED_ARE_COORDINATES)
                 .collect { lastSavedIsCoordinated ->
@@ -261,59 +238,50 @@ class MainViewModel @Inject constructor(
         return result
     }
 
-    fun saveLastGeonameId(geoId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+    private suspend fun saveLastGeonameId(geoId: String) {
             dataStoreHelper.writeLastGeonameId(geoId)
-        }
     }
 
     fun saveLastLatitude(lastLatitude: Float) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             dataStoreHelper.writeLastLatitude(lastLatitude)
         }
     }
 
     fun saveLastLongitude(lastLongitude: Float) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             dataStoreHelper.writeLastLongitude(lastLongitude)
         }
     }
 
     fun saveLastSavedIsCoordinated(lastSavedIsCoordinated: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             dataStoreHelper.writeLastSavedIsCoordinated(lastSavedIsCoordinated)
         }
     }
 
     fun saveLanguageCode(languageCode: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             dataStoreHelper.writeLanguageCode(languageCode)
         }
     }
 
     fun saveUnitSystem(unitSystem: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             dataStoreHelper.writeUnitSystem(unitSystem)
         }
     }
 
     fun saveSavedCityName(savedCityNameId: String, savedCityName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             dataStoreHelper.writeSavedCityName(savedCityNameId, savedCityName)
         }
     }
 
     fun saveIsFirstAppStar(isFirstAppStart: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             dataStoreHelper.writeIsFirstAppStart(isFirstAppStart)
         }
-    }
-
-    private fun isGPSEnabled(activity: MainActivity): Boolean {
-        val locationManager: LocationManager =
-            activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     //Necessary to stay in the index range of DAYS_OF_WEEK

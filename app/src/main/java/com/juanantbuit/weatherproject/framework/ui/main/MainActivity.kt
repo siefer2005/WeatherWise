@@ -1,11 +1,13 @@
 package com.juanantbuit.weatherproject.framework.ui.main
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -13,10 +15,14 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.Priority
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -26,6 +32,7 @@ import com.juanantbuit.weatherproject.databinding.ActivityMainBinding
 import com.juanantbuit.weatherproject.domain.models.NextDayInfoModel
 import com.juanantbuit.weatherproject.framework.ui.dailyDetails.DailyDetailsFragment
 import com.juanantbuit.weatherproject.framework.ui.searchList.SearchListActivity
+import com.juanantbuit.weatherproject.usecases.TurnOnGpsUseCase
 import com.juanantbuit.weatherproject.utils.GPS_REQUEST_CODE
 import com.juanantbuit.weatherproject.utils.LANG
 import com.juanantbuit.weatherproject.utils.Quadruple
@@ -33,15 +40,11 @@ import com.juanantbuit.weatherproject.utils.UNITS
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
     private lateinit var binding: ActivityMainBinding
-
-    @Inject
-    lateinit var dailyDetailsFragment: DailyDetailsFragment
 
     private lateinit var nextDaysInfo: MutableList<NextDayInfoModel>
 
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.gpsButton.setOnClickListener {
             if (viewModel.isNetworkAvailable(this)) {
-                viewModel.checkGPSPermission(this)
+                checkGPSPermission()
             } else {
                 showNoInternetMessage()
             }
@@ -103,6 +106,7 @@ class MainActivity : AppCompatActivity() {
                     showSpecialMessage()
                     binding.specialMessage.text = getString(R.string.firstStartText)
                 } else {
+                    showProgressBar()
                     if (viewModel.lastSavedIsCoordinated()) {
                         viewModel.setLastSavedCoordinates()
                     } else {
@@ -194,6 +198,8 @@ class MainActivity : AppCompatActivity() {
             val saveName = viewModel.getSavedCityName(saveNameKey)
 
             if (saveName != "none") {
+                viewModel.saveLastSavedIsCoordinated(false)
+                showProgressBar()
                 getSavedCityInfo(geoIdKey)
             } else {
                 launchCitySearchActivity(searchType)
@@ -233,19 +239,17 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.geonameId.observe(this) { geoId ->
             if (!geoId.isNullOrEmpty()) {
-                viewModel.saveLastGeonameId(geoId)
-
                 viewModel.getCityInfoByGeonameId(geoId)
                 viewModel.getForecastResponseByGeonameId(geoId)
+                viewModel.getCurrentDay()
             }
-            viewModel.getCurrentDay()
         }
 
         viewModel.coordinates.observe(this) { coordinates ->
-            if (coordinates != null) {
+            if (!coordinates.isNullOrEmpty()) {
+                showProgressBar()
                 coordinates["latitude"]?.let { viewModel.saveLastLatitude(it) }
                 coordinates["longitude"]?.let { viewModel.saveLastLongitude(it) }
-                viewModel.saveLastSavedIsCoordinated(true)
 
                 viewModel.getCityInfoByCoordinates(
                     coordinates["latitude"]!!, coordinates["longitude"]!!
@@ -253,12 +257,13 @@ class MainActivity : AppCompatActivity() {
                 viewModel.getForecastResponseByCoordinates(
                     coordinates["latitude"]!!, coordinates["longitude"]!!
                 )
-            }
+
             viewModel.getCurrentDay()
+            }
         }
 
         viewModel.cityInfo.observe(this) { cityInfo ->
-            if (cityInfo != null) {
+             if (cityInfo != null) {
                 loadIcon(
                     viewModel.getImageUrl(cityInfo.iconId[0].idIcon),
                     binding.principalCardView.currentImage
@@ -398,15 +403,20 @@ class MainActivity : AppCompatActivity() {
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+      when (requestCode) {
+          GPS_REQUEST_CODE -> {
+             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                   val locationRequestBuilder: LocationRequest.Builder =
+                      LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
+                  locationRequestBuilder.setMinUpdateIntervalMillis(2000)
 
-        when (requestCode) {
-            GPS_REQUEST_CODE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    viewModel.getCoordinatesFromGPS(this)
-                }
-                return
-            }
-        }
+                      val locationRequest: LocationRequest = locationRequestBuilder.build()
+
+                      viewModel.getCoordinatesFromGPS(this, locationRequest)
+              }
+              return
+          }
+      }
     }
 
     /*************************PRIVATE FUNCTIONS*************************/
@@ -482,6 +492,8 @@ class MainActivity : AppCompatActivity() {
         bundle.putInt("highestTemp", nextDayInfo.highestTemp)
         bundle.putInt("dayNumber", dayNumber)
 
+        val dailyDetailsFragment=  DailyDetailsFragment()
+
         if (dailyDetailsFragment.isAdded) {
             dailyDetailsFragment.dismiss()
         }
@@ -527,4 +539,50 @@ class MainActivity : AppCompatActivity() {
         showSpecialMessage()
         binding.specialMessage.text = getString(R.string.noInternetMessage)
     }
+
+    override fun onDestroy() {
+
+        super.onDestroy()
+        Glide.get(this).clearMemory()
+
+        firebaseAnalytics.resetAnalyticsData()
+
+        viewModel.currentDay.removeObservers(this)
+        viewModel.geonameId.removeObservers(this)
+        viewModel.coordinates.removeObservers(this)
+        viewModel.cityInfo.removeObservers(this)
+        viewModel.forecastResponse.removeObservers(this)
+    }
+
+    private fun checkGPSPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val locationRequestBuilder: LocationRequest.Builder =
+                LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
+            locationRequestBuilder.setMinUpdateIntervalMillis(2000)
+
+            val locationRequest: LocationRequest = locationRequestBuilder.build()
+            if(isGPSEnabled()) {
+                viewModel.saveLastSavedIsCoordinated(true)
+                viewModel.getCoordinatesFromGPS(this, locationRequest)
+            } else {
+                val turnOnGpsUseCase = TurnOnGpsUseCase(this)
+                turnOnGpsUseCase.turnOnGPS(locationRequest)
+            }
+        } else {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), GPS_REQUEST_CODE
+            )
+        }
+    }
+
+    private fun isGPSEnabled(): Boolean {
+        val locationManager: LocationManager =
+            this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    }
 }
+

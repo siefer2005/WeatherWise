@@ -135,4 +135,16 @@ class DailyDetailsFragment : BottomSheetDialogFragment() {
 
         lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
     }
+
+    override fun onDestroyView() {
+        binding.dayImage.setImageBitmap(null)
+        binding.dayName.text = null
+        binding.averageTemperature.text = null
+        binding.lowestTemp.text = null
+        binding.highestTemp.text = null
+        binding.lineChart.data = null
+        lineList.clear()
+
+        super.onDestroyView()
+    }
 }

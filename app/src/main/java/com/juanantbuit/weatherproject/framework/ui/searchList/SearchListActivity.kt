@@ -1,10 +1,10 @@
 package com.juanantbuit.weatherproject.framework.ui.searchList
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -12,9 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.search.SearchView
+import com.juanantbuit.weatherproject.WeatherApplication
 import com.juanantbuit.weatherproject.databinding.SearchListBinding
 import com.juanantbuit.weatherproject.domain.models.SearchItemModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,12 +24,15 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchListActivity : AppCompatActivity() {
     private val viewModel by viewModels<SearchListViewModel>()
     private lateinit var binding: SearchListBinding
     private lateinit var searchType: String
+    private val application: WeatherApplication = WeatherApplication()
+    @Inject lateinit var dispatcher: CoroutineDispatcher
 
     @FlowPreview
     private val searchQueryFlow = MutableStateFlow("")
@@ -49,7 +54,12 @@ class SearchListActivity : AppCompatActivity() {
         binding.citySearcherList.addTransitionListener { _, _, newState ->
             if (newState == SearchView.TransitionState.HIDDEN) {
                 finish()
-                overridePendingTransition(0, 0)
+
+                if (Build.VERSION.SDK_INT >= 34) {
+                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0)
+                } else {
+                    overridePendingTransition(0, 0)
+                }
             }
         }
 
@@ -91,11 +101,7 @@ class SearchListActivity : AppCompatActivity() {
                     when (uiState) {
                         is SearchListUIState.Error -> {
                             hideProgressBar()
-                            Toast.makeText(
-                                this@SearchListActivity,
-                                "Ha ocurrido un error: ${uiState.msg}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            application.showToast("Ha ocurrido un error: ${uiState.msg}")
                         }
 
                         SearchListUIState.Loading -> {
@@ -109,7 +115,8 @@ class SearchListActivity : AppCompatActivity() {
                         }
 
                         is SearchListUIState.Success -> {
-                            withContext(Dispatchers.Main) {
+                            dispatcher = Dispatchers.Main
+                            withContext(dispatcher) {
                                 binding.recyclerSearch.adapter = SearchItemsAdapter(
                                     uiState.searchValues.searchItemModelsList,
                                     uiState.searchValues.cityInfoModelsList
@@ -127,7 +134,6 @@ class SearchListActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun onItemSelected(searchItem: SearchItemModel) {
