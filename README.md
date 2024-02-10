@@ -97,6 +97,8 @@
 
 * **Firebase Crashlytics**: A tool for real-time crash reporting that helps developers track and analyze app crashes.
 
+* **Dagger Hilt**: A dependency injection framework for Android that simplifies dependency management and improves modularity, testability and maintainability of code.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -150,7 +152,6 @@
 <!-- ROADMAP -->
 ## Roadmap
 
-- Apply dependency injection with Dagger Hilt
 - Testing
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -95,6 +95,8 @@
 
 * **Firebase Crashlytics**: Una herramienta de notificación de fallos en tiempo real que ayuda a los desarrolladores a rastrear y analizar los fallos de las aplicaciones.
 
+* **Dagger Hilt**: Framework de inyección de dependencias para Android que simplifica la gestión de dependencias y mejora la modularidad, la testabilidad y el mantenimiento del código.
+
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
 ### Imágenes
@@ -146,7 +148,6 @@
 <!-- HOJA DE RUTA -->
 ## Hoja de Ruta
 
-- Aplicación de inyección de dependencias con Dagger Hilt
 - Testing
 
 <p align="right">(<a href="#readme-top">volver arriba</a>)</p>
