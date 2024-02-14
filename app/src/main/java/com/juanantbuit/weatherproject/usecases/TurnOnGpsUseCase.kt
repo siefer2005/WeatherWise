@@ -21,7 +21,7 @@ class TurnOnGpsUseCase(private val activity: MainActivity) {
         builder.setAlwaysShow(true)
 
         val result: Task<LocationSettingsResponse> =
-            LocationServices.getSettingsClient(application.applicationContext)
+            LocationServices.getSettingsClient(activity.applicationContext)
                 .checkLocationSettings(builder.build())
 
         result.addOnCompleteListener { task ->
