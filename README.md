@@ -1,6 +1,6 @@
 <!-- Improved compatibility of back to top link-->
 <a name="readme-top"></a>
-[![es](https://img.shields.io/badge/Idioma-Español-red.svg)](/README-ES.md)
+
 
 
 
