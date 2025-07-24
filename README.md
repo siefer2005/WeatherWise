@@ -5,16 +5,12 @@
 
 
 <!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/JuanAntBuit/WeatherProject">
-    <img src="images/logo.webp" alt="Logo" width="80" height="80">
-  </a>
 
-<h3 align="center">WeatherProject</h3>
+
+<h3 align="center">WeatherWise</h3>
 
   <p align="center">
-    WeatherProject is a Kotlin Android app that gathers data from the OpenWeatherMap API and showcases global weather information
+    WeatherWise is a Kotlin Android app that gathers data from the OpenWeatherMap API and showcases global weather information
     <br />
     <br />
   </p>
@@ -158,15 +154,6 @@
 
 
 
-<!-- Design -->
-## Design
-
-The design of the main screen is inspired by the [Weather App Freebie](https://www.uplabs.com/posts/weather-app-freebie) concept by [Raman Yv](https://www.uplabs.com/ramandesigns9).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- LICENSE -->
 ## License
 
@@ -176,16 +163,6 @@ Distributed under the GPL-3.0 license. See `LICENSE` for more information.
 
 
 
-<!-- CONTACT -->
-## Contact
-
-Juan Antonio Buitrago B. - juanantoniobuit@gmail.com
-
-Linkedin: https://www.linkedin.com/in/juan-antonio-buitrago-balsalobre/
-
-Project Link: [https://github.com/JuanAntBuit/WeatherProject](https://github.com/JuanAntBuit/WeatherProject)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
